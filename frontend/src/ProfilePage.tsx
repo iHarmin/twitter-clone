@@ -2,40 +2,48 @@ import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function ProfilePage() {
+
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    userName: '',
+    email: '',
+    interests: ''
+  });
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [userName] = useState('');
   const [email, setEmail] = useState('');
   const [interests, setInterests] = useState('');
-
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const formData = {
-      firstName,
-      lastName,
-      userName, // username is used as identifier for user and cannot be changed
-      email,
-      interests
-    };
+    setFormData({
+      ...formData,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      interests: interests
+    });
+
 
     try {
       // Send the form data to the server
-      const serverResponse = await fetch("http://localhost:8080/api/users/save", {
+      const serverResponse = await fetch('http://localhost:8080/api/users/save', {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": 'application/json',
         },
         body: JSON.stringify(formData)
       });
 
       const result = await serverResponse.json();
-      console.log("Success:", result);
-      alert("Profile Changes Saved!");
+      console.log('Success:', result);
+      alert('Profile Changes Saved!');
     } catch (error) {
       console.error(error);
-      alert("An error occurred while saving your profile changes.");
+      alert('An error occurred while saving your profile changes.');
     }
   };
 
@@ -45,10 +53,10 @@ function ProfilePage() {
     <>
       <div>
         <h2>User Profile</h2>
-        <p>{firstName} {lastName}</p>
-        <p>{userName}</p>
-        <p>{email}</p>
-        <p>{interests}</p>
+        <p>{formData.firstName} {formData.lastName}</p>
+        <p>{formData.userName}</p>
+        <p>{formData.email}</p>
+        <p>{formData.interests}</p>
       </div>
 
       <form onSubmit={handleSubmit}>
