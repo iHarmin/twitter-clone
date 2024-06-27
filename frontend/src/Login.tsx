@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import './App.css';
 
@@ -62,6 +63,7 @@ const Login: React.FC = () => {
             required
           />
           <button type="submit">Sign In</button>
+          <Link to="/forgot-password">Forgot Password?</Link>
         </form>
       )}
     </div>
