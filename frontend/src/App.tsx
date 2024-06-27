@@ -4,6 +4,7 @@ import NavBar from './NavBar';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Login from "./Login.tsx";
 import Signup from "./Signup.tsx";
+import ForgotPassword from "./ForgotPassword";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/profile/:username" element={<ProfilePage />} />
+          <Route path="/Forgot password" element={<ForgotPassword />} />
         </Routes>
       </div>
     </Router>
