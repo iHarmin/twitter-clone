@@ -1,16 +1,33 @@
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {useState} from "react";
 
 function NavBar() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return (
-    <nav>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/profile">Profile</Link>
-        </li>
-      </ul>
+    <nav className="navbar navbar-expand navbar-light bg-light">
+      <div className="container">
+        <Link className="navbar-brand" to="#">Twitter 2</Link>
+        <ul>
+          <li className="nav-item">
+            <Link to="/">Home</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/profile/currentName">Profile</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/signup">Signup</Link>
+          </li>
+          <li className="nav-item">
+            {isLoggedIn ? (
+              <Link to="/login">Logout</Link>
+            ) : (
+              <Link to="/login">Login</Link>
+            )}
+          </li>
+        </ul>
+      </div>
     </nav>
   );
 }
