@@ -13,14 +13,15 @@ function ProfilePage() {
     status: 'Online 🟢' // default status
   });
 
-  const {id} = useParams();
+  const { username} = useParams();
   // TODO: placeholder for current username
   const currentUser = 'currentName';
 
+  // Fetch the user's profile data
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const serverResponse = await fetch(`http://localhost:8080/api/users/${id}`);
+        const serverResponse = await fetch(`http://localhost:8080/api/users/currentName`);
         const profileData = await serverResponse.json();
         console.log(profileData);
         setFormData(profileData);
@@ -31,7 +32,7 @@ function ProfilePage() {
     };
 
     fetchProfileData();
-  }, [id]);
+  }, [username]);
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -83,7 +84,7 @@ function ProfilePage() {
     });
 
     try {
-      const serverResponse = await fetch('http://localhost:8080/api/users/save_status', {
+      const serverResponse = await fetch('http://localhost:8080/api/users/{id}/save_status', {
         method: "POST",
         headers: {
           "Content-Type": 'application/json',
@@ -118,7 +119,7 @@ function ProfilePage() {
             </div>
           </div>
 
-          {id === currentUser && (isFirstVisit || isEditingProfile) && (
+          {username === currentUser && (isFirstVisit || isEditingProfile) && (
             <div className="row">
               <div className="col">
                 <h3>Please enter your personal information:</h3>
@@ -154,12 +155,12 @@ function ProfilePage() {
             </div>
           )}
 
-          {id === currentUser && !isFirstVisit && !isEditingProfile && (
+          {username === currentUser && !isFirstVisit && !isEditingProfile && (
             <button onClick={() => setIsEditingProfile(true)}
                     className="btn btn-primary">Edit Profile</button>
           )}
 
-          {id === currentUser && (
+          {currentUser === currentUser && (
             <form onSubmit={handleStatusChange} className="mt-5">
               <label>
                 Status:
