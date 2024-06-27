@@ -118,7 +118,7 @@ function ProfilePage() {
             </div>
           </div>
 
-          {username === currentUser && (isFirstVisit || isEditingProfile) && (
+          {id === currentUser && (isFirstVisit || isEditingProfile) && (
             <div className="row">
               <div className="col">
                 <h3>Please enter your personal information:</h3>
@@ -154,12 +154,12 @@ function ProfilePage() {
             </div>
           )}
 
-          {username === currentUser && !isFirstVisit && !isEditingProfile && (
+          {id === currentUser && !isFirstVisit && !isEditingProfile && (
             <button onClick={() => setIsEditingProfile(true)}
                     className="btn btn-primary">Edit Profile</button>
           )}
 
-          {username === currentUser && (
+          {id === currentUser && (
             <form onSubmit={handleStatusChange} className="mt-5">
               <label>
                 Status:
