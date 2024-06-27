@@ -31,9 +31,15 @@ const Signup: React.FC = () => {
 
     // Regex pattern to match email containing "@dal.ca"
     const emailPattern = /@dal\.ca$/;
+    const passwordPattern = "^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" //retrieved from: https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
 
     if (!emailPattern.test(email)) {
       setErrorMessage('Email must be of domain @dal.ca');
+      return;
+    }
+
+    if (!passwordPattern.test(password)) {
+      setErrorMessage('Password must contain at least 8 characters, one upper case letter, one letter, one number and one special character');
       return;
     }
 
