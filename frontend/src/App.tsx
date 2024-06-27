@@ -1,6 +1,9 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ProfilePage from './ProfilePage';
 import NavBar from './NavBar';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Login from "./Login.tsx";
+import Signup from "./Signup.tsx";
 
 function App() {
   return (
@@ -8,7 +11,9 @@ function App() {
       <NavBar />
       <div>
         <Routes>
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/profile/:username" element={<ProfilePage />} />
         </Routes>
       </div>
     </Router>
