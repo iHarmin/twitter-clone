@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Cookies from 'js-cookie';
 import './App.css';
 
 const Login: React.FC = () => {
@@ -16,8 +17,15 @@ const Login: React.FC = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    console.log('Email:', email);
-    console.log('Password:', password);
+    // Simulate login logic and set a cookie
+    if (email && password) {
+      // Set a cookie for the logged-in user
+      Cookies.set('user', email, { expires: 7 }); // 7 days
+      console.log('Email:', email);
+      console.log('Password:', password);
+    } else {
+      console.log('Invalid login attempt');
+    }
   };
 
   return (
