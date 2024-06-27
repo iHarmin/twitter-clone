@@ -15,9 +15,11 @@ public class Twitter2 {
     private String lastName;
     private String securityAnswer;
     private String personalInterests;
-    private String status = "away";
+    private String status;
+
     public Twitter2() {
     }
+
     public Twitter2(int id, String userName, String email, String password, String firstName, String lastName, String securityAnswer, String personalInterests, String status) {
         this.id = id;
         this.userName = userName;
