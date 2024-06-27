@@ -50,7 +50,7 @@ const ForgotPassword: React.FC = () => {
           onChange={handleEmailChange}
           required
         />
-        <label htmlFor="recoveryQuestion">Enter Your Recovery Question:</label>
+        <label htmlFor="recoveryQuestion">What is your favourite movie?</label>
         <input
           type="text"
           id="recoveryQuestion"
