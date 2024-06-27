@@ -15,7 +15,7 @@ function ProfilePage() {
 
   const {username} = useParams();
   // TODO: placeholder for current username
-  const currentUser = 'currentUsername';
+  const currentUser = 'currentName';
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -103,13 +103,12 @@ function ProfilePage() {
   // Form for entering name, email, and interests
   // Username cannot be changed
   return (
-    <div className="container-fluid">
-      <div className="row justify-content-center">
+    <div className="container-fluid p-3">
+      <div className="row">
         <div className="col">
           <div className="container">
             <div className="row">
               <div className="col">
-                <h2>My Profile</h2>
                 <p>{formData.firstName} {formData.lastName}</p>
                 <p>{formData.userName}</p>
                 <p>{formData.email}</p>
@@ -161,18 +160,18 @@ function ProfilePage() {
           )}
 
           {username === currentUser && (
-            <form onSubmit={handleStatusChange}>
+            <form onSubmit={handleStatusChange} className="mt-5">
               <label>
                 Status:
                 <select value={status} onChange={e => setStatus(e.target.value)}
-                        className="form-control">
+                        className="form-control mb-3">
                   <option value="Online 🟢">Online</option>
                   <option value="Offline ⚪">Offline</option>
                   <option value="Busy 🔴">Busy</option>
                 </select>
               </label>
               <input type="submit" value="Change Status"
-                     className="btn btn-primary"/>
+                     className="btn btn-primary mt-3"/>
             </form>
           )}
         </div>
