@@ -4,8 +4,8 @@ import NavBar from './NavBar';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Login from "./Login.tsx";
 import Signup from "./Signup.tsx";
-import ForgotPassword from "./ForgotPassword.tsx";
 import Home from "./Home.tsx";
+import ForgotPassword from "./ForgotPassword";
 
 function App() {
   return (

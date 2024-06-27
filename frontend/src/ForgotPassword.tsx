@@ -22,6 +22,13 @@ const ForgotPassword: React.FC = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
+    const passwordPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/ //retrieved from: https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+
+    if (!passwordPattern.test(newPassword)) {
+        setMessage('Password must contain at least 8 characters, one upper case letter, one letter, one number and one special character');
+        return;
+      }
+
     
     if (email && recoveryQuestion && newPassword) {
       
@@ -43,7 +50,7 @@ const ForgotPassword: React.FC = () => {
           onChange={handleEmailChange}
           required
         />
-        <label htmlFor="recoveryQuestion">Enter Your Recovery Question:</label>
+        <label htmlFor="recoveryQuestion">What is your favourite movie?</label>
         <input
           type="text"
           id="recoveryQuestion"
