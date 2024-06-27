@@ -2,20 +2,17 @@ import React, { useState } from 'react';
 import './App.css';
 
 const Signup: React.FC = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [username, setusername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [recoveryQuestion, setRecoveryQuestion] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleFirstNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFirstName(event.target.value);
+  const handleusernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setusername(event.target.value);
   };
 
-  const handleLastNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLastName(event.target.value);
-  };
+ 
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -43,8 +40,7 @@ const Signup: React.FC = () => {
     // Clear error message if previous was set
     setErrorMessage('');
 
-    console.log('First Name:', firstName);
-    console.log('Last Name:', lastName);
+    console.log('First Name:', username);
     console.log('Email:', email);
     console.log('Password:', password);
     console.log('Recovery Question:', recoveryQuestion);
@@ -56,22 +52,15 @@ const Signup: React.FC = () => {
     <div className="container">
       <h1>Twitter 2 Signup</h1>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="firstName">First Name:</label>
+        <label htmlFor="username">Username:</label>
         <input
           type="text"
-          id="firstName"
-          value={firstName}
-          onChange={handleFirstNameChange}
+          id="username"
+          value={username}
+          onChange={handleusernameChange}
           required
-        />
-        <label htmlFor="lastName">Last Name:</label>
-        <input
-          type="text"
-          id="lastName"
-          value={lastName}
-          onChange={handleLastNameChange}
-          required
-        />
+        />    
+   
         <label htmlFor="email">Email:</label>
         <input
           type="email"
