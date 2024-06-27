@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {useParams} from 'react-router-dom';
 
 function ProfilePage() {
 
@@ -11,6 +12,26 @@ function ProfilePage() {
     interests: '',
     status: 'Online 🟢' // default status
   });
+
+  const {username} = useParams();
+  // TODO: placeholder for current username
+  const currentUser = 'currentUsername';
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const serverResponse = await fetch(`http://localhost:8080/api/users/${username}`);
+        const profileData = await serverResponse.json();
+        console.log(profileData);
+        setFormData(profileData);
+      } catch (error) {
+        console.error(error);
+        alert('An error occurred while fetching your profile data.');
+      }
+    };
+
+    fetchProfileData();
+  }, [username]);
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -82,67 +103,81 @@ function ProfilePage() {
   // Form for entering name, email, and interests
   // Username cannot be changed
   return (
-    <>
-      <div>
-        <h2>My Profile</h2>
-        <p>{formData.firstName} {formData.lastName}</p>
-        <p>{formData.userName}</p>
-        <p>{formData.email}</p>
-        <p>{formData.interests}</p>
-        <p>{formData.status}</p>
+    <div className="container-fluid">
+      <div className="row justify-content-center">
+        <div className="col">
+          <div className="container">
+            <div className="row">
+              <div className="col">
+                <h2>My Profile</h2>
+                <p>{formData.firstName} {formData.lastName}</p>
+                <p>{formData.userName}</p>
+                <p>{formData.email}</p>
+                <p>{formData.interests}</p>
+                <p>{formData.status}</p>
+              </div>
+            </div>
+          </div>
+
+          {username === currentUser && (isFirstVisit || isEditingProfile) && (
+            <div className="row">
+              <div className="col">
+                <h3>Please enter your personal information:</h3>
+                <form onSubmit={handleDetailsSubmit}>
+                  <div className="form-group mb-3">
+                    <label> First Name: </label>
+                    <input type="text" value={firstName}
+                           onChange={e => setFirstName(e.target.value)}
+                           className="form-control"/>
+                  </div>
+                  <div className="form-group mb-3">
+                    <label> Last Name: </label>
+                    <input type="text" value={lastName}
+                           onChange={e => setLastName(e.target.value)}
+                           className="form-control"/>
+                  </div>
+                  <div className="form-group mb-3">
+                    <label> Email: </label>
+                    <input type="email" value={email}
+                           onChange={e => setEmail(e.target.value)}
+                           className="form-control"/>
+                  </div>
+                  <div className="form-group mb-3">
+                    <label> Interests: </label>
+                    <input type="text" value={interests}
+                           onChange={e => setInterests(e.target.value)}
+                           className="form-control"/>
+                  </div>
+                  <input type="submit" value="Submit"
+                         className="btn btn-primary"/>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {username === currentUser && !isFirstVisit && !isEditingProfile && (
+            <button onClick={() => setIsEditingProfile(true)}
+                    className="btn btn-primary">Edit Profile</button>
+          )}
+
+          {username === currentUser && (
+            <form onSubmit={handleStatusChange}>
+              <label>
+                Status:
+                <select value={status} onChange={e => setStatus(e.target.value)}
+                        className="form-control">
+                  <option value="Online 🟢">Online</option>
+                  <option value="Offline ⚪">Offline</option>
+                  <option value="Busy 🔴">Busy</option>
+                </select>
+              </label>
+              <input type="submit" value="Change Status"
+                     className="btn btn-primary"/>
+            </form>
+          )}
+        </div>
       </div>
-
-      {(isFirstVisit || isEditingProfile) && (
-        <>
-          <h3>Please enter your personal information:</h3>
-          <form onSubmit={handleDetailsSubmit}>
-            <label>
-              First Name:
-              <input type="text" value={firstName}
-                     onChange={e => setFirstName(e.target.value)}
-                     className="form-control"/>
-            </label>
-            <label>
-              Last Name:
-              <input type="text" value={lastName}
-                     onChange={e => setLastName(e.target.value)}
-                     className="form-control"/>
-            </label>
-            <label>
-              Email:
-              <input type="email" value={email}
-                     onChange={e => setEmail(e.target.value)}
-                     className="form-control"/>
-            </label>
-            <label>
-              Interests:
-              <input type="text" value={interests}
-                     onChange={e => setInterests(e.target.value)}
-                     className="form-control"/>
-            </label>
-            <input type="submit" value="Submit" className="btn btn-primary"/>
-          </form>
-        </>
-      )}
-
-      {!isFirstVisit && !isEditingProfile && (
-        <button onClick={() => setIsEditingProfile(true)}
-                className="btn btn-primary">Edit Profile</button>
-      )}
-
-      <form onSubmit={handleStatusChange}>
-        <label>
-          Status:
-          <select value={status} onChange={e => setStatus(e.target.value)}
-                  className="form-control">
-            <option value="Online 🟢">Online</option>
-            <option value="Offline ⚪">Offline</option>
-            <option value="Busy 🔴">Busy</option>
-          </select>
-        </label>
-        <input type="submit" value="Change Status" className="btn btn-primary"/>
-      </form>
-    </>
+    </div>
   );
 }
 
