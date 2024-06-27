@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Login from "./Login.tsx";
 import Signup from "./Signup.tsx";
 import ForgotPassword from "./ForgotPassword";
+import ErrorPage from './errorpage.tsx';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/profile/:username" element={<ProfilePage />} />
           <Route path="/Forgot password" element={<ForgotPassword />} />
+          <Route path="/error" element={<ErrorPage />} />
         </Routes>
       </div>
     </Router>
