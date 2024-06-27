@@ -42,7 +42,7 @@ const Signup: React.FC = () => {
       return;
     }
 
-    // Clear error message if previous was set
+    // Clear error message if previous was set.
     setErrorMessage('');
 
     console.log('Username:', username);
