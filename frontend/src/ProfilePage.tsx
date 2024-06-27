@@ -13,14 +13,14 @@ function ProfilePage() {
     status: 'Online 🟢' // default status
   });
 
-  const {username} = useParams();
+  const {id} = useParams();
   // TODO: placeholder for current username
   const currentUser = 'currentName';
 
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const serverResponse = await fetch(`http://localhost:8080/api/users/${username}`);
+        const serverResponse = await fetch(`http://localhost:8080/api/users/${id}`);
         const profileData = await serverResponse.json();
         console.log(profileData);
         setFormData(profileData);
@@ -31,7 +31,7 @@ function ProfilePage() {
     };
 
     fetchProfileData();
-  }, [username]);
+  }, [id]);
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
