@@ -17,6 +17,8 @@ function ProfilePage() {
   const [email, setEmail] = useState('');
   const [interests, setInterests] = useState('');
   const [status, setStatus] = useState('Online 🟢');
+  const [isFirstVisit, setIsFirstVisit] = useState(true);
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
 
   const handleDetailsSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -28,7 +30,6 @@ function ProfilePage() {
       email: email,
       interests: interests,
     });
-
 
     try {
       // Send the form data to the server
@@ -47,6 +48,10 @@ function ProfilePage() {
       console.error(error);
       alert('An error occurred while saving your profile changes.');
     }
+
+    // Set to false after the user has entered their details
+    setIsFirstVisit(false);
+    setIsEditingProfile(false);
   };
 
   const handleStatusChange = async (event: React.FormEvent) => {
@@ -87,40 +92,51 @@ function ProfilePage() {
         <p>{formData.status}</p>
       </div>
 
-      <form onSubmit={handleDetailsSubmit}>
-        <label>
-          First Name:
-          <input type="text" value={firstName}
-                 onChange={e => setFirstName(e.target.value)}
-                 className="form-control"/>
-        </label>
-        <label>
-          Last Name:
-          <input type="text" value={lastName}
-                 onChange={e => setLastName(e.target.value)}
-                 className="form-control"/>
-        </label>
-        <label>
-          Email:
-          <input type="email" value={email}
-                 onChange={e => setEmail(e.target.value)}
-                 className="form-control"/>
-        </label>
-        <label>
-          Interests:
-          <input type="text" value={interests}
-                 onChange={e => setInterests(e.target.value)}
-                 className="form-control"/>
-        </label>
-        <input type="submit" value="Submit" className="btn btn-primary"/>
-      </form>
+      {(isFirstVisit || isEditingProfile) && (
+        <>
+          <h3>Please enter your personal information:</h3>
+          <form onSubmit={handleDetailsSubmit}>
+            <label>
+              First Name:
+              <input type="text" value={firstName}
+                     onChange={e => setFirstName(e.target.value)}
+                     className="form-control"/>
+            </label>
+            <label>
+              Last Name:
+              <input type="text" value={lastName}
+                     onChange={e => setLastName(e.target.value)}
+                     className="form-control"/>
+            </label>
+            <label>
+              Email:
+              <input type="email" value={email}
+                     onChange={e => setEmail(e.target.value)}
+                     className="form-control"/>
+            </label>
+            <label>
+              Interests:
+              <input type="text" value={interests}
+                     onChange={e => setInterests(e.target.value)}
+                     className="form-control"/>
+            </label>
+            <input type="submit" value="Submit" className="btn btn-primary"/>
+          </form>
+        </>
+      )}
+
+      {!isFirstVisit && !isEditingProfile && (
+        <button onClick={() => setIsEditingProfile(true)}
+                className="btn btn-primary">Edit Profile</button>
+      )}
 
       <form onSubmit={handleStatusChange}>
         <label>
           Status:
-          <select value={status} onChange={e => setStatus(e.target.value)} className="form-control">
+          <select value={status} onChange={e => setStatus(e.target.value)}
+                  className="form-control">
             <option value="Online 🟢">Online</option>
-              <option value="Offline ⚪">Offline</option>
+            <option value="Offline ⚪">Offline</option>
             <option value="Busy 🔴">Busy</option>
           </select>
         </label>
