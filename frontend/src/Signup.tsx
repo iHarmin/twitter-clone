@@ -36,7 +36,7 @@ const Signup: React.FC = () => {
     const emailPattern = /@dal\.ca$/;
 
     if (!emailPattern.test(email)) {
-      setErrorMessage('Email must be of domain @rdal.ca');
+      setErrorMessage('Email must be of domain @dal.ca');
       return;
     }
 
