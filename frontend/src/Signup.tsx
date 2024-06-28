@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import './App.css';
+import { useNavigate } from 'react-router-dom';
 
 const Signup: React.FC = () => {
   const [username, setusername] = useState('');
@@ -7,6 +8,8 @@ const Signup: React.FC = () => {
   const [password, setPassword] = useState('');
   const [recoveryAnswer, setRecoveryAnswer] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
+
 
   const handleusernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setusername(event.target.value);
@@ -61,21 +64,21 @@ const Signup: React.FC = () => {
       personalInterests: null,
       status: null
     };
-
+    console.log(user);
     // Send the user object to the server
-    fetch('http://localhost:8080/api/users/signup', {
+    fetch('http://localhost:8080/api/users/save', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(user),
     })
-      .then(response => response.json())
+      .then(response => response)
       .then(data => console.log(data))
       .catch((error) => {
         alert("Couldn't sign up. Please try again.");
         console.error('Error:', error);
-      });
+      }).then(() => navigate("/login/"))
   };
 
 

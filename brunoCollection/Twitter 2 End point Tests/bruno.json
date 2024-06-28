@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Twitter 2 End point Tests",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

@@ -1,0 +1,24 @@
+meta {
+  name: Create User Null
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/api/users/save
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "userName": "exampleUser1",
+      "email": "example1@dal.ca",
+      "password": "password123",
+      "firstName": "John",
+      "lastName": "Doe",
+      "securityAnswer": "My first pet's name",
+      "personalInterests": "coding, music",
+      "status": "active"
+  }
+}
