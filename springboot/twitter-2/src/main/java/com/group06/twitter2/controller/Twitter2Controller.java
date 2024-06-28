@@ -47,4 +47,5 @@ public class Twitter2Controller {
     public String deleteFriend(@PathVariable int id, @PathVariable int friendId) {
         return twitter2Service.deleteFriend(id, friendId);
     }
+
 }
