@@ -18,7 +18,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/profile/:username" element={<ProfilePage />} />
           <Route path="/Forgot password" element={<ForgotPassword />} />
-          <Route path="/error" element={<ErrorPage />} />
+          <Route path="*" element={<ErrorPage />} /> 
         </Routes>
       </div>
     </Router>
