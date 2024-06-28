@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ProfilePage from './ProfilePage';
 import NavBar from './NavBar';
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -6,6 +6,7 @@ import Login from "./Login.tsx";
 import Signup from "./Signup.tsx";
 import Home from "./Home.tsx";
 import ForgotPassword from "./ForgotPassword";
+import ErrorPage from './errorpage.tsx';
 import {AuthContext} from './AuthContext';
 import {useState} from 'react';
 
@@ -23,6 +24,7 @@ function App() {
             <Route path="/signup" element={<Signup/>}/>
             <Route path="/forgot-password" element={<ForgotPassword/>}/>
             <Route path="/profile/:username" element={<ProfilePage/>}/>
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </div>
       </Router>
