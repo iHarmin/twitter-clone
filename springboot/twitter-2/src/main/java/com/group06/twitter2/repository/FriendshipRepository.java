@@ -10,4 +10,5 @@ import java.util.*;
 @Repository
 public interface FriendshipRepository extends JpaRepository<Friendship, Integer> {
     Friendship findByUserName1AndUserName2(Twitter2 userName1, Twitter2 userName2);
+
 }

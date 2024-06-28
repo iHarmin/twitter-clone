@@ -16,4 +16,6 @@ public interface Twitter2Service {
     String acceptFriend(int id, int friendId);
 
     String deleteFriend(int id, int friendId);
+
+    String resetPassword(String email, String recoveryAnswer, String newPassword);
 }
