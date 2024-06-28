@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios, { Axios } from 'axios';
 import './App.css';
 
 const ForgotPassword: React.FC = () => {
@@ -28,11 +29,27 @@ const ForgotPassword: React.FC = () => {
         setMessage('Password must contain at least 8 characters, one upper case letter, one letter, one number and one special character');
         return;
       }
-
+    const passwordResetRequest = {
+      email: email,
+      recoveryAnswer: recoveryQuestion,
+      newPassword: newPassword
+    }
     
+    fetch("http://localhost:8080/api/users/resetPassword", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams(passwordResetRequest)
+    }).then((data) => {
+      if (data.status == 200) {
+        setMessage("Password reset successfully")
+      } else {
+        setMessage("Error resetting password")
+      }
+    })
     if (email && recoveryQuestion && newPassword) {
-      
-      setMessage(`Password reset successfully for ${email}`);
+      setMessage(`Attempting password reset...`);
     } else {
       setMessage('Please fill in all fields');
     }

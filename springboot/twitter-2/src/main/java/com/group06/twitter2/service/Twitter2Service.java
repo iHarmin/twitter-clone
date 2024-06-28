@@ -18,4 +18,6 @@ public interface Twitter2Service {
     String deleteFriend(int id, int friendId);
 
     Twitter2 getUserByID(int id);
+
+    String resetPassword(String email, String recoveryAnswer, String newPassword);
 }
