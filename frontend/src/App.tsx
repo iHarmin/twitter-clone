@@ -8,6 +8,7 @@ import Home from "./Home.tsx";
 import ForgotPassword from "./ForgotPassword";
 import ErrorPage from './errorpage.tsx';
 import {AuthContext} from './AuthContext';
+import  Feed from './Feed.tsx'
 import {useState} from 'react';
 
 function App() {
@@ -19,11 +20,12 @@ function App() {
         <NavBar/>
         <div>
           <Routes>
-            <Route path="/" element={<Home/>}/>
+            <Route path="/" element={<div />}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/signup" element={<Signup/>}/>
             <Route path="/forgotpassword" element={<ForgotPassword/>}/>
             <Route path="/profile/:profileID" element={<ProfilePage/>}/>
+            <Route path="/feed" element={<Feed />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </div>
