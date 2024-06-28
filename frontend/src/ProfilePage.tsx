@@ -1,8 +1,10 @@
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useParams} from 'react-router-dom';
+import {AuthContext} from "./AuthContext.tsx";
+import { useCookies } from "react-cookie";
 
-function ProfilePage() {
+const ProfilePage: React.FC = () => {
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -13,15 +15,43 @@ function ProfilePage() {
     status: 'Online 🟢' // default status
   });
 
-  const { username} = useParams();
-  // TODO: placeholder for current username
-  const currentUser = 'currentName';
+  const {profileID} = useParams();
+  // TODO: placeholder for current username, will use cookie to obtain
+  const currentUserID : string = '22';
+  const {isLoggedIn} = useContext(AuthContext);
+  const [cookies] = useCookies(['user']);
+  // TODO: placeholders for friend adding
+  // const loggedInUser = "profileUser";
+  // const profileUser = "profileUser";
+
+  const handleAddFriend = async () => {
+    // try {
+    //   const userID = cookies.user;
+    //   const serverResponse = await fetch(`http://localhost:8080/api/users/${userID}/friends/${friendID}`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({ friendUsername: username }), // Send the username of the friend to be added
+    //   });
+    //
+    //   if (serverResponse.ok) {
+    //     alert('Friend request sent!');
+    //   } else {
+    //     alert('An error occurred while sending the friend request.');
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    //   alert('An error occurred while sending the friend request.');
+    // }
+  };
+
 
   // Fetch the user's profile data
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const serverResponse = await fetch(`http://localhost:8080/api/users/currentName`);
+        const serverResponse = await fetch(`http://localhost:8080/api/users/${profileID}`);
         const profileData = await serverResponse.json();
         console.log(profileData);
         setFormData(profileData);
@@ -32,7 +62,7 @@ function ProfilePage() {
     };
 
     fetchProfileData();
-  }, [username]);
+  }, []);
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -119,7 +149,11 @@ function ProfilePage() {
             </div>
           </div>
 
-          {username === currentUser && (isFirstVisit || isEditingProfile) && (
+          {isLoggedIn && loggedInUser !== profileUser && (
+            <button onClick={handleAddFriend}>Add Friend</button>
+          )}
+
+          {profileID === currentUserID && (isFirstVisit || isEditingProfile) && (
             <div className="row">
               <div className="col">
                 <h3>Please enter your personal information:</h3>
@@ -155,12 +189,12 @@ function ProfilePage() {
             </div>
           )}
 
-          {username === currentUser && !isFirstVisit && !isEditingProfile && (
+          {profileID === currentUserID && !isFirstVisit && !isEditingProfile && (
             <button onClick={() => setIsEditingProfile(true)}
                     className="btn btn-primary">Edit Profile</button>
           )}
 
-          {currentUser === currentUser && (
+          {profileID === currentUserID && (
             <form onSubmit={handleStatusChange} className="mt-5">
               <label>
                 Status:

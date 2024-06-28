@@ -22,6 +22,11 @@ public class Twitter2Controller {
         return twitter2Service.createUser(twitter2);
     }
 
+    @GetMapping("/{id}")
+    public Twitter2 getUserById(@PathVariable("id") int id){
+        return twitter2Service.getUserByID(id);
+    }
+
     @PutMapping("/update/{password}")
     public String updatePassword(@PathVariable String password, @RequestBody Twitter2 twitter2){
         twitter2.setPassword(password);

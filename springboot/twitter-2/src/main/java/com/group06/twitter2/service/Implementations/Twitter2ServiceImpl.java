@@ -27,6 +27,19 @@ public class Twitter2ServiceImpl implements Twitter2Service {
     }
 
     @Override
+    public Twitter2 getUserByID(int id) {
+        Optional<Twitter2> optionalTwitter2 = twitter2Repository.findById(id);
+        if (optionalTwitter2.isPresent()) {
+            Twitter2 twitter2 = optionalTwitter2.get();
+            System.out.println("Successfully fetched user information: " + twitter2);
+            return twitter2;
+        } else {
+            System.out.println("Customer not found with id: " + id);
+            throw new RuntimeException("Customer not found with id: " + id);
+        }
+    }
+
+    @Override
     public String updatePassword(Twitter2 twitter2) {
         Optional<Twitter2> passOpt = twitter2Repository.findById(twitter2.getId());
         if(passOpt.isPresent()) {

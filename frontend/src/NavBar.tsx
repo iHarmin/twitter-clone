@@ -2,9 +2,14 @@ import {Link} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useContext, useState} from "react";
 import {AuthContext} from "./AuthContext.tsx";
+import { useCookies } from "react-cookie";
 
 function NavBar() {
   const { isLoggedIn } = useContext(AuthContext);
+  const [cookies] = useCookies(['user']);
+  // const userID = cookies.user;
+  // TODO: placeholder for user id until cookie is implemented
+  const userID = '22';
 
   return (
     <nav className="navbar navbar-expand navbar-light bg-light">
@@ -15,7 +20,7 @@ function NavBar() {
             <Link to="/">Home</Link>
           </li>
           <li className="nav-item">
-            <Link to="/profile/currentName">Profile</Link>
+            <Link to={`/profile/${userID}`}>Profile</Link>
           </li>
           <li className="nav-item">
             <Link to="/signup">Signup</Link>
