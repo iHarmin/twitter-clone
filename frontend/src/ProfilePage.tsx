@@ -17,7 +17,7 @@ const ProfilePage: React.FC = () => {
 
   const {profileID} = useParams();
   // TODO: placeholder for current username, will use cookie to obtain
-  const currentUserID : string = '22';
+  const currentUserID : string = '30';
   const {isLoggedIn} = useContext(AuthContext);
   const [cookies] = useCookies(['user']);
   // TODO: placeholders for friend adding
@@ -85,12 +85,17 @@ const ProfilePage: React.FC = () => {
 
     try {
       // Send the form data to the server
-      const serverResponse = await fetch('http://localhost:8080/api/users/save', {
-        method: "POST",
+      const serverResponse = await fetch(`http://localhost:8080/api/users/${currentUserID}/information`, {
+        method: "PUT",
         headers: {
           "Content-Type": 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          interests: interests
+        })
       });
 
       const result = await serverResponse.json();
@@ -122,9 +127,8 @@ const ProfilePage: React.FC = () => {
         body: JSON.stringify(status)
       });
 
-      const result = await serverResponse.json();
+      console.log(serverResponse);
       console.log(status);
-      console.log('Success:', result.message);
       alert('Status Changes Saved!');
     } catch (error) {
       console.error(error);
@@ -201,6 +205,7 @@ const ProfilePage: React.FC = () => {
                 Status:
                 <select value={status} onChange={e => setStatus(e.target.value)}
                         className="form-control mb-3">
+                  <option value="" disabled>Click to select your status</option>
                   <option value="Online">Online 🟢</option>
                   <option value="Offline">Offline ⚪</option>
                   <option value="Busy">Busy 🔴</option>

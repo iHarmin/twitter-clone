@@ -8,6 +8,9 @@ import java.util.Map;
 public interface Twitter2Service {
     public String createUser(Twitter2 twitter2);
 
+    String updateUserInformation(int id, String firstName, String lastName, String email,
+                                 String interests);
+
     public String updatePassword(Twitter2 twitter2);
 
     String updateUserStatus(int id, String status) throws JsonProcessingException;
@@ -21,4 +24,5 @@ public interface Twitter2Service {
     Twitter2 getUserByID(int id);
 
     String resetPassword(String email, String recoveryAnswer, String newPassword);
+
 }

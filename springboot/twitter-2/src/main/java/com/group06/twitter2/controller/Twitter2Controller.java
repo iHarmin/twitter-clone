@@ -26,6 +26,16 @@ public class Twitter2Controller {
         return twitter2Service.createUser(twitter2);
     }
 
+    @PutMapping("/{id}/information")
+    public String updateUserInformation(@PathVariable("id") int id, @RequestBody Map<String,
+            String> body) {
+        String firstName = body.get("firstName");
+        String lastName = body.get("lastName");
+        String email = body.get("email");
+        String interests = body.get("interests");
+        return twitter2Service.updateUserInformation(id, firstName, lastName, email, interests);
+    }
+
     @GetMapping("/{id}")
     public Twitter2 getUserById(@PathVariable("id") int id){
         return twitter2Service.getUserByID(id);

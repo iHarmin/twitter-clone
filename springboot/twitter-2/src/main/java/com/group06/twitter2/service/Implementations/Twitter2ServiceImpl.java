@@ -74,17 +74,26 @@ public class Twitter2ServiceImpl implements Twitter2Service {
             Twitter2 user = userOpt.get();
             user.setStatus(status);
             twitter2Repository.save(user);
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Status updated to " + status);
-            ObjectMapper mapper = new ObjectMapper();
-            String jsonResponse = mapper.writeValueAsString(response);
-            return jsonResponse;
+            return status;
         } else {
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "User not found");
-            ObjectMapper mapper = new ObjectMapper();
-            String jsonResponse = mapper.writeValueAsString(response);
-            return jsonResponse;
+            return "User not found with id: " + id;
+        }
+    }
+
+    @Override
+    public String updateUserInformation(int id, String firstName, String lastName, String email,
+                                        String personalInterests) {
+        Optional<Twitter2> userOpt = twitter2Repository.findById(id);
+        if (userOpt.isPresent()) {
+            Twitter2 user = userOpt.get();
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setEmail(email);
+            user.setPersonalInterests(personalInterests);
+            twitter2Repository.save(user);
+            return "User information updated successfully";
+        } else {
+            return "User not found";
         }
     }
 

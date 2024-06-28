@@ -9,7 +9,7 @@ function NavBar() {
   const [cookies] = useCookies(['user']);
   // const userID = cookies.user;
   // TODO: placeholder for user id until cookie is implemented
-  const userID = '22';
+  const userID = '30';
 
   return (
     <nav className="navbar navbar-expand navbar-light bg-light">
