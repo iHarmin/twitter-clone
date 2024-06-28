@@ -3,28 +3,37 @@ import './App.css';
 import { useNavigate } from 'react-router-dom';
 
 const Feed: React.FC = () => {
-  return (
-    <div>
-        <div className='container'>
-            <form>
-                <input type="text"></input>
-                <input type="button" value="Unleash opinion"></input>
-            </form>
+    const [post, setPost] = useState('Hello');
+
+    const handlePostChange = (event: any) => {
+        setPost(event.target.value)
+    }
+    const handlePostSubmit = (event: any) => {
+        alert("Posted" + post)
+    }
+
+    return (
+        <div>
+            <div className='container'>
+                <form onSubmit={handlePostSubmit}>
+                    <input type="text" value={post} onChange={handlePostChange}></input>
+                    <input type="submit" value="Unleash opinion"></input>
+                </form>
+            </div>
+            <br></br>
+            <div className='container'>
+                <h1>Lorem Ipsum</h1>
+                <p><i>Username</i></p>
+                <p>Contrerversial opinion</p>
+            </div>
+            <br></br>
+            <div className='container'>
+                <h1>Lorem Ipsum</h1>
+                <p><i>Username</i></p>
+                <p>Contrerversial opinion</p>
+            </div>
         </div>
-        <br></br>
-        <div className='container'>
-            <h1>Lorem Ipsum</h1>
-            <p><i>Username</i></p>
-            <p>Contrerversial opinion</p>
-        </div>
-        <br></br>
-        <div className='container'>
-            <h1>Lorem Ipsum</h1>
-            <p><i>Username</i></p>
-            <p>Contrerversial opinion</p>
-        </div>
-    </div>
-  );
+    );
 }
 
 export default Feed;
