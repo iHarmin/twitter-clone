@@ -28,6 +28,11 @@ public class Twitter2Controller {
         return twitter2Service.updatePassword(twitter2);
     }
 
+    @PostMapping("/resetPassword")
+    public String resetPassword(@RequestParam String email, @RequestParam String recoveryAnswer, @RequestParam String newPassword) {
+        return twitter2Service.resetPassword(email, recoveryAnswer, newPassword);
+    }
+
     @PutMapping("/{id}/status")
     public String updateUserStatus(@PathVariable int id, @RequestBody Map<String,String> data) {
         return twitter2Service.updateUserStatus(id, data);
