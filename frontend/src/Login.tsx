@@ -36,7 +36,7 @@ const Login = () => {
 
       Cookies.set('authToken', result.authToken); // Set the cookie
       setIsLoggedIn(true);
-      navigate(`/profile/${result.username}`); // Redirect to the user's profile page
+      navigate(`/profile/${result.id}`); // Redirect to the user's profile page
 
     } catch (error) {
       console.error(error);
@@ -65,6 +65,7 @@ const Login = () => {
         />
       </div>
       <button type="submit">Login</button>
+     <a href="/forgotpassword">Forgot Password?</a>
     </form>
   );
 };
