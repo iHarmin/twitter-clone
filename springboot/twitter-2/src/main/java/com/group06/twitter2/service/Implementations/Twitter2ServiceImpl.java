@@ -130,4 +130,16 @@ public class Twitter2ServiceImpl implements Twitter2Service {
             return "User or Friend not found";
         }
     }
+
+    @Override
+    public String resetPassword(String email, String recoveryAnswer, String newPassword) {
+        Twitter2 user = twitter2Repository.findByEmail(email);
+        if (user.getSecurityAnswer().equals(recoveryAnswer)) {
+            user.setPassword(newPassword);
+            twitter2Repository.save(user);
+            return "New password set";
+        } else {
+            return "Wrong security answer try";
+        }
+    }
 }
