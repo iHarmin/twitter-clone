@@ -1,75 +1,72 @@
-import {useContext, useState} from 'react';
-import { Link } from 'react-router-dom';
+// Login.tsx
+import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './AuthContext';
 import Cookies from 'js-cookie';
-import './App.css';
-import {AuthContext} from "./AuthContext.tsx";
 
-const Login: React.FC = () => {
+const Login = () => {
+  const { setIsLoggedIn } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  };
+    const formData = {
+      email,
+      password
+    };
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
+    try {
+      const serverResponse = await fetch('http://localhost:8080/api/login', {
+        method: "POST",
+        headers: {
+          "Content-Type": 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
 
-    // Simulate login logic and set a cookie
-    if (email && password) {
-      // Set a cookie for the logged-in user
-      Cookies.set('user', email, { expires: 1 }); 
+      if (!serverResponse.ok) {
+        throw new Error('Login failed');
+      }
+
+      const result = await serverResponse.json();
+      console.log('Success:', result);
+
+      Cookies.set('authToken', result.authToken); // Set the cookie
       setIsLoggedIn(true);
-    } else {
-      console.log('Invalid login attempt');
+      navigate(`/profile/${result.username}`); // Redirect to the user's profile page
+
+    } catch (error) {
+      console.error(error);
+      alert('An error occurred during login.');
     }
   };
 
-  const handleLogout = () => {
-    // Remove the user cookie
-    Cookies.remove('user');
-    console.log('User logged out');
-    setIsLoggedIn(false);
-  };
-
   return (
-    <div className="container">
-      <h1>Twitter 2 Login</h1>
-      {isLoggedIn ? (
-        <div>
-          <p>Welcome, {email}</p>
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={handleEmailChange}
-            required
-          />
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={handlePasswordChange}
-            required
-          />
-          <button type="submit">Sign In</button>
-          <Link to="/forgot-password">Forgot Password?</Link>
-        </form>
-      )}
-    </div>
+    <form onSubmit={handleLogin}>
+      <div>
+        <label>Email:</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <label>Password:</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </div>
+      <button type="submit">Login</button>
+    </form>
   );
-}
+};
 
 export default Login;
