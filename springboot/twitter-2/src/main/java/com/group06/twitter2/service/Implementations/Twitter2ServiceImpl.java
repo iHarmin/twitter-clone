@@ -1,6 +1,8 @@
 package com.group06.twitter2.service.Implementations;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.group06.twitter2.model.Twitter2;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group06.twitter2.model.Friendship;
 import com.group06.twitter2.repository.Twitter2Repository;
 import com.group06.twitter2.repository.FriendshipRepository;
@@ -51,26 +53,38 @@ public class Twitter2ServiceImpl implements Twitter2Service {
             return "Password not updated";
         }
     }
+
+//    @Override
+//    public String updateUserStatus(int id, String status) {
+//        Optional<Twitter2> userOpt = twitter2Repository.findById(id);
+//        if (userOpt.isPresent()) {
+//            Twitter2 user = userOpt.get();
+//            user.setStatus(status);
+//            twitter2Repository.save(user);
+//            return "Status updated to " + status;
+//        } else {
+//            return "User not found";
+//        }
+//    }
+
     @Override
-    public String updateUserStatus(int id, Map<String,String> data) {
-        List<String> allowedStatuses = Arrays.asList("away", "inactive", "available");
-        if(!data.containsKey("status")) {
-            return "status key not present in the request body";
-        }
-
-        String status = data.get("status");
-        if (!allowedStatuses.contains(status.toLowerCase())) {
-            return "Invalid status. Allowed statuses are: away, inactive, available";
-        }
-
-        Optional<Twitter2> statusOpt = twitter2Repository.findById(id);
-        if (statusOpt.isPresent()) {
-            Twitter2 s = statusOpt.get();
-            s.setStatus(status);
-            twitter2Repository.save(s);
-            return "Status updated to " + status;
+    public String updateUserStatus(int id, String status) throws JsonProcessingException {
+        Optional<Twitter2> userOpt = twitter2Repository.findById(id);
+        if (userOpt.isPresent()) {
+            Twitter2 user = userOpt.get();
+            user.setStatus(status);
+            twitter2Repository.save(user);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Status updated to " + status);
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonResponse = mapper.writeValueAsString(response);
+            return jsonResponse;
         } else {
-            return "User not found";
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "User not found");
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonResponse = mapper.writeValueAsString(response);
+            return jsonResponse;
         }
     }
 

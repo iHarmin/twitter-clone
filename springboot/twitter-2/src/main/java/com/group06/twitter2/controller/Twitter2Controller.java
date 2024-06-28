@@ -1,11 +1,15 @@
 package com.group06.twitter2.controller;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.group06.twitter2.model.Twitter2;
 import com.group06.twitter2.service.Twitter2Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,9 +42,15 @@ public class Twitter2Controller {
         return twitter2Service.resetPassword(email, recoveryAnswer, newPassword);
     }
 
-    @PutMapping("/{id}/status")
-    public String updateUserStatus(@PathVariable int id, @RequestBody Map<String,String> data) {
-        return twitter2Service.updateUserStatus(id, data);
+    @PostMapping("/{id}/status")
+    public ResponseEntity<String> updateUserStatus(@PathVariable("id") int id,
+                                                   @RequestBody String status) throws JsonProcessingException {
+        String result = twitter2Service.updateUserStatus(id, status);
+        if (result.contains("User not found")) {
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
     }
 
     @PostMapping("/{id}/friends/{friendId}")

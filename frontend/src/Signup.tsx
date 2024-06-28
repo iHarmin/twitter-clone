@@ -64,6 +64,7 @@ const Signup: React.FC = () => {
       personalInterests: null,
       status: null
     };
+
     console.log(user);
     // Send the user object to the server
     fetch('http://localhost:8080/api/users/save', {

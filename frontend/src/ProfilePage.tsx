@@ -12,7 +12,7 @@ const ProfilePage: React.FC = () => {
     userName: '',
     email: '',
     interests: '',
-    status: 'Online 🟢' // default status
+    status: '' // default status
   });
 
   const {profileID} = useParams();
@@ -68,7 +68,7 @@ const ProfilePage: React.FC = () => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [interests, setInterests] = useState('');
-  const [status, setStatus] = useState('Online 🟢');
+  const [status, setStatus] = useState('');
   const [isFirstVisit, setIsFirstVisit] = useState(true);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
 
@@ -114,16 +114,17 @@ const ProfilePage: React.FC = () => {
     });
 
     try {
-      const serverResponse = await fetch('http://localhost:8080/api/users/{id}/save_status', {
+      const serverResponse = await fetch(`http://localhost:8080/api/users/${currentUserID}/status`, {
         method: "POST",
         headers: {
           "Content-Type": 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(status)
       });
 
       const result = await serverResponse.json();
-      console.log('Success:', result);
+      console.log(status);
+      console.log('Success:', result.message);
       alert('Status Changes Saved!');
     } catch (error) {
       console.error(error);
@@ -200,9 +201,9 @@ const ProfilePage: React.FC = () => {
                 Status:
                 <select value={status} onChange={e => setStatus(e.target.value)}
                         className="form-control mb-3">
-                  <option value="Online 🟢">Online</option>
-                  <option value="Offline ⚪">Offline</option>
-                  <option value="Busy 🔴">Busy</option>
+                  <option value="Online">Online 🟢</option>
+                  <option value="Offline">Offline ⚪</option>
+                  <option value="Busy">Busy 🔴</option>
                 </select>
               </label>
               <input type="submit" value="Change Status"
