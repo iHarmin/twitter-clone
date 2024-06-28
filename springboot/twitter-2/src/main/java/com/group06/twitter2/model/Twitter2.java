@@ -45,7 +45,7 @@ public class Twitter2 {
     }
 
     public void setUserName(String userName) {
-        userName = userName;
+        this.userName = userName;
     }
 
     public String getEmail() {
