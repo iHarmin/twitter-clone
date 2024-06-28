@@ -13,7 +13,7 @@ public interface Twitter2Service {
 
     public String updatePassword(Twitter2 twitter2);
 
-    String updateUserStatus(int id, String status) throws JsonProcessingException;
+    String updateUserStatus(int id, String status);
 
     String addFriend(int id, int friendId);
 

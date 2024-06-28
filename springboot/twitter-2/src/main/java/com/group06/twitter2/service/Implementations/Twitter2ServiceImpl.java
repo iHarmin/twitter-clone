@@ -68,13 +68,13 @@ public class Twitter2ServiceImpl implements Twitter2Service {
 //    }
 
     @Override
-    public String updateUserStatus(int id, String status) throws JsonProcessingException {
+    public String updateUserStatus(int id, String status) {
         Optional<Twitter2> userOpt = twitter2Repository.findById(id);
         if (userOpt.isPresent()) {
             Twitter2 user = userOpt.get();
             user.setStatus(status);
             twitter2Repository.save(user);
-            return status;
+            return "User status updated successfully";
         } else {
             return "User not found with id: " + id;
         }

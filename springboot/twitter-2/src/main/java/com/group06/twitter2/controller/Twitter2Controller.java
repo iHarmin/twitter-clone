@@ -26,7 +26,7 @@ public class Twitter2Controller {
         return twitter2Service.createUser(twitter2);
     }
 
-    @PutMapping("/{id}/information")
+    @PostMapping("/{id}/information")
     public String updateUserInformation(@PathVariable("id") int id, @RequestBody Map<String,
             String> body) {
         String firstName = body.get("firstName");
@@ -41,11 +41,11 @@ public class Twitter2Controller {
         return twitter2Service.getUserByID(id);
     }
 
-    @PutMapping("/update/{password}")
-    public String updatePassword(@PathVariable String password, @RequestBody Twitter2 twitter2){
-        twitter2.setPassword(password);
-        return twitter2Service.updatePassword(twitter2);
-    }
+//    @PutMapping("/update/{password}")
+//    public String updatePassword(@PathVariable String password, @RequestBody Twitter2 twitter2){
+//        twitter2.setPassword(password);
+//        return twitter2Service.updatePassword(twitter2);
+//    }
 
     @PostMapping("/resetPassword")
     public String resetPassword(@RequestParam String email, @RequestParam String recoveryAnswer, @RequestParam String newPassword) {
@@ -53,14 +53,15 @@ public class Twitter2Controller {
     }
 
     @PostMapping("/{id}/status")
-    public ResponseEntity<String> updateUserStatus(@PathVariable("id") int id,
-                                                   @RequestBody String status) throws JsonProcessingException {
-        String result = twitter2Service.updateUserStatus(id, status);
-        if (result.contains("User not found")) {
-            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        }
+    public String updateUserStatus(@PathVariable("id") int id,
+                                                   @RequestBody Map<String, String> body) {
+        String status = body.get("status");
+        return twitter2Service.updateUserStatus(id, status);
+//        if (result.contains("User not found")) {
+//            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+//        } else {
+//            return new ResponseEntity<>(result, HttpStatus.OK);
+//        }
     }
 
     @PostMapping("/{id}/friends/{friendId}")

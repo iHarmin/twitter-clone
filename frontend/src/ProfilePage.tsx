@@ -46,6 +46,13 @@ const ProfilePage: React.FC = () => {
     // }
   };
 
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [interests, setInterests] = useState('');
+  const [status, setStatus] = useState('');
+  const [isFirstVisit, setIsFirstVisit] = useState(true);
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
 
   // Fetch the user's profile data
   useEffect(() => {
@@ -64,14 +71,6 @@ const ProfilePage: React.FC = () => {
     fetchProfileData();
   }, []);
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [interests, setInterests] = useState('');
-  const [status, setStatus] = useState('');
-  const [isFirstVisit, setIsFirstVisit] = useState(true);
-  const [isEditingProfile, setIsEditingProfile] = useState(false);
-
   const handleDetailsSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -86,7 +85,7 @@ const ProfilePage: React.FC = () => {
     try {
       // Send the form data to the server
       const serverResponse = await fetch(`http://localhost:8080/api/users/${currentUserID}/information`, {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": 'application/json',
         },
@@ -98,9 +97,13 @@ const ProfilePage: React.FC = () => {
         })
       });
 
-      const result = await serverResponse.json();
-      console.log('Success:', result);
-      alert('Profile Changes Saved!');
+      if (serverResponse.ok) {
+        const result = await serverResponse.text();
+        console.log('Success:', result);
+        alert("Successfully saved your profile changes!");
+      } else {
+        throw new Error('Server response was not ok.');
+      }
     } catch (error) {
       console.error(error);
       alert('An error occurred while saving your profile changes.');
@@ -124,12 +127,16 @@ const ProfilePage: React.FC = () => {
         headers: {
           "Content-Type": 'application/json',
         },
-        body: JSON.stringify(status)
+        body: JSON.stringify({ status: status})
       });
 
-      console.log(serverResponse);
-      console.log(status);
-      alert('Status Changes Saved!');
+      if (serverResponse.ok) {
+        const result = await serverResponse.text();
+        console.log('Success:', result);
+        alert("Successfully changed your status!");
+      } else {
+        throw new Error('Server response was not ok.');
+      }
     } catch (error) {
       console.error(error);
       alert('An error occurred while saving your status changes.');
@@ -161,7 +168,7 @@ const ProfilePage: React.FC = () => {
           {profileID === currentUserID && (isFirstVisit || isEditingProfile) && (
             <div className="row">
               <div className="col">
-                <h3>Please enter your personal information:</h3>
+                <h3>Update your personal information:</h3>
                 <form onSubmit={handleDetailsSubmit}>
                   <div className="form-group mb-3">
                     <label> First Name: </label>
