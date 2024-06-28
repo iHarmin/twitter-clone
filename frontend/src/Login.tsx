@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import {useContext, useState} from 'react';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import './App.css';
+import {AuthContext} from "./AuthContext.tsx";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
