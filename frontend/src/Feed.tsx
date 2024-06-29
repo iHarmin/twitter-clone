@@ -1,21 +1,39 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import { useNavigate } from 'react-router-dom';
 
 const Feed: React.FC = () => {
     const [post, setPost] = useState('Hello');
     const [postData, setPostData] = useState([
-        {username: "User 1", body: "Contrerversial opinion"},
-        {username: "User 2", body: "Contrerversial opinion"}
+        {userID: {userName: "USER"}, body: "Contrerversial opinion"},
+        {userID: {userName: "USER"}, body: "Contrerversial opinion"}
     ])
 
     const handlePostChange = (event: any) => {
         setPost(event.target.value)
     }
+
+    useEffect(() => {
+        fetch("http://localhost:8080/api/post/getPosts", {
+            method: 'GET'
+        }).then(data => data.json().then(data => {
+            setPostData(data)
+            console.log(data)
+        }))
+    }, [])
+
     const handlePostSubmit = (event: any) => {
         event.preventDefault();
-        let newPost = {username: "Username", body: post}
-        setPostData([...postData, newPost])
+        let newPost = {userID: {id: 30}, body: post}
+        fetch("http://localhost:8080/api/post/createPost", {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newPost)
+        }).then(data => console.log(data));
+        let showPost = {userID: {userName: "USER"}, body: post}
+        setPostData([...postData, showPost])
     }
 
 
@@ -24,7 +42,7 @@ const Feed: React.FC = () => {
         return (
             <div>
                 <div className='container'>
-                    <p><i>{post.username}</i></p>
+                    <p><i>{post.userID.userName}</i></p>
                     <p>{post.body}</p>
                 </div>
             </div>
