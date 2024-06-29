@@ -12,10 +12,19 @@ const Feed: React.FC = () => {
     const handlePostChange = (event: any) => {
         setPost(event.target.value)
     }
+
     const handlePostSubmit = (event: any) => {
         event.preventDefault();
-        let newPost = {username: "Username", body: post}
-        setPostData([...postData, newPost])
+        let newPost = {userID: {id: 30}, body: post}
+        fetch("http://localhost:8080/api/post/createPost", {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newPost)
+        }).then(data => console.log(data));
+        let showPost = {username: "USER", body: post}
+        setPostData([...postData, showPost])
     }
 
 
