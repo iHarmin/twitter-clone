@@ -28,5 +28,5 @@ public interface Twitter2Service {
 
     String resetPassword(String email, String recoveryAnswer, String newPassword);
 
-    ArrayList<Post> getPosts();
+
 }

@@ -22,8 +22,7 @@ public class Twitter2ServiceImpl implements Twitter2Service {
     @Autowired
     private FriendshipRepository friendshipRepository;
 
-    @Autowired
-    PostsRepository postsRepository;
+
 
     @Override
     public String createUser(Twitter2 twitter2) {
@@ -185,9 +184,5 @@ public class Twitter2ServiceImpl implements Twitter2Service {
         }
     }
 
-    @Override
-    public ArrayList<Post> getPosts() {
-        ArrayList<Post> output = (ArrayList<Post>) postsRepository.findAll();
-        return output;
-    }
+
 }
