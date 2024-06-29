@@ -1,15 +1,18 @@
 package com.group06.twitter2.service.Implementations;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.group06.twitter2.model.Post;
 import com.group06.twitter2.model.Twitter2;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group06.twitter2.model.Friendship;
+import com.group06.twitter2.repository.PostsRepository;
 import com.group06.twitter2.repository.Twitter2Repository;
 import com.group06.twitter2.repository.FriendshipRepository;
 import com.group06.twitter2.service.Twitter2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.util.*;
 @Service
 public class Twitter2ServiceImpl implements Twitter2Service {
@@ -18,6 +21,9 @@ public class Twitter2ServiceImpl implements Twitter2Service {
     Twitter2Repository twitter2Repository;
     @Autowired
     private FriendshipRepository friendshipRepository;
+
+    @Autowired
+    PostsRepository postsRepository;
 
     @Override
     public String createUser(Twitter2 twitter2) {
@@ -177,5 +183,11 @@ public class Twitter2ServiceImpl implements Twitter2Service {
         } else {
             return "Wrong security answer try";
         }
+    }
+
+    @Override
+    public ArrayList<Post> getPosts() {
+        ArrayList<Post> output = (ArrayList<Post>) postsRepository.findAll();
+        return output;
     }
 }

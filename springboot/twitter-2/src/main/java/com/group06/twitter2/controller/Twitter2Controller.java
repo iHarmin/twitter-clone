@@ -2,6 +2,7 @@ package com.group06.twitter2.controller;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.group06.twitter2.model.Post;
 import com.group06.twitter2.model.Twitter2;
 import com.group06.twitter2.service.Twitter2Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -79,4 +78,8 @@ public class Twitter2Controller {
         return twitter2Service.deleteFriend(id, friendId);
     }
 
+    @GetMapping("/getPosts")
+    public ArrayList<Post> getPosts() {
+        return twitter2Service.getPosts();
+    }
 }

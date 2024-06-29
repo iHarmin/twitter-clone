@@ -1,0 +1,17 @@
+meta {
+  name: Get posts
+  type: http
+  seq: 5
+}
+
+put {
+  url: http://localhost:8080/resetPassword?email=EX1@dal.ca&recoveryAnswer=ans&newPassword=newPass
+  body: none
+  auth: none
+}
+
+query {
+  email: EX1@dal.ca
+  recoveryAnswer: ans
+  newPassword: newPass
+}

@@ -1,8 +1,11 @@
 package com.group06.twitter2.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.group06.twitter2.model.Post;
 import com.group06.twitter2.model.Twitter2;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Map;
 
 public interface Twitter2Service {
@@ -25,4 +28,5 @@ public interface Twitter2Service {
 
     String resetPassword(String email, String recoveryAnswer, String newPassword);
 
+    ArrayList<Post> getPosts();
 }
