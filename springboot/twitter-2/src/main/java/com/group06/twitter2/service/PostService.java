@@ -6,4 +6,6 @@ import java.util.ArrayList;
 
 public interface PostService {
     ArrayList<Post> getPosts();
+
+    Post createPost(Post post);
 }

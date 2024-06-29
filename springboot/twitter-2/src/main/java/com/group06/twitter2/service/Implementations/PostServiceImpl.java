@@ -18,4 +18,10 @@ public class PostServiceImpl implements PostService {
         ArrayList<Post> output = (ArrayList<Post>) postsRepository.findAll();
         return output;
     }
+
+    @Override
+    public Post createPost(Post post) {
+        postsRepository.save(post);
+        return post;
+    }
 }

@@ -10,9 +10,19 @@ public class Post {
 
     private String body;
 
+    public Post(String body, Twitter2 userID) {
+        this.body = body;
+        this.userID = userID;
+    }
+
+
     @ManyToOne
     @JoinColumn(name = "userName")
     private Twitter2 userID;
+
+    public Post() {
+
+    }
 
     public int getId() {
         return id;
