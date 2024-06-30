@@ -37,12 +37,6 @@ public class Twitter2Controller {
         return twitter2Service.getUserByID(id);
     }
 
-//    @PutMapping("/update/{password}")
-//    public String updatePassword(@PathVariable String password, @RequestBody Twitter2 twitter2){
-//        twitter2.setPassword(password);
-//        return twitter2Service.updatePassword(twitter2);
-//    }
-
     @PostMapping("/resetPassword")
     public String resetPassword(@RequestParam String email, @RequestParam String recoveryAnswer, @RequestParam String newPassword) {
         return twitter2Service.resetPassword(email, recoveryAnswer, newPassword);
