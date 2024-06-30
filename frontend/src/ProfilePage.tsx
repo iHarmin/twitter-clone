@@ -79,7 +79,12 @@ const ProfilePage: React.FC = () => {
       try {
         const friendsResponse = await fetch(`http://localhost:8080/api/friends/${profileID}`);
         const friendsData = await friendsResponse.json();
-        setFriends(friendsData);
+        setFriends(friendsData.map(friendship => ({
+          userID: friendship.user2.id,
+          userName: friendship.user2.userName,
+          firstName: friendship.user2.firstName,
+          lastName: friendship.user2.lastName,
+        })));
         console.log("My friends", friendsData);
 
         const requestsResponse = await fetch(`http://localhost:8080/api/friends/${profileID}/friendRequests`);
@@ -176,7 +181,7 @@ const ProfilePage: React.FC = () => {
       if (serverResponse.ok) {
         alert('Friend removed successfully!');
         // Remove the friend from the friends state
-        setFriends(friends.filter(friend => friend.userName2.userID !== friendUserID));
+        setFriends(friends.filter(friend => friend.userID !== friendUserID));
       } else {
         throw new Error('Server response was not ok.');
       }
@@ -287,16 +292,16 @@ const ProfilePage: React.FC = () => {
 
           <h3>Friend List</h3>
           {friends.map(friend => (
-            <div key={friend.friendID}
-                className="list-group-item d-flex justify-content-between align-items-center">
+            <div key={friend.userID}
+                 className="list-group-item d-flex justify-content-between align-items-center">
               <div className="card">
                 <div className="card-body">
-                <p className="mb-0">Username: {friend.userName2.userName}</p>
-                <p
-                  className="mb-0">Name: {friend.userName2.firstName} {friend.userName2.lastName}</p>
-                <button onClick={() => handleRemoveFriend(friend.userName2.userID)}
-                        className="btn btn-danger">Remove Friend
-                </button>
+                  <p className="mb-0">Username: {friend.userName}</p>
+                  <p className="mb-0">Name: {friend.firstName} {friend.lastName}</p>
+                  <button
+                    onClick={() => handleRemoveFriend(friend.userID)}
+                    className="btn btn-danger">Remove Friend
+                  </button>
                 </div>
               </div>
             </div>
