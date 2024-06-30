@@ -6,6 +6,14 @@ body, html {
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
   }
+
+  .navbar-brand {
+  font-size: 42px;
+  font-weight: bold;
+  color: #333;
+  font-family: 'Snell Roundhand', 'cursive';
+   
+}
   
   .container {
     background: #ffffff;

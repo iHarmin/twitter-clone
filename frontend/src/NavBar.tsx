@@ -7,8 +7,6 @@ import { useCookies } from "react-cookie";
 function NavBar() {
   const { isLoggedIn } = useContext(AuthContext);
   const [cookies] = useCookies(['user']);
-  // const userID = cookies.user;
-  // TODO: placeholder for user id until cookie is implemented
   const userID = '30';
 
   return (
