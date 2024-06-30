@@ -1,14 +1,11 @@
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {useContext, useState} from "react";
-import {AuthContext} from "./AuthContext.tsx";
-import { useCookies } from "react-cookie";
+import { useContext } from "react";
+import { AuthContext } from "./AuthContext";
+import Logout from './Logout';
 
 function NavBar() {
   const { isLoggedIn } = useContext(AuthContext);
-  const [cookies] = useCookies(['user']);
-  // const userID = cookies.user;
-  // TODO: placeholder for user id until cookie is implemented
   const userID = '30';
 
   return (
@@ -27,7 +24,7 @@ function NavBar() {
           </li>
           <li className="nav-item">
             {isLoggedIn ? (
-              <Link to="/login">Logout</Link>
+              <Logout />
             ) : (
               <Link to="/login">Login</Link>
             )}
