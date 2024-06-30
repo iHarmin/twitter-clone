@@ -26,18 +26,18 @@ public class FriendshipController {
         return ResponseEntity.ok(friendshipService.getFriendRequests(id));
     }
 
-    @PostMapping("/{id}/friends/{friendId}")
-    public String addFriend(@PathVariable int id, @PathVariable int friendId) {
-        return friendshipService.addFriend(id, friendId);
+    @PostMapping("/{id}/friends/{friendID}")
+    public String addFriend(@PathVariable int id, @PathVariable int friendID) {
+        return friendshipService.addFriend(id, friendID);
     }
 
-    @PutMapping("/{id}/friends/{friendId}")
-    public String acceptFriend(@PathVariable int id, @PathVariable int friendId) {
-        return friendshipService.acceptFriend(id, friendId);
+    @PutMapping("/{id}/friends/{friendID}")
+    public String acceptFriend(@PathVariable int id, @PathVariable int friendID) {
+        return friendshipService.acceptFriend(id, friendID);
     }
 
-    @DeleteMapping("/{id}/friends/{friendId}")
-    public String deleteFriend(@PathVariable int id, @PathVariable int friendId) {
-        return friendshipService.deleteFriend(id, friendId);
+    @DeleteMapping("/{id}/friends/{friendID}")
+    public String deleteFriend(@PathVariable int id, @PathVariable int friendID) {
+        return friendshipService.deleteFriend(id, friendID);
     }
 }

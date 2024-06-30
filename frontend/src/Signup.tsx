@@ -53,7 +53,6 @@ const Signup: React.FC = () => {
     console.log('Password:', password);
     console.log('Recovery Answer:', recoveryAnswer);
 
-    // Create a user object
     const user = {
       firstName: null,
       lastName: null,

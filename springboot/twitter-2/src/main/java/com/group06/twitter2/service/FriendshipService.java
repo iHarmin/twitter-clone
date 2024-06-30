@@ -5,11 +5,11 @@ import com.group06.twitter2.model.Friendship;
 import java.util.List;
 
 public interface FriendshipService {
-    String addFriend(int id, int friendId);
+    String addFriend(int id, int friendID);
 
-    String acceptFriend(int id, int friendId);
+    String acceptFriend(int id, int friendID);
 
-    String deleteFriend(int id, int friendId);
+    String deleteFriend(int id, int friendID);
 
     List<Friendship> getFriends(int id);
 

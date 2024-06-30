@@ -7,7 +7,8 @@ import jakarta.persistence.Id;
 public class Friendship {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int friendId;
+    @Column(name = "friend_id")
+    private int friendID;
 
     @ManyToOne
     @JoinColumn(name = "username1")
@@ -22,19 +23,19 @@ public class Friendship {
     public Friendship() {
     }
 
-    public Friendship(int friendId, Twitter2 userName1, Twitter2 userName2, boolean accepted) {
-        this.friendId = friendId;
+    public Friendship(int friendID, Twitter2 userName1, Twitter2 userName2, boolean accepted) {
+        this.friendID = friendID;
         this.userName1 = userName1;
         this.userName2 = userName2;
         this.accepted = accepted;
     }
 
-    public int getFriendId() {
-        return friendId;
+    public int getFriendID() {
+        return friendID;
     }
 
     public void setId(int id) {
-        this.friendId = id;
+        this.friendID = id;
     }
 
     public Twitter2 getUserName1() {

@@ -2,7 +2,7 @@ import {useContext, useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useParams} from 'react-router-dom';
 import {AuthContext} from "./AuthContext.tsx";
-import { useCookies } from "react-cookie";
+import {useCookies} from "react-cookie";
 
 const ProfilePage: React.FC = () => {
 
@@ -17,7 +17,7 @@ const ProfilePage: React.FC = () => {
 
   const {profileID} = useParams();
   // TODO: placeholder for current username, will use cookie to obtain
-  const currentUserID : string = '30';
+  const currentUserID: string = '30';
   const {isLoggedIn} = useContext(AuthContext);
   const [cookies] = useCookies(['user']);
   // TODO: placeholders for friend adding
@@ -53,6 +53,8 @@ const ProfilePage: React.FC = () => {
   const [status, setStatus] = useState('');
   const [isFirstVisit, setIsFirstVisit] = useState(true);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [friends, setFriends] = useState([]);
+  const [friendRequests, setFriendRequests] = useState([]);
 
   // Fetch the user's profile data
   useEffect(() => {
@@ -60,7 +62,7 @@ const ProfilePage: React.FC = () => {
       try {
         const serverResponse = await fetch(`http://localhost:8080/api/users/${profileID}`);
         const profileData = await serverResponse.json();
-        console.log(profileData);
+        console.log("Profile Data", profileData);
         setFormData(profileData);
       } catch (error) {
         console.error(error);
@@ -69,6 +71,28 @@ const ProfilePage: React.FC = () => {
     };
 
     fetchProfileData();
+  }, []);
+
+  // Fetch the list of friends and friend requests
+  useEffect(() => {
+    const fetchFriendsAndRequests = async () => {
+      try {
+        const friendsResponse = await fetch(`http://localhost:8080/api/friends/${profileID}`);
+        const friendsData = await friendsResponse.json();
+        setFriends(friendsData);
+        console.log("My friends", friendsData);
+
+        const requestsResponse = await fetch(`http://localhost:8080/api/friends/${profileID}/friendRequests`);
+        const requestsData = await requestsResponse.json();
+        setFriendRequests(requestsData);
+        console.log("Friend Requests", requestsData);
+      } catch (error) {
+        console.error(error);
+        alert('An error occurred while fetching your friends and friend requests.');
+      }
+    };
+
+    fetchFriendsAndRequests();
   }, []);
 
   const handleDetailsSubmit = async (event: React.FormEvent) => {
@@ -127,7 +151,7 @@ const ProfilePage: React.FC = () => {
         headers: {
           "Content-Type": 'application/json',
         },
-        body: JSON.stringify({ status: status})
+        body: JSON.stringify({status: status})
       });
 
       if (serverResponse.ok) {
@@ -142,6 +166,44 @@ const ProfilePage: React.FC = () => {
       alert('An error occurred while saving your status changes.');
     }
   }
+
+  const handleRemoveFriend = async (friendUserID) => {
+    try {
+      const serverResponse = await fetch(`http://localhost:8080/api/friends/${profileID}/friends/${friendUserID}`, {
+        method: 'DELETE',
+      });
+
+      if (serverResponse.ok) {
+        alert('Friend removed successfully!');
+        // Remove the friend from the friends state
+        setFriends(friends.filter(friend => friend.userName2.userID !== friendUserID));
+      } else {
+        throw new Error('Server response was not ok.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('An error occurred while removing the friend.');
+    }
+  };
+
+  const handleAcceptRequest = async (requestID) => {
+    try {
+      const serverResponse = await fetch(`http://localhost:8080/api/friends/${profileID}/friendRequests/${requestID}`, {
+        method: 'PUT',
+      });
+
+      if (serverResponse.ok) {
+        alert('Friend request accepted successfully!');
+        // Remove the request from the friendRequests state
+        setFriendRequests(friendRequests.filter(request => request.id !== requestID));
+      } else {
+        throw new Error('Server response was not ok.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Error: could not accept the friend request.');
+    }
+  };
 
   // Form for entering name, email, and interests
   // Username cannot be changed
@@ -222,6 +284,35 @@ const ProfilePage: React.FC = () => {
                      className="btn btn-primary mt-3"/>
             </form>
           )}
+
+          <h3>Friend List</h3>
+          {friends.map(friend => (
+            <div key={friend.friendID}
+                className="list-group-item d-flex justify-content-between align-items-center">
+              <div className="card">
+                <div className="card-body">
+                <p className="mb-0">Username: {friend.userName2.userName}</p>
+                <p
+                  className="mb-0">Name: {friend.userName2.firstName} {friend.userName2.lastName}</p>
+                <button onClick={() => handleRemoveFriend(friend.userName2.userID)}
+                        className="btn btn-danger">Remove Friend
+                </button>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          <h3>Friend Requests</h3>
+          {friendRequests.map(request => (
+            <div key={request.id}>
+              <p>{request.from.firstName} {request.from.lastName}</p>
+              <button onClick={() => handleAcceptRequest(request.id)}>Accept
+                Request
+              </button>
+            </div>
+          ))}
+
+
         </div>
       </div>
     </div>

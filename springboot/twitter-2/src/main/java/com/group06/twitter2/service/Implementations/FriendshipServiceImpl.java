@@ -20,9 +20,9 @@ public class FriendshipServiceImpl implements FriendshipService {
     FriendshipRepository friendshipRepository;
 
     @Override
-    public String addFriend(int id, int friendId) {
+    public String addFriend(int id, int friendID) {
         Optional<Twitter2> userOpt = twitter2Repository.findById(id);
-        Optional<Twitter2> friendOpt = twitter2Repository.findById(friendId);
+        Optional<Twitter2> friendOpt = twitter2Repository.findById(friendID);
 
         if (userOpt.isPresent() && friendOpt.isPresent()) {
             Twitter2 user = userOpt.get();
@@ -33,7 +33,7 @@ public class FriendshipServiceImpl implements FriendshipService {
                 f.setUserName2(friend);
                 f.setAccepted(false);
                 friendshipRepository.save(f);
-                return "Added friend successfully";
+                return "Sent friend request successfully";
             } else {
                 return "Not added";
             }
@@ -43,9 +43,9 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public String acceptFriend(int id, int friendId) {
+    public String acceptFriend(int id, int friendID) {
         Optional<Twitter2> userOpt = twitter2Repository.findById(id);
-        Optional<Twitter2> friendOpt = twitter2Repository.findById(friendId);
+        Optional<Twitter2> friendOpt = twitter2Repository.findById(friendID);
 
         if (userOpt.isPresent() && friendOpt.isPresent()) {
             Twitter2 user = userOpt.get();
@@ -64,9 +64,9 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public String deleteFriend(int id, int friendId) {
+    public String deleteFriend(int id, int friendID) {
         Optional<Twitter2> userOpt = twitter2Repository.findById(id);
-        Optional<Twitter2> friendOpt = twitter2Repository.findById(friendId);
+        Optional<Twitter2> friendOpt = twitter2Repository.findById(friendID);
 
         if (userOpt.isPresent() && friendOpt.isPresent()) {
             Twitter2 user = userOpt.get();
