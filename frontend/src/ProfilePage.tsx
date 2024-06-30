@@ -204,9 +204,20 @@ const ProfilePage: React.FC = () => {
 
   const handleAcceptRequest = async (friendUserID) => {
     try {
-      const serverResponse = await fetch(`http://localhost:8080/api/friends/${profileID}/friendRequests/${friendUserID}`, {
+      const serverResponse = await fetch(`http://localhost:8080/api/friends/${profileID}/friends/${friendUserID}`, {
         method: 'PUT',
       });
+
+      // Find the accepted friend request
+      const acceptedRequest = friendRequests.find(request => request.from.id === friendUserID);
+
+      // Add the accepted friend to the friends state
+      setFriends([...friends, {
+        userID: acceptedRequest.from.id,
+        userName: acceptedRequest.from.userName,
+        firstName: acceptedRequest.from.firstName,
+        lastName: acceptedRequest.from.lastName,
+      }]);
 
       if (serverResponse.ok) {
         alert('Friend request accepted successfully!');
