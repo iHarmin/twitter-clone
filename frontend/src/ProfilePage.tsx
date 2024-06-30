@@ -33,6 +33,7 @@ const ProfilePage: React.FC = () => {
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [friends, setFriends] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
+  const [friendRequestSent, setFriendRequestSent] = useState(false);
 
   // Fetch the user's profile data
   useEffect(() => {
@@ -163,7 +164,7 @@ const ProfilePage: React.FC = () => {
 
   const handleRemoveFriend = async (friendUserID) => {
     try {
-      const serverResponse = await fetch(`http://localhost:8080/api/friends/${profileID}/friends/${friendUserID}`, {
+      const serverResponse = await fetch(`http://localhost:8080/api/friends/${currentUserID}/friends/${friendUserID}`, {
         method: 'DELETE',
       });
 
@@ -182,7 +183,7 @@ const ProfilePage: React.FC = () => {
 
   const handleAcceptRequest = async (friendUserID) => {
     try {
-      const serverResponse = await fetch(`http://localhost:8080/api/friends/${profileID}/friends/${friendUserID}`, {
+      const serverResponse = await fetch(`http://localhost:8080/api/friends/${currentUserID}/friends/${friendUserID}`, {
         method: 'PUT',
       });
 
@@ -212,7 +213,7 @@ const ProfilePage: React.FC = () => {
 
   const handleDeclineRequest = async (friendUserID) => {
     try {
-      const serverResponse = await fetch(`http://localhost:8080/api/friends/${profileID}/friends/${friendUserID}`, {
+      const serverResponse = await fetch(`http://localhost:8080/api/friends/${currentUserID}/friends/${friendUserID}`, {
         method: 'DELETE',
       });
 
@@ -228,6 +229,27 @@ const ProfilePage: React.FC = () => {
       alert('Error: could not decline the friend request.');
     }
   };
+
+  const handleSendRequest = async (friendUserID) => {
+    try {
+      const serverResponse = await fetch(`http://localhost:8080/api/friends/${currentUserID}/friends/${friendUserID}`, {
+        method: 'POST',
+      });
+
+      if (serverResponse.ok) {
+        alert('Friend request sent successfully!');
+        setFriendRequestSent(true);
+        // Add the request to the friendRequests state
+        setFriendRequests([...friendRequests, {from: {id: friendUserID}}]);
+      } else {
+        throw new Error('Server response was not ok.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Error: could not send the friend request.');
+    }
+  };
+
 
   // Form for entering name, email, and interests
   // Username cannot be changed
@@ -247,9 +269,12 @@ const ProfilePage: React.FC = () => {
             </div>
           </div>
 
-          {isLoggedIn && loggedInUser !== profileUser && (
-            <button onClick={handleAddFriend}>Add Friend</button>
+          {profileID !== currentUserID && (
+            <button onClick={() => handleSendRequest(profileID)} className="btn btn-primary" disabled={friendRequestSent}>
+              {friendRequestSent ? 'Request Pending' : 'Add Friend'}
+            </button>
           )}
+
 
           {profileID === currentUserID && (isFirstVisit || isEditingProfile) && (
             <div className="row">
