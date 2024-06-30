@@ -24,28 +24,6 @@ const ProfilePage: React.FC = () => {
   // const loggedInUser = "profileUser";
   // const profileUser = "profileUser";
 
-  const handleAddFriend = async () => {
-    // try {
-    //   const userID = cookies.user;
-    //   const serverResponse = await fetch(`http://localhost:8080/api/users/${userID}/friends/${friendID}`, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({ friendUsername: username }), // Send the username of the friend to be added
-    //   });
-    //
-    //   if (serverResponse.ok) {
-    //     alert('Friend request sent!');
-    //   } else {
-    //     alert('An error occurred while sending the friend request.');
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    //   alert('An error occurred while sending the friend request.');
-    // }
-  };
-
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -232,6 +210,25 @@ const ProfilePage: React.FC = () => {
     }
   };
 
+  const handleDeclineRequest = async (friendUserID) => {
+    try {
+      const serverResponse = await fetch(`http://localhost:8080/api/friends/${profileID}/friends/${friendUserID}`, {
+        method: 'DELETE',
+      });
+
+      if (serverResponse.ok) {
+        alert('Friend request declined successfully!');
+        // Remove the request from the friendRequests state
+        setFriendRequests(friendRequests.filter(request => request.from.id !== friendUserID));
+      } else {
+        throw new Error('Server response was not ok.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Error: could not decline the friend request.');
+    }
+  };
+
   // Form for entering name, email, and interests
   // Username cannot be changed
   return (
@@ -319,8 +316,7 @@ const ProfilePage: React.FC = () => {
               <div className="card">
                 <div className="card-body">
                   <p className="mb-0">Username: {friend.userName}</p>
-                  <p
-                    className="mb-0">Name: {friend.firstName} {friend.lastName}</p>
+                  <p>Name: {friend.firstName} {friend.lastName}</p>
                   <button
                     onClick={() => handleRemoveFriend(friend.userID)}
                     className="btn btn-danger">Remove Friend
@@ -337,10 +333,12 @@ const ProfilePage: React.FC = () => {
               <div className="card">
                 <div className="card-body">
                   <p className="mb-0">Username: {request.from.userName}</p>
-                  <p
-                    className="mb-0">Name: {request.from.firstName} {request.from.lastName}</p>
+                  <p>Name: {request.from.firstName} {request.from.lastName}</p>
                   <button onClick={() => handleAcceptRequest(request.from.id)}
-                          className="btn btn-primary">Accept Request
+                          className="btn btn-primary me-3">Accept Request
+                  </button>
+                  <button onClick={() => handleDeclineRequest(request.from.id)}
+                          className="btn btn-danger">Decline Request
                   </button>
                 </div>
               </div>
