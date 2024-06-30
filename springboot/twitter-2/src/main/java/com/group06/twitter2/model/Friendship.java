@@ -11,22 +11,22 @@ public class Friendship {
     private int friendID;
 
     @ManyToOne
-    @JoinColumn(name = "username1")
-    private Twitter2 userName1;
+    @JoinColumn(name = "user_id1", referencedColumnName = "id")
+    private Twitter2 user1;
 
     @ManyToOne
-    @JoinColumn(name = "username2")
-    private Twitter2 userName2;
+    @JoinColumn(name = "user_id2", referencedColumnName = "id")
+    private Twitter2 user2;
 
     private boolean accepted;
 
     public Friendship() {
     }
 
-    public Friendship(int friendID, Twitter2 userName1, Twitter2 userName2, boolean accepted) {
+    public Friendship(int friendID, Twitter2 user1, Twitter2 user2, boolean accepted) {
         this.friendID = friendID;
-        this.userName1 = userName1;
-        this.userName2 = userName2;
+        this.user1 = user1;
+        this.user2 = user2;
         this.accepted = accepted;
     }
 
@@ -38,20 +38,20 @@ public class Friendship {
         this.friendID = id;
     }
 
-    public Twitter2 getUserName1() {
-        return userName1;
+    public Twitter2 getUser1() {
+        return user1;
     }
 
-    public void setUserName1(Twitter2 userName1) {
-        this.userName1 = userName1;
+    public void setUser1(Twitter2 user1) {
+        this.user1 = user1;
     }
 
-    public Twitter2 getUserName2() {
-        return userName2;
+    public Twitter2 getUser2() {
+        return user2;
     }
 
-    public void setUserName2(Twitter2 userName2) {
-        this.userName2 = userName2;
+    public void setUser2(Twitter2 user2) {
+        this.user2 = user2;
     }
 
     public boolean isAccepted() {

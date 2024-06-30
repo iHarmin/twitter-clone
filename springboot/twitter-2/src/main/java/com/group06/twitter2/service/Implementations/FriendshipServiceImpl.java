@@ -20,17 +20,17 @@ public class FriendshipServiceImpl implements FriendshipService {
     FriendshipRepository friendshipRepository;
 
     @Override
-    public String addFriend(int id, int friendID) {
-        Optional<Twitter2> userOpt = twitter2Repository.findById(id);
-        Optional<Twitter2> friendOpt = twitter2Repository.findById(friendID);
+    public String addFriend(int userID1, int userID2) {
+        Optional<Twitter2> userOpt = twitter2Repository.findById(userID1);
+        Optional<Twitter2> friendOpt = twitter2Repository.findById(userID2);
 
         if (userOpt.isPresent() && friendOpt.isPresent()) {
             Twitter2 user = userOpt.get();
             Twitter2 friend = friendOpt.get();
             if (friendshipRepository.findFriendshipBetweenUsers(user, friend) == null) {
                 Friendship f = new Friendship();
-                f.setUserName1(user);
-                f.setUserName2(friend);
+                f.setUser1(user);
+                f.setUser2(friend);
                 f.setAccepted(false);
                 friendshipRepository.save(f);
                 return "Sent friend request successfully";
@@ -43,9 +43,9 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public String acceptFriend(int id, int friendID) {
-        Optional<Twitter2> userOpt = twitter2Repository.findById(id);
-        Optional<Twitter2> friendOpt = twitter2Repository.findById(friendID);
+    public String acceptFriend(int userID1, int userID2) {
+        Optional<Twitter2> userOpt = twitter2Repository.findById(userID1);
+        Optional<Twitter2> friendOpt = twitter2Repository.findById(userID2);
 
         if (userOpt.isPresent() && friendOpt.isPresent()) {
             Twitter2 user = userOpt.get();
@@ -64,9 +64,9 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public String deleteFriend(int id, int friendID) {
-        Optional<Twitter2> userOpt = twitter2Repository.findById(id);
-        Optional<Twitter2> friendOpt = twitter2Repository.findById(friendID);
+    public String deleteFriend(int userID1, int userID2) {
+        Optional<Twitter2> userOpt = twitter2Repository.findById(userID1);
+        Optional<Twitter2> friendOpt = twitter2Repository.findById(userID2);
 
         if (userOpt.isPresent() && friendOpt.isPresent()) {
             Twitter2 user = userOpt.get();
@@ -90,24 +90,24 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public List<Friendship> getFriends(int id) {
-        Optional<Twitter2> userOpt = twitter2Repository.findById(id);
+    public List<Friendship> getFriends(int userID) {
+        Optional<Twitter2> userOpt = twitter2Repository.findById(userID);
         if (userOpt.isPresent()) {
             Twitter2 user = userOpt.get();
             return friendshipRepository.findFriendsByUser(user);
         } else {
-            throw new RuntimeException("User not found with id: " + id);
+            throw new RuntimeException("User not found with id: " + userID);
         }
     }
 
     @Override
-    public List<Friendship> getFriendRequests(int id) {
-        Optional<Twitter2> userOpt = twitter2Repository.findById(id);
+    public List<Friendship> getFriendRequests(int userID) {
+        Optional<Twitter2> userOpt = twitter2Repository.findById(userID);
         if (userOpt.isPresent()) {
             Twitter2 user = userOpt.get();
             return friendshipRepository.findFriendRequestsByUser(user);
         } else {
-            throw new RuntimeException("User not found with id: " + id);
+            throw new RuntimeException("User not found with id: " + userID);
         }
     }
 
