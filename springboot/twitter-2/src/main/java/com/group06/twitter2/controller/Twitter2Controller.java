@@ -1,14 +1,9 @@
 package com.group06.twitter2.controller;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.group06.twitter2.model.Post;
 import com.group06.twitter2.model.Twitter2;
-import com.group06.twitter2.service.PostService;
 import com.group06.twitter2.service.Twitter2Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -63,21 +58,6 @@ public class Twitter2Controller {
 //        } else {
 //            return new ResponseEntity<>(result, HttpStatus.OK);
 //        }
-    }
-
-    @PostMapping("/{id}/friends/{friendId}")
-    public String addFriend(@PathVariable int id, @PathVariable int friendId) {
-        return twitter2Service.addFriend(id, friendId);
-    }
-
-    @PutMapping("/{id}/friends/{friendId}")
-    public String acceptFriend(@PathVariable int id, @PathVariable int friendId) {
-        return twitter2Service.acceptFriend(id, friendId);
-    }
-
-    @DeleteMapping("/{id}/friends/{friendId}")
-    public String deleteFriend(@PathVariable int id, @PathVariable int friendId) {
-        return twitter2Service.deleteFriend(id, friendId);
     }
 
 }
