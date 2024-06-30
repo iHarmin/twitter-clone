@@ -89,7 +89,18 @@ const ProfilePage: React.FC = () => {
 
         const requestsResponse = await fetch(`http://localhost:8080/api/friends/${profileID}/friendRequests`);
         const requestsData = await requestsResponse.json();
-        setFriendRequests(requestsData);
+
+        setFriendRequests(requestsData.map(request => ({
+          id: request.id,
+          from: {
+            id: request.user2.id,
+            userName: request.user2.userName,
+            firstName: request.user2.firstName,
+            lastName: request.user2.lastName,
+          },
+        })));
+
+
         console.log("Friend Requests", requestsData);
       } catch (error) {
         console.error(error);
@@ -191,16 +202,16 @@ const ProfilePage: React.FC = () => {
     }
   };
 
-  const handleAcceptRequest = async (requestID) => {
+  const handleAcceptRequest = async (friendUserID) => {
     try {
-      const serverResponse = await fetch(`http://localhost:8080/api/friends/${profileID}/friendRequests/${requestID}`, {
+      const serverResponse = await fetch(`http://localhost:8080/api/friends/${profileID}/friendRequests/${friendUserID}`, {
         method: 'PUT',
       });
 
       if (serverResponse.ok) {
         alert('Friend request accepted successfully!');
         // Remove the request from the friendRequests state
-        setFriendRequests(friendRequests.filter(request => request.id !== requestID));
+        setFriendRequests(friendRequests.filter(request => request.from.id !== friendUserID));
       } else {
         throw new Error('Server response was not ok.');
       }
@@ -297,7 +308,8 @@ const ProfilePage: React.FC = () => {
               <div className="card">
                 <div className="card-body">
                   <p className="mb-0">Username: {friend.userName}</p>
-                  <p className="mb-0">Name: {friend.firstName} {friend.lastName}</p>
+                  <p
+                    className="mb-0">Name: {friend.firstName} {friend.lastName}</p>
                   <button
                     onClick={() => handleRemoveFriend(friend.userID)}
                     className="btn btn-danger">Remove Friend
@@ -309,11 +321,18 @@ const ProfilePage: React.FC = () => {
 
           <h3>Friend Requests</h3>
           {friendRequests.map(request => (
-            <div key={request.id}>
-              <p>{request.from.firstName} {request.from.lastName}</p>
-              <button onClick={() => handleAcceptRequest(request.id)}>Accept
-                Request
-              </button>
+            <div key={request.id}
+                 className="list-group-item d-flex justify-content-between align-items-center">
+              <div className="card">
+                <div className="card-body">
+                  <p className="mb-0">Username: {request.from.userName}</p>
+                  <p
+                    className="mb-0">Name: {request.from.firstName} {request.from.lastName}</p>
+                  <button onClick={() => handleAcceptRequest(request.from.id)}
+                          className="btn btn-primary">Accept Request
+                  </button>
+                </div>
+              </div>
             </div>
           ))}
 
