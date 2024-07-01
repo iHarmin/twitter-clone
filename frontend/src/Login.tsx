@@ -32,9 +32,12 @@ const Login = () => {
       }
 
       const result = await serverResponse.json();
+      console.log(result);
       console.log('Success:', result);
-
+  
       Cookies.set('authToken', result.authToken); // Set the cookie
+      Cookies.set('userId', result.id);
+      Cookies.set('username', result.userName);
       setIsLoggedIn(true);
       navigate(`/profile/${result.id}`); // Redirect to the user's profile page
       console.log(result.authToken);

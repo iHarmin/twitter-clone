@@ -23,7 +23,6 @@ const ProfilePage: React.FC = () => {
   // TODO: placeholders for friend adding
   // const loggedInUser = "profileUser";
   // const profileUser = "profileUser";
-
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
