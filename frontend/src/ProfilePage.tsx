@@ -17,7 +17,7 @@ const ProfilePage: React.FC = () => {
 
   const {profileID} = useParams();
   // TODO: placeholder for current username, will use cookie to obtain
-  const currentUserID: string = '30';
+  const currentUserID: string = '11';
   const {isLoggedIn} = useContext(AuthContext);
   const [cookies] = useCookies(['user']);
   // TODO: placeholders for friend adding
@@ -63,24 +63,94 @@ const ProfilePage: React.FC = () => {
           userName: friendship.user2.userName,
           firstName: friendship.user2.firstName,
           lastName: friendship.user2.lastName,
+          email: friendship.user2.email,
         })));
         console.log("My friends", friendsData);
 
         const requestsResponse = await fetch(`http://localhost:8080/api/friends/${profileID}/friendRequests`);
         const requestsData = await requestsResponse.json();
-
-        setFriendRequests(requestsData.map(request => ({
-          id: request.id,
-          from: {
-            id: request.user2.id,
-            userName: request.user2.userName,
-            firstName: request.user2.firstName,
-            lastName: request.user2.lastName,
-          },
-        })));
-
-
         console.log("Friend Requests", requestsData);
+
+        const filteredRequests = requestsData
+          .filter(request => request.user2 && request.user2.id === Number(currentUserID) && request.user1.id !== Number(currentUserID) && false)
+          .map(request => {
+            return {
+              id: request.friendID,
+              from: {
+                id: request.user1.id,
+                userName: request.user1.userName,
+                firstName: request.user1.firstName,
+                lastName: request.user1.lastName,
+                email: request.user1.email,
+              },
+              to: {
+                id: request.user2.id,
+                userName: request.user2.userName,
+                firstName: request.user2.firstName,
+                lastName: request.user2.lastName,
+                email: request.user2.email,
+              }
+            };
+          });
+
+
+        // const filteredRequests = requestsData.map(request => {
+        //   let from, to;
+        //   if (request.user2.id === Number(currentUserID)) {
+        //     from = request.user1;
+        //     to = request.user2;
+        //   } else {
+        //     from = request.user2;
+        //     to = request.user1;
+        //   }
+        //
+        //   return {
+        //     id: request.id,
+        //     from: {
+        //       id: from.id,
+        //       userName: from.userName,
+        //       firstName: from.firstName,
+        //       lastName: from.lastName,
+        //       email: from.email,
+        //     },
+        //     to: {
+        //       id: to.id,
+        //       userName: to.userName,
+        //       firstName: to.firstName,
+        //       lastName: to.lastName,
+        //       email: to.email,
+        //     }
+        //   };
+        // }).filter(request => {
+        //   console.log("currentUserID:", currentUserID);
+        //   console.log("request.to.id:", request.to.id);
+        //   console.log("request.from.id:", request.from.id);
+        //   return request.to.id === currentUserID || request.from.id === currentUserID;
+        // });
+
+        // setFriendRequests(requestsData.map(request => ({
+        //   id: request.id,
+        //   from: {
+        //     id: request.user2.id,
+        //     userName: request.user2.userName,
+        //     firstName: request.user2.firstName,
+        //     lastName: request.user2.lastName,
+        //     email: request.user2.email,
+        //   },
+        //   to: {
+        //     id: request.user1.id,
+        //     userName: request.user1.userName,
+        //     firstName: request.user1.firstName,
+        //     lastName: request.user1.lastName,
+        //     email: request.user1.email,
+        //   }
+        // })));
+
+        // console.log("Current User ID:", currentUserID);
+        console.log("Filtered Friend Requests", filteredRequests);
+        setFriendRequests(filteredRequests);
+
+
       } catch (error) {
         console.error(error);
         alert('An error occurred while fetching your friends and friend requests.');
@@ -239,7 +309,7 @@ const ProfilePage: React.FC = () => {
       if (serverResponse.ok) {
         alert('Friend request sent successfully!');
         setFriendRequestSent(true);
-        // Add the request to the friendRequests state
+
         setFriendRequests([...friendRequests, {from: {id: friendUserID}}]);
       } else {
         throw new Error('Server response was not ok.');
@@ -270,7 +340,8 @@ const ProfilePage: React.FC = () => {
           </div>
 
           {profileID !== currentUserID && (
-            <button onClick={() => handleSendRequest(profileID)} className="btn btn-primary" disabled={friendRequestSent}>
+            <button onClick={() => handleSendRequest(profileID)}
+                    className="btn btn-primary" disabled={friendRequestSent}>
               {friendRequestSent ? 'Request Pending' : 'Add Friend'}
             </button>
           )}
@@ -341,6 +412,7 @@ const ProfilePage: React.FC = () => {
               <div className="card">
                 <div className="card-body">
                   <p className="mb-0">Username: {friend.userName}</p>
+                  <p className="mb-0">Email: {friend.email}</p>
                   <p>Name: {friend.firstName} {friend.lastName}</p>
                   <button
                     onClick={() => handleRemoveFriend(friend.userID)}
@@ -352,12 +424,14 @@ const ProfilePage: React.FC = () => {
           ))}
 
           <h3>Friend Requests</h3>
-          {friendRequests.map(request => (
-            <div key={request.id}
+          {/*{friendRequests.filter(request => request.to && request.to.id === currentUserID).map(request => (*/}
+            {friendRequests.map(request => (
+            <div key={request.from.id}
                  className="list-group-item d-flex justify-content-between align-items-center">
               <div className="card">
                 <div className="card-body">
                   <p className="mb-0">Username: {request.from.userName}</p>
+                  <p className="mb-0">Email: {request.from.email}</p>
                   <p>Name: {request.from.firstName} {request.from.lastName}</p>
                   <button onClick={() => handleAcceptRequest(request.from.id)}
                           className="btn btn-primary me-3">Accept Request
