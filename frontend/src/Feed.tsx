@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const Feed: React.FC = () => {
     const [post, setPost] = useState('Hello');
@@ -24,7 +25,8 @@ const Feed: React.FC = () => {
 
     const handlePostSubmit = (event: any) => {
         event.preventDefault();
-        let newPost = {userID: {id: 30}, body: post}
+        let newPost = {userID: {id: Cookies.get('userId')}, body: post}
+        console.log(newPost);
         fetch("http://localhost:8080/api/post/createPost", {
             method: 'PUT',
             headers: {
@@ -32,7 +34,7 @@ const Feed: React.FC = () => {
             },
             body: JSON.stringify(newPost)
         }).then(data => console.log(data));
-        let showPost = {userID: {userName: "USER"}, body: post}
+        let showPost = {userID: {userName: Cookies.get('username')}, body: post}
         setPostData([...postData, showPost])
     }
 
