@@ -291,7 +291,8 @@ const ProfilePage: React.FC = () => {
           )}
 
 
-          {profileID === currentUserID && (isFirstVisit || isEditingProfile) && (
+          {Cookies.get('userId') === profileID && (
+           
             <div className="row">
               <div className="col">
                 <h3>Update your personal information:</h3>
