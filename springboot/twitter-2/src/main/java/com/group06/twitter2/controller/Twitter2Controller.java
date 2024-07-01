@@ -45,4 +45,9 @@ public class Twitter2Controller {
         String status = body.get("status");
         return twitter2Service.updateUserStatus(id, status);
     }
+
+    @PostMapping("/checkPasswordValid")
+    public Twitter2 checkPasswordValid(@RequestParam String email, @RequestParam String password) {
+        return twitter2Service.checkPasswordValid(email, password);
+    }
 }

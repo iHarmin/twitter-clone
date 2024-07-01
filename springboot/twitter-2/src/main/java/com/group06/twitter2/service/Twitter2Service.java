@@ -1,5 +1,7 @@
 package com.group06.twitter2.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.group06.twitter2.model.Post;
 import com.group06.twitter2.model.Twitter2;
 
 import java.util.ArrayList;
@@ -18,4 +20,6 @@ public interface Twitter2Service {
     Twitter2 getUserByID(int id);
 
     String resetPassword(String email, String recoveryAnswer, String newPassword);
+
+    Twitter2 checkPasswordValid(String email, String password);
 }

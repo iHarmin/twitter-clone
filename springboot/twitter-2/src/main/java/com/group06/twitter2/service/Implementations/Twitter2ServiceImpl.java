@@ -1,22 +1,23 @@
 package com.group06.twitter2.service.Implementations;
 
 import com.group06.twitter2.model.Twitter2;
-import com.group06.twitter2.model.Friendship;
 import com.group06.twitter2.repository.Twitter2Repository;
+import com.group06.twitter2.repository.FriendshipRepository;
 import com.group06.twitter2.service.Twitter2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-
 @Service
 public class Twitter2ServiceImpl implements Twitter2Service {
     @Autowired
     Twitter2Repository twitter2Repository;
+    @Autowired
+    private FriendshipRepository friendshipRepository;
 
     @Override
     public String createUser(Twitter2 twitter2) {
-        if (!twitter2.getEmail().endsWith("@dal.ca")) {
+        if(!twitter2.getEmail().endsWith("@dal.ca")) {
             return "Invalid email address";
         }
         twitter2Repository.save(twitter2);
@@ -39,7 +40,7 @@ public class Twitter2ServiceImpl implements Twitter2Service {
     @Override
     public String updatePassword(Twitter2 twitter2) {
         Optional<Twitter2> passOpt = twitter2Repository.findById(twitter2.getId());
-        if (passOpt.isPresent()) {
+        if(passOpt.isPresent()) {
             Twitter2 p = passOpt.get();
             p.setPassword(twitter2.getPassword());
             twitter2Repository.save(p);
@@ -79,7 +80,6 @@ public class Twitter2ServiceImpl implements Twitter2Service {
         }
     }
 
-
     @Override
     public String resetPassword(String email, String recoveryAnswer, String newPassword) {
         Twitter2 user = twitter2Repository.findByEmail(email);
@@ -89,6 +89,17 @@ public class Twitter2ServiceImpl implements Twitter2Service {
             return "New password set";
         } else {
             return "Wrong security answer try";
+        }
+    }
+
+    @Override
+    public Twitter2 checkPasswordValid(String email, String password) {
+        Twitter2 user = twitter2Repository.findByEmail(email);
+        String actualPassword = user.getPassword();
+        if(actualPassword.equals(password)) {
+            return user;
+        } else {
+            return null;
         }
     }
 }
