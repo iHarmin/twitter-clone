@@ -34,10 +34,10 @@ const Login = () => {
       const result = await serverResponse.json();
       console.log('Success:', result);
 
-      Cookies.set('authToken', result.authToken); // Set the cookie
+      Cookies.set('userID', result.id); // Set the cookie
       setIsLoggedIn(true);
       navigate(`/profile/${result.id}`); // Redirect to the user's profile page
-      console.log(result.authToken);
+      console.log("Cookie:", result.id);
 
     } catch (error) {
       console.error(error);
