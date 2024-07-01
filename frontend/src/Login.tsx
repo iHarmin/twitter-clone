@@ -40,7 +40,7 @@ const Login = () => {
       Cookies.set('username', result.userName);
       setIsLoggedIn(true);
       navigate(`/profile/${result.id}`); // Redirect to the user's profile page
-      console.log(result.authToken);
+      console.log("Cookie:", result.id);
 
     } catch (error) {
       console.error(error);

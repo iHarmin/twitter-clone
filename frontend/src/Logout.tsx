@@ -8,7 +8,7 @@ const Logout = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    Cookies.remove('authToken'); // Remove the cookie
+    Cookies.remove('userID'); // Remove the cookie
     setIsLoggedIn(false);
     navigate('/'); // Redirect to the home page or login page
     console.log('Logged out, dispatching Cookie Monster to eat your cookies! Nom nom nom!'); 

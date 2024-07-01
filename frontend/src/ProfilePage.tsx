@@ -2,7 +2,7 @@ import {useContext, useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useParams} from 'react-router-dom';
 import {AuthContext} from "./AuthContext.tsx";
-import {useCookies} from "react-cookie";
+import Cookies from "js-cookie";
 
 const ProfilePage: React.FC = () => {
 
@@ -16,13 +16,12 @@ const ProfilePage: React.FC = () => {
   });
 
   const {profileID} = useParams();
-  // TODO: placeholder for current username, will use cookie to obtain
-  const currentUserID: string = '11';
-  const {isLoggedIn} = useContext(AuthContext);
-  const [cookies] = useCookies(['user']);
-  // TODO: placeholders for friend adding
-  // const loggedInUser = "profileUser";
-  // const profileUser = "profileUser";
+  const currentUserID: string = Cookies.get('userID');
+  console.log("Current User ID: ", currentUserID);
+  // const currentUserID: string = '11';
+
+  // const {isLoggedIn} = useContext(AuthContext);
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
