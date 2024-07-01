@@ -1,10 +1,10 @@
-import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AuthContext } from './AuthContext';
+import React, {useContext, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {AuthContext} from './AuthContext';
 import Cookies from 'js-cookie';
 
 const Login = () => {
-  const { setIsLoggedIn } = useContext(AuthContext);
+  const {setIsLoggedIn} = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -12,19 +12,20 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const formData = {
-      email,
-      password
-    };
-
     try {
-      const serverResponse = await fetch('http://localhost:8080/api/login', {
+
+      const formData = new URLSearchParams();
+      formData.append('email', email);
+      formData.append('password', password);
+
+      const serverResponse = await fetch('http://localhost:8080/api/users/checkPasswordValid', {
         method: "POST",
         headers: {
-          "Content-Type": 'application/json',
+          "Content-Type": 'application/x-www-form-urlencoded',
         },
-        body: JSON.stringify(formData)
+        body: formData
       });
+      console.log(formData);
 
       if (!serverResponse.ok) {
         throw new Error('Login failed');
@@ -36,6 +37,7 @@ const Login = () => {
       Cookies.set('authToken', result.authToken); // Set the cookie
       setIsLoggedIn(true);
       navigate(`/profile/${result.id}`); // Redirect to the user's profile page
+      console.log(result.authToken);
 
     } catch (error) {
       console.error(error);
@@ -64,7 +66,7 @@ const Login = () => {
         />
       </div>
       <button type="submit">Login</button>
-     <a href="/forgotpassword">Forgot Password?</a>
+      <a href="/forgotpassword">Forgot Password?</a>
     </form>
   );
 };
