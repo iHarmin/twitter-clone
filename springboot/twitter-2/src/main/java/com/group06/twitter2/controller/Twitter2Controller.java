@@ -45,19 +45,4 @@ public class Twitter2Controller {
         String status = body.get("status");
         return twitter2Service.updateUserStatus(id, status);
     }
-
-    @PostMapping("/{id}/friends/{friendId}")
-    public String addFriend(@PathVariable int id, @PathVariable int friendId) {
-        return twitter2Service.addFriend(id, friendId);
-    }
-
-    @PutMapping("/{id}/friends/{friendId}")
-    public String acceptFriend(@PathVariable int id, @PathVariable int friendId) {
-        return twitter2Service.acceptFriend(id, friendId);
-    }
-
-    @DeleteMapping("/{id}/friends/{friendId}")
-    public String deleteFriend(@PathVariable int id, @PathVariable int friendId) {
-        return twitter2Service.deleteFriend(id, friendId);
-    }
 }
