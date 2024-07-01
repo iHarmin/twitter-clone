@@ -15,13 +15,11 @@ public class Post {
         this.userID = userID;
     }
 
-
     @ManyToOne
     @JoinColumn(name = "userName")
     private Twitter2 userID;
 
     public Post() {
-
     }
 
     public int getId() {

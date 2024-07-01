@@ -1,6 +1,7 @@
 package com.group06.twitter2.service.Implementations;
 
 import com.group06.twitter2.model.Twitter2;
+import com.group06.twitter2.model.Friendship;
 import com.group06.twitter2.repository.Twitter2Repository;
 import com.group06.twitter2.service.Twitter2Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import java.util.*;
 
 @Service
 public class Twitter2ServiceImpl implements Twitter2Service {
-
     @Autowired
     Twitter2Repository twitter2Repository;
 
@@ -48,19 +48,6 @@ public class Twitter2ServiceImpl implements Twitter2Service {
             return "Password not updated";
         }
     }
-
-//    @Override
-//    public String updateUserStatus(int id, String status) {
-//        Optional<Twitter2> userOpt = twitter2Repository.findById(id);
-//        if (userOpt.isPresent()) {
-//            Twitter2 user = userOpt.get();
-//            user.setStatus(status);
-//            twitter2Repository.save(user);
-//            return "Status updated to " + status;
-//        } else {
-//            return "User not found";
-//        }
-//    }
 
     @Override
     public String updateUserStatus(int id, String status) {
@@ -104,6 +91,4 @@ public class Twitter2ServiceImpl implements Twitter2Service {
             return "Wrong security answer try";
         }
     }
-
-
 }

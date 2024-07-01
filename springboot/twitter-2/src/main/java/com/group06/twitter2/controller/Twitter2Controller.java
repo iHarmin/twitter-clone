@@ -12,10 +12,8 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/users")
 public class Twitter2Controller {
-
     @Autowired
     Twitter2Service twitter2Service;
-
 
     @PostMapping("/save")
     public String saveUserProfile(@RequestBody Twitter2 twitter2){
@@ -43,15 +41,23 @@ public class Twitter2Controller {
     }
 
     @PostMapping("/{id}/status")
-    public String updateUserStatus(@PathVariable("id") int id,
-                                                   @RequestBody Map<String, String> body) {
+    public String updateUserStatus(@PathVariable("id") int id, @RequestBody Map<String, String> body) {
         String status = body.get("status");
         return twitter2Service.updateUserStatus(id, status);
-//        if (result.contains("User not found")) {
-//            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
-//        } else {
-//            return new ResponseEntity<>(result, HttpStatus.OK);
-//        }
     }
 
+    @PostMapping("/{id}/friends/{friendId}")
+    public String addFriend(@PathVariable int id, @PathVariable int friendId) {
+        return twitter2Service.addFriend(id, friendId);
+    }
+
+    @PutMapping("/{id}/friends/{friendId}")
+    public String acceptFriend(@PathVariable int id, @PathVariable int friendId) {
+        return twitter2Service.acceptFriend(id, friendId);
+    }
+
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public String deleteFriend(@PathVariable int id, @PathVariable int friendId) {
+        return twitter2Service.deleteFriend(id, friendId);
+    }
 }

@@ -1,6 +1,7 @@
 package com.group06.twitter2.repository;
 
 import com.group06.twitter2.model.Friendship;
+import com.group06.twitter2.model.Post;
 import com.group06.twitter2.model.Twitter2;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
