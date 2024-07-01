@@ -36,12 +36,12 @@ Vraj Patel (B00941813)
 
 
 
-Citations for Frontend:
+## Citations for Frontend:
 1) File: ForgotPassword.tsx
 retrieved from: https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
- * Used for Regex
+	* Used for Regex
 
 2) File: Login.tsx, logout.tsx
 Retrieved from: https://www.geeksforgeeks.org/servlet-login-and-logout-example-using-cookies/
-* Used as a reference for cookie implementation 
+	* Used as a reference for cookie implementation 
 
