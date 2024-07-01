@@ -33,3 +33,15 @@ Vraj Patel (B00941813)
 	  csci3130-lab4 repository which was taught by TA.
 	* validatePassword(): This function's code is taken from 
 	  PasswordValidator.java which is in csci3130-lab4 repository which was taught by TA.
+
+
+
+Citations for Frontend:
+1) File: ForgotPassword.tsx
+retrieved from: https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+ * Used for Regex
+
+2) File: Login.tsx, logout.tsx
+Retrieved from: https://www.geeksforgeeks.org/servlet-login-and-logout-example-using-cookies/
+* Used as a reference for cookie implementation 
+
