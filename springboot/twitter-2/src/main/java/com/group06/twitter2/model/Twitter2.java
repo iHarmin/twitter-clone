@@ -13,21 +13,21 @@ public class Twitter2 {
     private String password;
     private String firstName;
     private String lastName;
-    private String securityAnswer;
+    private String recoveryAnswer;
     private String personalInterests;
     private String status;
 
     public Twitter2() {
     }
 
-    public Twitter2(int id, String userName, String email, String password, String firstName, String lastName, String securityAnswer, String personalInterests, String status) {
+    public Twitter2(int id, String userName, String email, String password, String firstName, String lastName, String recoveryAnswer, String personalInterests, String status) {
         this.id = id;
         this.userName = userName;
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.securityAnswer = securityAnswer;
+        this.recoveryAnswer = recoveryAnswer;
         this.personalInterests = personalInterests;
         this.status = status;
     }
@@ -80,12 +80,12 @@ public class Twitter2 {
         this.lastName = lastName;
     }
 
-    public String getSecurityAnswer() {
-        return securityAnswer;
+    public String getRecoveryAnswer() {
+        return recoveryAnswer;
     }
 
-    public void setSecurityAnswer(String securityAnswer) {
-        this.securityAnswer = securityAnswer;
+    public void setRecoveryAnswer(String recoveryAnswer) {
+        this.recoveryAnswer = recoveryAnswer;
     }
 
     public String getPersonalInterests() {
@@ -104,4 +104,3 @@ public class Twitter2 {
         this.status = status;
     }
 }
-

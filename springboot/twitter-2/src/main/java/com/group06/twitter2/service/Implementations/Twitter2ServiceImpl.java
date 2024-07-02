@@ -83,7 +83,7 @@ public class Twitter2ServiceImpl implements Twitter2Service {
     @Override
     public String resetPassword(String email, String recoveryAnswer, String newPassword) {
         Twitter2 user = twitter2Repository.findByEmail(email);
-        if (user.getSecurityAnswer().equals(recoveryAnswer)) {
+        if (user.getRecoveryAnswer().equals(recoveryAnswer)) {
             user.setPassword(newPassword);
             twitter2Repository.save(user);
             return "New password set";
