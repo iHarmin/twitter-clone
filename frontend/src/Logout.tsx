@@ -8,7 +8,7 @@ const Logout = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    Cookies.remove('userID'); // Remove the cookie
+    Cookies.remove('userId'); // Remove the cookie
     Cookies.remove('username');
     setIsLoggedIn(false);
     navigate('/'); // Redirect to the home page or login page
