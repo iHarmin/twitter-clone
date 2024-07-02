@@ -16,7 +16,7 @@ const ProfilePage: React.FC = () => {
   });
 
   const {profileID} = useParams();
-  const currentUserID: string = Cookies.get('userID');
+  const currentUserID: string = Cookies.get('userId');
   console.log("Current User ID: ", currentUserID);
   // const currentUserID: string = '11';
 

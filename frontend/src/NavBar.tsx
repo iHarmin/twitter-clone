@@ -3,10 +3,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useContext } from "react";
 import { AuthContext } from "./AuthContext";
 import Logout from './Logout';
+import Cookies from "js-cookie";
 
 function NavBar() {
   const { isLoggedIn } = useContext(AuthContext);
-  const userID = '30';
+  
+  const userID = Cookies.get("userId");
 
   return (
     <nav className="navbar navbar-expand navbar-light bg-light">
@@ -23,7 +25,7 @@ function NavBar() {
             <Link to="/signup">Signup</Link>
           </li>
           <li className="nav-item">
-            {isLoggedIn ? (
+            {Cookies.get('username') ? (
               <Logout />
             ) : (
               <Link to="/login">Login</Link>

@@ -9,6 +9,7 @@ const Logout = () => {
 
   const handleLogout = () => {
     Cookies.remove('userID'); // Remove the cookie
+    Cookies.remove('username');
     setIsLoggedIn(false);
     navigate('/'); // Redirect to the home page or login page
     console.log('Logged out, dispatching Cookie Monster to eat your cookies! Nom nom nom!'); 
