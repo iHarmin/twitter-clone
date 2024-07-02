@@ -7,7 +7,7 @@ import Cookies from "js-cookie";
 
 function NavBar() {
   const { isLoggedIn } = useContext(AuthContext);
-  
+
   const userID = Cookies.get("userId");
 
   return (
@@ -18,21 +18,25 @@ function NavBar() {
           <li className="nav-item">
             <Link to="/">Home</Link>
           </li>
-          <li className="nav-item">
-            <Link to={`/profile/${userID}`}>Profile</Link>
-          </li>
+          {userID && (
+            <>
+              <li className="nav-item">
+                <Link to={`/profile/${userID}`}>Profile</Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/feed">Feed</Link>
+              </li>
+            </>
+          )}
           <li className="nav-item">
             <Link to="/signup">Signup</Link>
           </li>
           <li className="nav-item">
             {Cookies.get('username') ? (
-              <Logout />
+              <Logout/>
             ) : (
               <Link to="/login">Login</Link>
             )}
-          </li>
-          <li className="nav-item">
-            <Link to="/feed">Feed</Link>
           </li>
         </ul>
       </div>
