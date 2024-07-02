@@ -11,8 +11,8 @@ const ProfilePage: React.FC = () => {
     lastName: '',
     userName: '',
     email: '',
-    interests: '',
-    status: '' // default status
+    personalInterests: '',
+    status: '' // default status is blank
   });
 
   const {profileID} = useParams();
@@ -264,7 +264,6 @@ const ProfilePage: React.FC = () => {
     }
   };
 
-
   // Form for entering name, email, and interests
   // Username cannot be changed
   return (
@@ -277,7 +276,7 @@ const ProfilePage: React.FC = () => {
                 <p>{formData.firstName} {formData.lastName}</p>
                 <p>{formData.userName}</p>
                 <p>{formData.email}</p>
-                <p>{formData.interests}</p>
+                <p>{formData.personalInterests}</p>
                 <p>{formData.status}</p>
               </div>
             </div>
@@ -292,7 +291,6 @@ const ProfilePage: React.FC = () => {
 
 
           {Cookies.get('userId') === profileID && (
-           
             <div className="row">
               <div className="col">
                 <h3>Update your personal information:</h3>
@@ -326,11 +324,6 @@ const ProfilePage: React.FC = () => {
                 </form>
               </div>
             </div>
-          )}
-
-          {profileID === currentUserID && !isFirstVisit && !isEditingProfile && (
-            <button onClick={() => setIsEditingProfile(true)}
-                    className="btn btn-primary">Edit Profile</button>
           )}
 
           {profileID === currentUserID && (
@@ -373,7 +366,6 @@ const ProfilePage: React.FC = () => {
           {profileID === currentUserID && (
             <div>
               <h3>Friend Requests</h3>
-              {/*{friendRequests.filter(request => request.to && request.to.id === currentUserID).map(request => (*/}
               {friendRequests.map(request => (
                 <div key={request.from.id}
                      className="list-group-item d-flex justify-content-between align-items-center">
