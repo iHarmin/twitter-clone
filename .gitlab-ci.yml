@@ -7,6 +7,7 @@ stages:          # List of stages for jobs, and their order of execution
 build-job:       # This job will make sure the springboot application compiles and builds.
   stage: build
   script:
+    - "cd springboot/twitter-2"
     - "mvn compile"
   artifacts:
     paths:
@@ -15,4 +16,5 @@ build-job:       # This job will make sure the springboot application compiles a
 unit-test-job:   # This job runs the unit tests of the application. Should they fail, the CICD will fail
   stage: test
   script:
+    - "cd springboot/twitter-2"
     - "mvn test"
