@@ -1,4 +1,4 @@
-image: maven:latest
+image: maven:3.9.1-amazoncorretto-19
 
 stages:          # List of stages for jobs, and their order of execution
   - build
