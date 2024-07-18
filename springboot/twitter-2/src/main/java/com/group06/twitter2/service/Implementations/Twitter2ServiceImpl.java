@@ -131,7 +131,7 @@ public class Twitter2ServiceImpl implements Twitter2Service {
             return "User already exist";
         }
 
-        if(adminUser.getRole().equals("Admin")) {
+        if(adminUser != null && adminUser.getRole().equals("Admin")) {
             Twitter2 new_user = new Twitter2();
             new_user.setUserName(username);
             new_user.setRole("Student");

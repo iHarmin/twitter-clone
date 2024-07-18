@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class Twitter2ServiceTest {
@@ -54,9 +55,9 @@ public class Twitter2ServiceTest {
     @Test
     public void addUserByAdmin_AdminAddsUserSuccessfully() {
         Twitter2 adminUser = new Twitter2(1, "adminUser", "admin@dal.ca", "adminPass", "FName0", "LName0", "rec0", "int0", "active", "Admin");
+
         when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
         when(twitter2Repository.findByEmail("newUser@dal.ca")).thenReturn(null);
-
         String result = twitter2Service.addUserByAdmin("newUser", "password", "FirstName", "LastName", "newUser@dal.ca", "recAnswer", "admin@dal.ca", "int1");
 
         assertEquals("User saved successfully", result);
@@ -65,11 +66,24 @@ public class Twitter2ServiceTest {
     @Test
     public void addUserByAdmin_NonAdminUserCannotAddUser() {
         Twitter2 nonAdminUser = new Twitter2(1, "nonAdminUser", "user@dal.ca", "userPass", "NonAdmin", "User", "recUser", "intUser", "active", "Student");
-        when(twitter2Repository.findByEmail("user@dal.ca")).thenReturn(nonAdminUser);
 
+        when(twitter2Repository.findByEmail("user@dal.ca")).thenReturn(nonAdminUser);
+        when(twitter2Repository.findByEmail("newUser@dal.ca")).thenReturn(null);
         String result = twitter2Service.addUserByAdmin("newUser", "password", "FirstName", "LastName", "newUser@dal.ca", "recAnswer", "user@dal.ca", "int1");
 
         assertEquals("This user is not authorized to create new user", result);
+    }
+
+    @Test
+    public void addUserByAdmin_UserAlreadyExists() {
+        Twitter2 adminUser = new Twitter2(1, "adminUser", "admin@dal.ca", "adminPass", "FName0", "LName0", "rec0", "int0", "active", "Admin");
+        when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
+        Twitter2 existingUser = new Twitter2(2, "existingUser", "existing@dal.ca", "existingPass", "Fname1", "Lname1", "rec1", "int1", "active", "Student");
+        when(twitter2Repository.findByEmail("existing@dal.ca")).thenReturn(existingUser);
+
+        String result = twitter2Service.addUserByAdmin("existingUser", "existingPass", "Fname1", "Lname1", "existing@dal.ca", "rec1", "admin@dal.ca", "int1");
+
+        assertEquals("User already exist", result);
     }
 
 }
