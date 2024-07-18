@@ -5,8 +5,6 @@ import com.group06.twitter2.model.Twitter2;
 import com.group06.twitter2.service.Twitter2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.group06.twitter2.DTO.addUserByAdminRequestDTO;
-
 import java.util.*;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -53,7 +51,16 @@ public class Twitter2Controller {
     }
 
     @PostMapping("/addUserByAdmin")
-    public String addUserByAdmin(@RequestBody addUserByAdminRequestDTO request) {
-        return twitter2Service.addUserByAdmin(request.getUserName(), request.getPassword(), request.getFirstname(), request.getLastname(), request.getUserEmail(), request.getRecoveryAnswer(), request.getAdminEmail(), request.getPersonalInterests());
+    public String addUserByAdmin(@RequestBody Map<String, String> userData) {
+        String userName = userData.get("userName");
+        String password = userData.get("password");
+        String firstname = userData.get("firstname");
+        String lastname = userData.get("lastname");
+        String userEmail = userData.get("userEmail");
+        String recoveryAnswer = userData.get("recoveryAnswer");
+        String adminEmail = userData.get("adminEmail");
+        String personalInterests = userData.get("personalInterests");
+
+        return twitter2Service.addUserByAdmin(userName, password, firstname, lastname, userEmail, recoveryAnswer, adminEmail, personalInterests);
     }
 }
