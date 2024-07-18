@@ -123,26 +123,17 @@ public class Twitter2ServiceImpl implements Twitter2Service {
     }
 
     @Override
-    public String addUserByAdmin(String userName, String password, String firstname, String lastname, String userEmail, String recoveryAnswer, String adminEmail, String personalInterests) {
+    public String addUserByAdmin(String role, String userEmail, String adminEmail) {
         Twitter2 adminUser = twitter2Repository.findByEmail(adminEmail);
-        Twitter2 user = twitter2Repository.findByEmail(userEmail);
-
-        if(user != null) {
-            return "User already exist";
-        }
-
         if(adminUser != null && adminUser.getRole().equals("Admin")) {
-            Twitter2 new_user = new Twitter2();
-            new_user.setUserName(userName);
-            new_user.setRole("Student");
-            new_user.setPassword(password);
-            new_user.setFirstName(firstname);
-            new_user.setLastName(lastname);
-            new_user.setEmail(userEmail);
-            new_user.setRecoveryAnswer(recoveryAnswer);
-            new_user.setPersonalInterests(personalInterests);
-            twitter2Repository.save(new_user);
-            return "User saved successfully";
+            Twitter2 user = twitter2Repository.findByEmail(userEmail);
+            if(user != null) {
+                user.setRole(role);
+                twitter2Repository.save(user);
+                return "User's role saved successfully";
+            } else {
+                return "User does not exist with this email";
+            }
         }
         return "This user is not authorized to create new user";
     }

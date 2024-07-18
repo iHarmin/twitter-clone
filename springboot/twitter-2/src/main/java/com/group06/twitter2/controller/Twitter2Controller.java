@@ -52,16 +52,11 @@ public class Twitter2Controller {
 
     @PostMapping("/addUserByAdmin")
     public String addUserByAdmin(@RequestBody Map<String, String> userData) {
-        String userName = userData.get("userName");
-        String password = userData.get("password");
-        String firstname = userData.get("firstname");
-        String lastname = userData.get("lastname");
+        String role = userData.get("role");
         String userEmail = userData.get("userEmail");
-        String recoveryAnswer = userData.get("recoveryAnswer");
         String adminEmail = userData.get("adminEmail");
-        String personalInterests = userData.get("personalInterests");
 
-        return twitter2Service.addUserByAdmin(userName, password, firstname, lastname, userEmail, recoveryAnswer, adminEmail, personalInterests);
+        return twitter2Service.addUserByAdmin(role, userEmail, adminEmail);
     }
 
     @PostMapping("/removeUserByAdmin")

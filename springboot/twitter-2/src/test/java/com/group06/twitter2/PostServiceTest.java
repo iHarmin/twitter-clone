@@ -65,6 +65,5 @@ public class PostServiceTest {
         assertEquals(5, posts.size());
         assertEquals("Name0", posts.get(0).getUserID().getUserName());
         assertEquals("postBody0", posts.get(0).getBody());
-
     }
 }
