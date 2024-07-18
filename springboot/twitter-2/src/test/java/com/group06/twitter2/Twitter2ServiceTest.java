@@ -78,6 +78,7 @@ public class Twitter2ServiceTest {
     public void addUserByAdmin_UserAlreadyExists() {
         Twitter2 adminUser = new Twitter2(1, "adminUser", "admin@dal.ca", "adminPass", "FName0", "LName0", "rec0", "int0", "active", "Admin");
         when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
+
         Twitter2 existingUser = new Twitter2(2, "existingUser", "existing@dal.ca", "existingPass", "Fname1", "Lname1", "rec1", "int1", "active", "Student");
         when(twitter2Repository.findByEmail("existing@dal.ca")).thenReturn(existingUser);
 
@@ -85,4 +86,18 @@ public class Twitter2ServiceTest {
 
         assertEquals("User already exist", result);
     }
+
+    @Test
+    public void removeUserByAdmin_AdminRemovesUserSuccessfully() {
+        Twitter2 adminUser = new Twitter2(1, "adminUser", "admin@dal.ca", "adminPass", "FName0", "LName0", "rec0", "int0", "active", "Admin");
+        when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
+
+        Twitter2 user = new Twitter2(2, "user", "user@dal.ca", "password", "FirstName", "LastName", "recAnswer", "intUser", "active", "Student");
+        when(twitter2Repository.findByEmail("user@dal.ca")).thenReturn(user);
+
+        String result = twitter2Service.removeUserByAdmin("admin@dal.ca", "user@dal.ca");
+
+        assertEquals("User deleted successfully.", result);
+    }
+
 }
