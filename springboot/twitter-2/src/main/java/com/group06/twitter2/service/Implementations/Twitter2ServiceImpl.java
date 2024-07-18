@@ -127,7 +127,7 @@ public class Twitter2ServiceImpl implements Twitter2Service {
         Twitter2 adminUser = twitter2Repository.findByEmail(adminEmail);
         Twitter2 userOpt = twitter2Repository.findByEmail(userEmail);
 
-        if(userOpt == null) {
+        if(userOpt != null) {
             return "User already exist";
         }
 
