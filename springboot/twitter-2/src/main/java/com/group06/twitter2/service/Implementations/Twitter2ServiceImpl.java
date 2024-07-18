@@ -125,9 +125,9 @@ public class Twitter2ServiceImpl implements Twitter2Service {
     @Override
     public String addUserByAdmin(String userName, String password, String firstname, String lastname, String userEmail, String recoveryAnswer, String adminEmail, String personalInterests) {
         Twitter2 adminUser = twitter2Repository.findByEmail(adminEmail);
-        Twitter2 userOpt = twitter2Repository.findByEmail(userEmail);
+        Twitter2 user = twitter2Repository.findByEmail(userEmail);
 
-        if(userOpt != null) {
+        if(user != null) {
             return "User already exist";
         }
 
