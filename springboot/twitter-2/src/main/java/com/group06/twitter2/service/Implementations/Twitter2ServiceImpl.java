@@ -126,10 +126,12 @@ public class Twitter2ServiceImpl implements Twitter2Service {
     public String addUserByAdmin(String username, String password, String firstname, String lastname, String userEmail, String recoveryAnswer, String adminEmail, String personalInterests) {
         Twitter2 adminUser = twitter2Repository.findByEmail(adminEmail);
         Twitter2 userOpt = twitter2Repository.findByEmail(userEmail);
-        if(userOpt == null){
+
+        if(userOpt == null) {
             return "User already exist";
         }
-        if(adminUser.getRole().equals("Admin")){
+
+        if(adminUser.getRole().equals("Admin")) {
             Twitter2 new_user = new Twitter2();
             new_user.setUserName(username);
             new_user.setRole("Student");
@@ -142,6 +144,25 @@ public class Twitter2ServiceImpl implements Twitter2Service {
             twitter2Repository.save(new_user);
             return "User saved successfully";
         }
+
         return "This user is not authorized to create new user";
+    }
+
+
+    @Override
+    public String removeUserByAdmin(String adminEmail, String userEmail){
+        Twitter2 adminUser = twitter2Repository.findByEmail(adminEmail);
+        Twitter2 user = twitter2Repository.findByEmail(userEmail);
+
+        if(!adminUser.getRole().equals("Admin")) {
+            return "This user is not authorized to remove user";
+        }
+
+        if(user == null) {
+            return "User does not exist with this email";
+        }
+
+        twitter2Repository.delete(user);
+        return "User deleted successfully.";
     }
 }
