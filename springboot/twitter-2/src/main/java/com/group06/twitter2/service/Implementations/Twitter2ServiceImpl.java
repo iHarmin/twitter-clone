@@ -102,4 +102,17 @@ public class Twitter2ServiceImpl implements Twitter2Service {
             return null;
         }
     }
+
+    @Override
+    public String updateUserRole(int id, String role) {
+        Optional<Twitter2> userOpt = twitter2Repository.findById(id);
+        if (userOpt.isPresent()) {
+            Twitter2 user = userOpt.get();
+            user.setRole(role);
+            twitter2Repository.save(user);
+            return "User role updated successfully";
+        } else {
+            return "User not found";
+        }
+    }
 }
