@@ -5,6 +5,7 @@ import com.group06.twitter2.model.Twitter2;
 import com.group06.twitter2.service.Twitter2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.group06.twitter2.DTO.addUserByAdminRequestDTO;
 
 import java.util.*;
 
@@ -49,5 +50,10 @@ public class Twitter2Controller {
     @PostMapping("/checkPasswordValid")
     public Twitter2 checkPasswordValid(@RequestParam String email, @RequestParam String password) {
         return twitter2Service.checkPasswordValid(email, password);
+    }
+
+    @PostMapping("/addUserByAdmin")
+    public String addUserByAdmin(@RequestBody addUserByAdminRequestDTO request) {
+        return twitter2Service.addUserByAdmin(request.getUserName(), request.getPassword(), request.getFirstname(), request.getLastname(), request.getUserEmail(), request.getRecoveryAnswer(), request.getAdminEmail(), request.getPersonalInterests());
     }
 }

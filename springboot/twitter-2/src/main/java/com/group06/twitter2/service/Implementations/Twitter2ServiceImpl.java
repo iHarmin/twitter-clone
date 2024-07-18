@@ -123,7 +123,7 @@ public class Twitter2ServiceImpl implements Twitter2Service {
     }
 
     @Override
-    public String addUserByAdmin(String username, String password, String firstname, String lastname, String userEmail, String recoveryAnswer, String adminEmail, String personalInterests) {
+    public String addUserByAdmin(String userName, String password, String firstname, String lastname, String userEmail, String recoveryAnswer, String adminEmail, String personalInterests) {
         Twitter2 adminUser = twitter2Repository.findByEmail(adminEmail);
         Twitter2 userOpt = twitter2Repository.findByEmail(userEmail);
 
@@ -133,7 +133,7 @@ public class Twitter2ServiceImpl implements Twitter2Service {
 
         if(adminUser != null && adminUser.getRole().equals("Admin")) {
             Twitter2 new_user = new Twitter2();
-            new_user.setUserName(username);
+            new_user.setUserName(userName);
             new_user.setRole("Student");
             new_user.setPassword(password);
             new_user.setFirstName(firstname);
@@ -144,7 +144,6 @@ public class Twitter2ServiceImpl implements Twitter2Service {
             twitter2Repository.save(new_user);
             return "User saved successfully";
         }
-
         return "This user is not authorized to create new user";
     }
 

@@ -27,7 +27,7 @@ public interface Twitter2Service {
 
     boolean isAdmin(String email);
 
-    String addUserByAdmin(String username, String password, String firstname, String lastname, String userEmail, String recoveryAnswer, String adminEmail, String personalInterests);
+    String addUserByAdmin(String userName, String password, String firstname, String lastname, String userEmail, String recoveryAnswer, String adminEmail, String personalInterests);
 
     String removeUserByAdmin(String adminEmail, String userEmail);
 }

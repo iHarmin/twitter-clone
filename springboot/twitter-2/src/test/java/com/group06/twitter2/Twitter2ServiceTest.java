@@ -44,7 +44,7 @@ public class Twitter2ServiceTest {
     }
 
     @Test
-    public void createUserTest_invalidEmail() {
+    public void createUserTest_InvalidEmail() {
         Twitter2 twitter2 = new Twitter2(0, "Name0", "n0@gmail.com", "password0", "FName0", "LName0", "rec0", "int0", "active", "Admin");
 
         String result = twitter2Service.createUser(twitter2);
@@ -58,7 +58,7 @@ public class Twitter2ServiceTest {
 
         when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
         when(twitter2Repository.findByEmail("newUser@dal.ca")).thenReturn(null);
-        String result = twitter2Service.addUserByAdmin("newUser", "password", "FirstName", "LastName", "newUser@dal.ca", "recAnswer", "admin@dal.ca", "int1");
+        String result = twitter2Service.addUserByAdmin("newUser", "password", "FirstName", "LastName", "newUser@dal.ca", "recAnswer", "admin@dal.ca", "intNew");
 
         assertEquals("User saved successfully", result);
     }
@@ -85,5 +85,4 @@ public class Twitter2ServiceTest {
 
         assertEquals("User already exist", result);
     }
-
 }
