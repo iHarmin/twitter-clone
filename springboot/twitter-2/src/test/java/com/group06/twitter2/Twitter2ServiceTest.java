@@ -61,4 +61,15 @@ public class Twitter2ServiceTest {
 
         assertEquals("User saved successfully", result);
     }
+
+    @Test
+    public void addUserByAdmin_NonAdminUserCannotAddUser() {
+        Twitter2 nonAdminUser = new Twitter2(1, "nonAdminUser", "user@dal.ca", "userPass", "NonAdmin", "User", "recUser", "intUser", "active", "Student");
+        when(twitter2Repository.findByEmail("user@dal.ca")).thenReturn(nonAdminUser);
+
+        String result = twitter2Service.addUserByAdmin("newUser", "password", "FirstName", "LastName", "newUser@dal.ca", "recAnswer", "user@dal.ca", "int1");
+
+        assertEquals("This user is not authorized to create new user", result);
+    }
+
 }
