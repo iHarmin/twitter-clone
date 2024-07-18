@@ -116,9 +116,9 @@ public class Twitter2ServiceTest {
     @Test
     public void removeUserByAdmin_UserDoesNotExist() {
         Twitter2 adminUser = new Twitter2(1, "adminUser", "admin@dal.ca", "adminPass", "FirstName", "LastName", "recAnswer", "intAdmin", "active", "Admin");
+
         when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
         when(twitter2Repository.findByEmail("nonExistentUser@dal.ca")).thenReturn(null);
-
         String result = twitter2Service.removeUserByAdmin("admin@dal.ca", "nonExistentUser@dal.ca");
 
         assertEquals("User does not exist with this email", result);
