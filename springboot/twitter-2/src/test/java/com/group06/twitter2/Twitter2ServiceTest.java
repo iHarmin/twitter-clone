@@ -100,4 +100,17 @@ public class Twitter2ServiceTest {
         assertEquals("User deleted successfully.", result);
     }
 
+    @Test
+    public void removeUserByAdmin_NonAdminUserCannotRemoveUser() {
+        Twitter2 nonAdminUser = new Twitter2(1, "nonAdminUser", "nonAdminUser@dal.ca", "userPass", "NonAdmin", "User", "recUser", "intUser", "active", "Student");
+        when(twitter2Repository.findByEmail("nonAdminUser@dal.ca")).thenReturn(nonAdminUser);
+
+        Twitter2 user = new Twitter2(2, "user", "user@dal.ca", "password", "FirstName", "LastName", "recAnswer", "intUser", "active", "Student");
+        when(twitter2Repository.findByEmail("user@dal.ca")).thenReturn(user);
+
+        String result = twitter2Service.removeUserByAdmin("nonAdminUser@dal.ca", "user@dal.ca");
+
+        assertEquals("This user is not authorized to remove user", result);
+    }
+
 }
