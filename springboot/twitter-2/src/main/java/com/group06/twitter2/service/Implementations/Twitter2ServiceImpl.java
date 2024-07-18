@@ -115,4 +115,10 @@ public class Twitter2ServiceImpl implements Twitter2Service {
             return "User not found";
         }
     }
+
+    @Override
+    public boolean isAdmin(String email) {
+        Twitter2 user = twitter2Repository.findByEmail(email);
+        return user != null && user.getRole() != null && user.getRole().equals("Admin");
+    }
 }

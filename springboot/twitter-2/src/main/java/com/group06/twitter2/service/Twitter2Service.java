@@ -22,5 +22,8 @@ public interface Twitter2Service {
     String resetPassword(String email, String recoveryAnswer, String newPassword);
 
     Twitter2 checkPasswordValid(String email, String password);
+
     String updateUserRole(int id, String role);
+
+    boolean isAdmin(String email);
 }
