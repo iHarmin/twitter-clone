@@ -46,7 +46,6 @@ public class Twitter2ServiceTest {
     @Test
     public void createUserTest_invalidEmail() {
         Twitter2 twitter2 = new Twitter2(0, "Name0", "n0@gmail.com", "password0", "FName0", "LName0", "rec0", "int0", "active");
-        when(twitter2Repository.save(twitter2)).thenReturn(twitter2);
         String result = twitter2Service.createUser(twitter2);
 
         assertEquals("Invalid email address", result);
