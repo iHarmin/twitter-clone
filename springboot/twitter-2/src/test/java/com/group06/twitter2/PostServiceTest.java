@@ -52,7 +52,7 @@ public class PostServiceTest {
 
     @Test
     public void findPostsByUsersIDTest() {
-        Twitter2 userID = new Twitter2(0, "Name0", "n0@dal.ca", "password0", "FName0", "LName0", "rec0", "int0", "active");
+        Twitter2 userID = new Twitter2(0, "Name0", "n0@dal.ca", "password0", "FName0", "LName0", "rec0", "int0", "active", "Student");
         ArrayList<Post> mockPosts = new ArrayList<>();
         for (int i = 0; i<5; i++) {
             Post post = new Post();
@@ -65,6 +65,5 @@ public class PostServiceTest {
         assertEquals(5, posts.size());
         assertEquals("Name0", posts.get(0).getUserID().getUserName());
         assertEquals("postBody0", posts.get(0).getBody());
-
     }
 }
