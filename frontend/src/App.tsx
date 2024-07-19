@@ -4,12 +4,12 @@ import NavBar from './NavBar';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Login from "./Login.tsx";
 import Signup from "./Signup.tsx";
-import Home from "./Home.tsx";
 import ForgotPassword from "./ForgotPassword";
 import ErrorPage from './errorpage.tsx';
 import {AuthContext} from './AuthContext';
 import  Feed from './Feed.tsx'
 import {useState} from 'react';
+import Search from "./Search.tsx";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -23,6 +23,7 @@ function App() {
             <Route path="/" element={<div />}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/signup" element={<Signup/>}/>
+            <Route path="/search" element={<Search/>}/>
             <Route path="/forgotpassword" element={<ForgotPassword/>}/>
             <Route path="/profile/:profileID" element={<ProfilePage/>}/>
             <Route path="/feed" element={<Feed />} />
