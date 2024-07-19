@@ -30,7 +30,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public ArrayList<Post> findPostsByUserID(Twitter2 userID) {
-        ArrayList<Post> output = (ArrayList<Post>) postsRepository.findByUserID(userID);
-        return output;
+        return postsRepository.findByUserID(userID);
     }
 }

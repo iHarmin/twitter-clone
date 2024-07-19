@@ -38,9 +38,6 @@ function NavBar() {
               <Link to="/login">Login</Link>
             )}
           </li>
-          <li className="nav-item">
-            <Link to="/CreateGroup">Create Group</Link>
-          </li>
         </ul>
       </div>
     </nav>
