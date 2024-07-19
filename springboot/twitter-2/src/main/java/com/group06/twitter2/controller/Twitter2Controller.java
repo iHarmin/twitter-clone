@@ -5,7 +5,6 @@ import com.group06.twitter2.model.Twitter2;
 import com.group06.twitter2.service.Twitter2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.*;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -49,5 +48,25 @@ public class Twitter2Controller {
     @PostMapping("/checkPasswordValid")
     public Twitter2 checkPasswordValid(@RequestParam String email, @RequestParam String password) {
         return twitter2Service.checkPasswordValid(email, password);
+    }
+
+    @PostMapping("/addUserByAdmin")
+    public String addUserByAdmin(@RequestBody Map<String, String> userData) {
+        String userName = userData.get("userName");
+        String password = userData.get("password");
+        String firstname = userData.get("firstname");
+        String lastname = userData.get("lastname");
+        String userEmail = userData.get("userEmail");
+        String recoveryAnswer = userData.get("recoveryAnswer");
+        String adminEmail = userData.get("adminEmail");
+        String personalInterests = userData.get("personalInterests");
+
+        return twitter2Service.addUserByAdmin(userName, password, firstname, lastname, userEmail, recoveryAnswer, personalInterests, adminEmail);
+    }
+    @PostMapping("/removeUserByAdmin")
+    public String removeUserByAdmin(@RequestBody Map<String, String> userData){
+        String adminEmail = userData.get("adminEmail");
+        String userEmail = userData.get("userEmail");
+        return twitter2Service.removeUserByAdmin(adminEmail, userEmail);
     }
 }
