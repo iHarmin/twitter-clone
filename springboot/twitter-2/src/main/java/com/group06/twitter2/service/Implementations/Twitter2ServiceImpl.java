@@ -146,8 +146,7 @@ public class Twitter2ServiceImpl implements Twitter2Service {
         }
         return "This user is not authorized to create new user";
     }
-
-
+    
     @Override
     public String removeUserByAdmin(String adminEmail, String userEmail){
         Twitter2 adminUser = twitter2Repository.findByEmail(adminEmail);
