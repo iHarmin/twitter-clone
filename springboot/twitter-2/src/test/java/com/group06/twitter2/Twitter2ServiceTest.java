@@ -1,22 +1,15 @@
 package com.group06.twitter2;
 
-import com.group06.twitter2.model.Post;
 import com.group06.twitter2.model.Twitter2;
-import com.group06.twitter2.repository.PostsRepository;
 import com.group06.twitter2.repository.Twitter2Repository;
-import com.group06.twitter2.service.FriendshipService;
-import com.group06.twitter2.service.Implementations.FriendshipServiceImpl;
-import com.group06.twitter2.service.Implementations.PostServiceImpl;
 import com.group06.twitter2.service.Implementations.Twitter2ServiceImpl;
-import com.group06.twitter2.service.Twitter2Service;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -123,5 +116,41 @@ public class Twitter2ServiceTest {
         String result = twitter2Service.removeUserByAdmin("admin@dal.ca", "nonExistentUser@dal.ca");
 
         assertEquals("User does not exist with this email", result);
+    }
+
+    @Test
+    public void searchUser_ByUserName() {
+        Twitter2 twitter2 = new Twitter2(0, "UserName0", "n0@dal.ca", "password0", "FName0",
+                "LName0", "rec0", "int0", "active", "Student");
+        String searchTerm = "UserName0";
+
+        when(twitter2Repository.searchByUserNameOrEmailOrInterests(searchTerm)).thenReturn(List.of(twitter2));
+        List<Twitter2> result = twitter2Service.searchUsers(searchTerm);
+
+        assertEquals("UserName0", result.get(0).getUserName());
+    }
+
+    @Test
+    public void searchUser_ByEmail() {
+        Twitter2 twitter2 = new Twitter2(0, "UserName0", "n0@dal.ca", "password0", "FName0",
+                "LName0", "rec0", "int0", "active", "Student");
+        String searchTerm = "n0@dal.ca";
+
+        when(twitter2Repository.searchByUserNameOrEmailOrInterests(searchTerm)).thenReturn(List.of(twitter2));
+        List<Twitter2> result = twitter2Service.searchUsers(searchTerm);
+
+        assertEquals("n0@dal.ca", result.get(0).getEmail());
+    }
+
+    @Test
+    public void searchUser_ByInterests() {
+        Twitter2 twitter2 = new Twitter2(0, "UserName0", "n0@dal.ca", "password0", "FName0",
+                "LName0", "rec0", "reading", "active", "Student");
+        String searchTerm = "reading";
+
+        when(twitter2Repository.searchByUserNameOrEmailOrInterests(searchTerm)).thenReturn(List.of(twitter2));
+        List<Twitter2> result = twitter2Service.searchUsers(searchTerm);
+
+        assertEquals("reading", result.get(0).getPersonalInterests());
     }
 }
