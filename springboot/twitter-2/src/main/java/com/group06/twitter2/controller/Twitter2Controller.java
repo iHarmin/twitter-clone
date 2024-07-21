@@ -69,4 +69,9 @@ public class Twitter2Controller {
         String userEmail = userData.get("userEmail");
         return twitter2Service.removeUserByAdmin(adminEmail, userEmail);
     }
+
+    @GetMapping("/search")
+    public List<Twitter2> searchUsers(@RequestParam String searchTerm) {
+        return twitter2Service.searchUsers(searchTerm);
+    }
 }
