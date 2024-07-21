@@ -1,7 +1,10 @@
 package com.group06.twitter2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.persistence.Id;
+
+import java.util.Set;
 
 @Entity
 public class Twitter2 {
@@ -16,6 +19,10 @@ public class Twitter2 {
     private String recoveryAnswer;
     private String personalInterests;
     private String status;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private Set<GroupMembership> groups;
 
     public Twitter2() {
     }
