@@ -38,19 +38,6 @@ public class Twitter2ServiceImpl implements Twitter2Service {
     }
 
     @Override
-    public String updatePassword(Twitter2 twitter2) {
-        Optional<Twitter2> passOpt = twitter2Repository.findById(twitter2.getId());
-        if(passOpt.isPresent()) {
-            Twitter2 p = passOpt.get();
-            p.setPassword(twitter2.getPassword());
-            twitter2Repository.save(p);
-            return "Password updated successfully";
-        } else {
-            return "Password not updated";
-        }
-    }
-
-    @Override
     public String updateUserStatus(int id, String status) {
         Optional<Twitter2> userOpt = twitter2Repository.findById(id);
         if (userOpt.isPresent()) {
@@ -101,25 +88,6 @@ public class Twitter2ServiceImpl implements Twitter2Service {
         } else {
             return null;
         }
-    }
-
-    @Override
-    public String updateUserRole(int id, String role) {
-        Optional<Twitter2> userOpt = twitter2Repository.findById(id);
-        if (userOpt.isPresent()) {
-            Twitter2 user = userOpt.get();
-            user.setRole(role);
-            twitter2Repository.save(user);
-            return "User role updated successfully";
-        } else {
-            return "User not found";
-        }
-    }
-
-    @Override
-    public boolean isAdmin(String email) {
-        Twitter2 user = twitter2Repository.findByEmail(email);
-        return user != null && user.getRole() != null && user.getRole().equals("Admin");
     }
 
     @Override

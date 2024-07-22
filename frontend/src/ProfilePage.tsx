@@ -291,7 +291,7 @@ const ProfilePage: React.FC = () => {
                 </div>
               </div>
             </div>
-          )}
+          )}<br></br>
 
           {profileID !== currentUserID && (
             <button onClick={() => handleSendRequest(profileID)}
