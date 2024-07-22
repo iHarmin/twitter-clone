@@ -21,7 +21,7 @@ const ProfilePage: React.FC = () => {
   // const currentUserID: string = '11';
 
   // const {isLoggedIn} = useContext(AuthContext);
-
+  const [role, setRole] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -41,6 +41,7 @@ const ProfilePage: React.FC = () => {
         const profileData = await serverResponse.json();
         console.log("Profile Data", profileData);
         setFormData(profileData);
+        setRole(profileData.role);
       } catch (error) {
         console.error(error);
         alert('An error occurred while fetching your profile data.');
@@ -280,7 +281,17 @@ const ProfilePage: React.FC = () => {
                 <p>{formData.status}</p>
               </div>
             </div>
-          </div>
+          </div><br></br>
+          {role === "Admin" && (
+            <div className="container">
+              <div className="row">
+                <div className="col">
+                  <p><button type="submit">Add Person</button></p>
+                  <p><button type="submit">Remove Person</button></p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {profileID !== currentUserID && (
             <button onClick={() => handleSendRequest(profileID)}
@@ -288,7 +299,6 @@ const ProfilePage: React.FC = () => {
               {friendRequestSent ? 'Request Pending' : 'Add Friend'}
             </button>
           )}
-
 
           {Cookies.get('userId') === profileID && (
             <div className="row">
