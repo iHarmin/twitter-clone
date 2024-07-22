@@ -3,8 +3,15 @@ package com.group06.twitter2.model;
 import jakarta.persistence.*;
 import jakarta.persistence.Id;
 
+
 @Entity
 public class Twitter2 {
+
+    public enum RequestStatus {
+        APPROVED,
+        REJECTED,
+        PENDING
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -17,11 +24,13 @@ public class Twitter2 {
     private String personalInterests;
     private String status;
     private String role;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private RequestStatus requestStatus = RequestStatus.APPROVED; // Default status
 
-    public Twitter2() {
-    }
+    public Twitter2() {}
 
-    public Twitter2(int id, String userName, String email, String password, String firstName, String lastName, String recoveryAnswer, String personalInterests, String status, String role) {
+    public Twitter2(int id, String userName, String email, String password, String firstName, String lastName, String recoveryAnswer, String personalInterests, String status, String role, RequestStatus requestStatus) {
         this.id = id;
         this.userName = userName;
         this.email = email;
@@ -32,6 +41,7 @@ public class Twitter2 {
         this.personalInterests = personalInterests;
         this.status = status;
         this.role = role;
+        this.requestStatus = requestStatus;
     }
 
     public int getId() {
@@ -112,5 +122,13 @@ public class Twitter2 {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public RequestStatus getRequestStatus() {
+        return requestStatus;
+    }
+
+    public void setRequestStatus(String requestStatus) {
+        this.requestStatus = RequestStatus.valueOf(requestStatus);
     }
 }

@@ -16,6 +16,8 @@ public class Twitter2Controller {
 
     @PostMapping("/save")
     public String saveUserProfile(@RequestBody Twitter2 twitter2){
+
+        twitter2.setRequestStatus(String.valueOf(Twitter2.RequestStatus.PENDING));
         return twitter2Service.createUser(twitter2);
     }
 
@@ -69,5 +71,19 @@ public class Twitter2Controller {
         String adminEmail = userData.get("adminEmail");
         String userEmail = userData.get("userEmail");
         return twitter2Service.removeUserByAdmin(adminEmail, userEmail);
+    }
+
+    @PostMapping("/{id}/approve")
+    public String approveRequest(@PathVariable Long id, @RequestBody Map<String, String> userData) {
+        String adminEmail = userData.get("adminEmail");
+        Long userId = id;
+        return twitter2Service.approveRequest(id, adminEmail);
+    }
+
+    @PostMapping("/{id}/reject")
+    public String rejectRequest(@PathVariable Long id, @RequestBody Map<String, String> userData) {
+        String adminEmail = userData.get("adminEmail");
+        Long userId = id;
+        return twitter2Service.rejectRequest(id, adminEmail);
     }
 }

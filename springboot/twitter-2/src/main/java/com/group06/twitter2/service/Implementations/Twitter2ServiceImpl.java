@@ -7,6 +7,7 @@ import com.group06.twitter2.service.Twitter2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.*;
 @Service
 public class Twitter2ServiceImpl implements Twitter2Service {
@@ -163,5 +164,42 @@ public class Twitter2ServiceImpl implements Twitter2Service {
 
         twitter2Repository.delete(user);
         return "User deleted successfully.";
+    }
+
+    @Override
+    public String approveRequest(Long requestId, String adminEmail) {
+        // Check if user is an admin
+        if (!isAdmin(adminEmail)) {
+            return "Only admins can approve requests";
+        }
+
+        Optional<Twitter2> user = twitter2Repository.findById(Math.toIntExact(requestId));
+        if(user.isPresent()){
+            Twitter2 u = user.get();
+            u.setRequestStatus(String.valueOf(Twitter2.RequestStatus.APPROVED));
+            twitter2Repository.save(u);
+            return "Request successfully approved";
+        }
+       return "Invalid user ID. User ID is not present";
+    }
+
+    @Override
+    public String rejectRequest(Long requestId, String adminEmail) {
+        // Check if user is an admin
+        if (!isAdmin(adminEmail)) {
+            return "Only admins can reject requests";
+        }
+
+        Optional<Twitter2> user = twitter2Repository.findById(Math.toIntExact(requestId));
+        if(user.isPresent()){
+            Twitter2 u = user.get();
+            if(u.getRequestStatus() == Twitter2.RequestStatus.APPROVED){
+                return "Request is already approved. Cannot reject, approved request.";
+            }
+            u.setRequestStatus(String.valueOf(Twitter2.RequestStatus.REJECTED));
+            twitter2Repository.save(u);
+            return "Request rejected successfully";
+        }
+        return "Invalid user ID. User ID is not present";
     }
 }
