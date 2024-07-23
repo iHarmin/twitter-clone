@@ -22,6 +22,7 @@ const ProfilePage: React.FC = () => {
   // const currentUserID: string = '11';
 
   // const {isLoggedIn} = useContext(AuthContext);
+  const [role, setRole] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -42,6 +43,7 @@ const ProfilePage: React.FC = () => {
         const profileData = await serverResponse.json();
         console.log("Profile Data", profileData);
         setFormData(profileData);
+        setRole(profileData.role);
       } catch (error) {
         console.error(error);
         alert('An error occurred while fetching your profile data.');
@@ -272,8 +274,6 @@ const ProfilePage: React.FC = () => {
   const handleRemovePersonClick = () => {
     navigate('/removePerson');
   };
-
-
 
   // Form for entering name, email, and interests
   // Username cannot be changed
