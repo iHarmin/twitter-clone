@@ -40,7 +40,20 @@ const RemovePerson: React.FC = () => {
             alert('An error occurred while adding new person.');
           }
     };
+
+    return (
+        <div className="container">
+          <h1>Remove person/user</h1>
+          <form onSubmit={handleSubmit}>
     
+            <label htmlFor="email">Existing user's email:</label>
+            <input type="email" id="userEmail" value={userEmail} onChange={handleEmailChange} required/>
+    
+            {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
+            <button type="submit">Save</button>
+          </form>
+        </div>
+      );
 }
 
 export default RemovePerson;
