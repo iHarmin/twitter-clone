@@ -12,6 +12,7 @@ public class Twitter2 {
         REJECTED,
         PENDING
     }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

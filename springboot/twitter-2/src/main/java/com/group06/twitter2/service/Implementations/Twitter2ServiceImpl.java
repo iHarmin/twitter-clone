@@ -7,7 +7,6 @@ import com.group06.twitter2.service.Twitter2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
 import java.util.*;
 @Service
 public class Twitter2ServiceImpl implements Twitter2Service {
@@ -105,19 +104,6 @@ public class Twitter2ServiceImpl implements Twitter2Service {
     }
 
     @Override
-    public String updateUserRole(int id, String role) {
-        Optional<Twitter2> userOpt = twitter2Repository.findById(id);
-        if (userOpt.isPresent()) {
-            Twitter2 user = userOpt.get();
-            user.setRole(role);
-            twitter2Repository.save(user);
-            return "User role updated successfully";
-        } else {
-            return "User not found";
-        }
-    }
-
-    @Override
     public boolean isAdmin(String email) {
         Twitter2 user = twitter2Repository.findByEmail(email);
         return user != null && user.getRole() != null && user.getRole().equals("Admin");
@@ -202,4 +188,5 @@ public class Twitter2ServiceImpl implements Twitter2Service {
         }
         return "Invalid user ID. User ID is not present";
     }
+
 }

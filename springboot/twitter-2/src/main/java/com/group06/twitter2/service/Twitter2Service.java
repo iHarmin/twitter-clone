@@ -24,8 +24,6 @@ public interface Twitter2Service {
 
     Twitter2 checkPasswordValid(String email, String password);
 
-    String updateUserRole(int id, String role);
-
     boolean isAdmin(String email);
 
     String addUserByAdmin(String userName, String password, String firstname, String lastname, String userEmail, String recoveryAnswer, String adminEmail, String personalInterests);
@@ -34,4 +32,5 @@ public interface Twitter2Service {
 
      String approveRequest(Long requestId, String adminEmail);
      String rejectRequest(Long requestId, String adminEmail);
+
 }

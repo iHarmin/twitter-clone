@@ -1,3 +1,5 @@
+// components/Login.js
+
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from './AuthContext';
@@ -25,8 +27,6 @@ const Login = () => {
         body: formData
       });
 
-      console.log(serverResponse);
-
       if (!serverResponse.ok) {
         throw new Error('Login failed');
       }
@@ -47,8 +47,14 @@ const Login = () => {
       Cookies.set('authToken', result.authToken); // Set the cookie
       Cookies.set('userId', result.id);
       Cookies.set('username', result.userName);
+      Cookies.set('role', result.role); // Set the user role
       setIsLoggedIn(true);
-      navigate(`/profile/${result.id}`); // Redirect to the user's profile page
+
+      if (result.role === 'admin') {
+        navigate('/pending-requests'); // Navigate to the pending requests page if admin
+      } else {
+        navigate(`/profile/${result.id}`); // Redirect to the user's profile page if not admin
+      }
 
     } catch (error) {
       console.error(error);
