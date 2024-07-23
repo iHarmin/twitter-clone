@@ -34,7 +34,12 @@ const Login = () => {
       const result = await serverResponse.json();
       console.log(result);
       console.log('Success:', result);
-  
+
+      if (email === 'christian.simoneau@dal.ca' || email === 'moses.tong@dal.ca' || email === 'harmin.patel@dal.ca'
+                || email === 'maitri.vasoya@dal.ca' || email === 'vraj.patel@dal.ca' || email === 'simon.losier@dal.ca') {
+        Cookies.set('adminEmail', result.email);
+      }
+      
       Cookies.set('authToken', result.authToken); // Set the cookie
       Cookies.set('userId', result.id);
       Cookies.set('username', result.userName);
