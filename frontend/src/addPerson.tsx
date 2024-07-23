@@ -1,5 +1,7 @@
 import './App.css';
 import React, {useContext, useEffect, useState} from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const AddPerson: React.FC = () => {
   const [firstname, setFirstName] = useState('');
@@ -88,6 +90,35 @@ const AddPerson: React.FC = () => {
         alert('An error occurred while adding new person.');
       }
   };
+
+  return (
+    <div className="container">
+      <h1>Add new person/user</h1>
+      <form onSubmit={handleSubmit}>
+
+        <label htmlFor="firstname">First Name:</label>
+        <input type="text" id="firstname" value={firstname} onChange={handlefirstnameChange} required/>
+
+        <label htmlFor="lastname">Last Name:</label>
+        <input type="text" id="lastname" value={lastname} onChange={handlelastnameChange} required/>
+
+        <label htmlFor="userName">Username:</label>
+        <input type="text" id="userName" value={userName} onChange={handleusernameChange} required/>
+
+        <label htmlFor="email">Email:</label>
+        <input type="email" id="userEmail" value={userEmail} onChange={handleEmailChange} required/>
+
+        <label htmlFor="password">Temporary Password:</label>
+        <input type="password" id="password" value={password} onChange={handlePasswordChange} required/>
+
+        <label htmlFor="recoveryAnswer">Recovery Answer:</label>
+        <input type="text" id="recoveryAnswer" value={recoveryAnswer} onChange={handlerecoveryanswerChange} required/>
+
+        {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
+        <button type="submit">Save</button>
+      </form>
+    </div>
+  );
 }
 
 export default AddPerson;
