@@ -9,6 +9,10 @@ const RemovePerson: React.FC = () => {
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
     };
+
+    const handleSubmit = async (event: React.FormEvent) => {
+        event.preventDefault();
+    };
     
 }
 
