@@ -30,7 +30,7 @@ const Login = () => {
       if (!serverResponse.ok) {
         throw new Error('Login failed');
       }
-      
+
       const result = await serverResponse.json();
       console.log(result);
       console.log('Success:', result);

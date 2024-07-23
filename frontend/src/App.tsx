@@ -11,7 +11,6 @@ import {AuthContext} from './AuthContext.tsx';
 import  Feed from './Feed.tsx'
 import {useState} from 'react';
 import AddPerson from './addPerson.tsx';
-import RemovePerson from './removePerson.tsx';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -29,6 +28,7 @@ function App() {
             <Route path="/profile/:profileID" element={<ProfilePage/>}/>
             <Route path="/feed" element={<Feed />} />
             <Route path="*" element={<ErrorPage />} />
+            <Route path="/addPerson" element={<AddPerson />}/>
           </Routes>
         </div>
       </Router>

@@ -1,7 +1,6 @@
 import './App.css';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 
 const AddPerson: React.FC = () => {
   const [firstname, setFirstName] = useState('');
