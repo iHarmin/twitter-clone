@@ -32,18 +32,14 @@ const Login = () => {
       }
 
       const result = await serverResponse.json();
+      console.log(result);
+      console.log('Success:', result);
 
-      if (result.requestStatus === 'PENDING') {
-        alert('Your request is pending approval. Please wait until your request is approved.');
-        return;
+      if (email === 'christian.simoneau@dal.ca' || email === 'moses.tong@dal.ca' || email === 'harmin.patel@dal.ca'
+                || email === 'maitri.vasoya@dal.ca' || email === 'vraj.patel@dal.ca' || email === 'simon.losier@dal.ca') {
+        Cookies.set('adminEmail', result.email);
       }
-
-      if (result.requestStatus === 'REJECTED') {
-        alert('Your request has been rejected. Please contact support.');
-        return;
-      }
-
-      // For approved requests
+      
       Cookies.set('authToken', result.authToken); // Set the cookie
       Cookies.set('userId', result.id);
       Cookies.set('username', result.userName);

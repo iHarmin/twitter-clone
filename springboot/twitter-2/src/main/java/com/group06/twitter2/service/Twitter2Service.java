@@ -14,8 +14,6 @@ public interface Twitter2Service {
 
     String updateUserInformation(int id, String firstName, String lastName, String email, String interests);
 
-    public String updatePassword(Twitter2 twitter2);
-
     String updateUserStatus(int id, String status);
 
     Twitter2 getUserByID(int id);
@@ -24,13 +22,13 @@ public interface Twitter2Service {
 
     Twitter2 checkPasswordValid(String email, String password);
 
-    boolean isAdmin(String email);
-
-    String addUserByAdmin(String userName, String password, String firstname, String lastname, String userEmail, String recoveryAnswer, String adminEmail, String personalInterests);
+    String addUserByAdmin(String username, String password, String firstname, String lastname, String userEmail,
+            String recoveryAnswer, String adminEmail);
 
     String removeUserByAdmin(String adminEmail, String userEmail);
 
-     String approveRequest(Long requestId, String adminEmail);
-     String rejectRequest(Long requestId, String adminEmail);
+    String approveRequest(Long requestId, String adminEmail);
+
+    String rejectRequest(Long requestId, String adminEmail);
 
 }

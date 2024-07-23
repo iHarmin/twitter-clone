@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
 @Service
 public class Twitter2ServiceImpl implements Twitter2Service {
     @Autowired
@@ -17,7 +18,7 @@ public class Twitter2ServiceImpl implements Twitter2Service {
 
     @Override
     public String createUser(Twitter2 twitter2) {
-        if(!twitter2.getEmail().endsWith("@dal.ca")) {
+        if (!twitter2.getEmail().endsWith("@dal.ca")) {
             return "Invalid email address";
         }
         twitter2Repository.save(twitter2);
@@ -38,19 +39,6 @@ public class Twitter2ServiceImpl implements Twitter2Service {
     }
 
     @Override
-    public String updatePassword(Twitter2 twitter2) {
-        Optional<Twitter2> passOpt = twitter2Repository.findById(twitter2.getId());
-        if(passOpt.isPresent()) {
-            Twitter2 p = passOpt.get();
-            p.setPassword(twitter2.getPassword());
-            twitter2Repository.save(p);
-            return "Password updated successfully";
-        } else {
-            return "Password not updated";
-        }
-    }
-
-    @Override
     public String updateUserStatus(int id, String status) {
         Optional<Twitter2> userOpt = twitter2Repository.findById(id);
         if (userOpt.isPresent()) {
@@ -65,7 +53,7 @@ public class Twitter2ServiceImpl implements Twitter2Service {
 
     @Override
     public String updateUserInformation(int id, String firstName, String lastName, String email,
-                                        String personalInterests) {
+            String personalInterests) {
         Optional<Twitter2> userOpt = twitter2Repository.findById(id);
         if (userOpt.isPresent()) {
             Twitter2 user = userOpt.get();
@@ -96,7 +84,7 @@ public class Twitter2ServiceImpl implements Twitter2Service {
     public Twitter2 checkPasswordValid(String email, String password) {
         Twitter2 user = twitter2Repository.findByEmail(email);
         String actualPassword = user.getPassword();
-        if(actualPassword.equals(password)) {
+        if (actualPassword.equals(password)) {
             return user;
         } else {
             return null;
@@ -104,47 +92,40 @@ public class Twitter2ServiceImpl implements Twitter2Service {
     }
 
     @Override
-    public boolean isAdmin(String email) {
-        Twitter2 user = twitter2Repository.findByEmail(email);
-        return user != null && user.getRole() != null && user.getRole().equals("Admin");
-    }
-
-    @Override
-    public String addUserByAdmin(String userName, String password, String firstname, String lastname, String userEmail, String recoveryAnswer, String adminEmail, String personalInterests) {
+    public String addUserByAdmin(String username, String password, String firstname, String lastname, String userEmail,
+            String recoveryAnswer, String adminEmail) {
         Twitter2 adminUser = twitter2Repository.findByEmail(adminEmail);
         Twitter2 user = twitter2Repository.findByEmail(userEmail);
 
-        if(user != null) {
+        if (user != null) {
             return "User already exist";
         }
 
-        if(adminUser != null && adminUser.getRole().equals("Admin")) {
-            Twitter2 new_user = new Twitter2();
-            new_user.setUserName(userName);
-            new_user.setRole("Student");
-            new_user.setPassword(password);
-            new_user.setFirstName(firstname);
-            new_user.setLastName(lastname);
-            new_user.setEmail(userEmail);
-            new_user.setRecoveryAnswer(recoveryAnswer);
-            new_user.setPersonalInterests(personalInterests);
-            twitter2Repository.save(new_user);
-            return "User saved successfully";
+        if (adminUser.getRole().equals("Admin")) {
+            Twitter2 newUser = new Twitter2();
+            newUser.setUserName(username);
+            newUser.setPassword(password);
+            newUser.setFirstName(firstname);
+            newUser.setLastName(lastname);
+            newUser.setEmail(userEmail);
+            newUser.setRecoveryAnswer(recoveryAnswer);
+            newUser.setRole("Student");
+            twitter2Repository.save(newUser);
+            return "User added successfully";
         }
         return "This user is not authorized to create new user";
     }
 
-
     @Override
-    public String removeUserByAdmin(String adminEmail, String userEmail){
+    public String removeUserByAdmin(String adminEmail, String userEmail) {
         Twitter2 adminUser = twitter2Repository.findByEmail(adminEmail);
         Twitter2 user = twitter2Repository.findByEmail(userEmail);
 
-        if(!adminUser.getRole().equals("Admin")) {
+        if (!adminUser.getRole().equals("Admin")) {
             return "This user is not authorized to remove user";
         }
 
-        if(user == null) {
+        if (user == null) {
             return "User does not exist with this email";
         }
 
@@ -160,13 +141,13 @@ public class Twitter2ServiceImpl implements Twitter2Service {
         }
 
         Optional<Twitter2> user = twitter2Repository.findById(Math.toIntExact(requestId));
-        if(user.isPresent()){
+        if (user.isPresent()) {
             Twitter2 u = user.get();
             u.setRequestStatus(String.valueOf(Twitter2.RequestStatus.APPROVED));
             twitter2Repository.save(u);
             return "Request successfully approved";
         }
-       return "Invalid user ID. User ID is not present";
+        return "Invalid user ID. User ID is not present";
     }
 
     @Override
@@ -177,9 +158,9 @@ public class Twitter2ServiceImpl implements Twitter2Service {
         }
 
         Optional<Twitter2> user = twitter2Repository.findById(Math.toIntExact(requestId));
-        if(user.isPresent()){
+        if (user.isPresent()) {
             Twitter2 u = user.get();
-            if(u.getRequestStatus() == Twitter2.RequestStatus.APPROVED){
+            if (u.getRequestStatus() == Twitter2.RequestStatus.APPROVED) {
                 return "Request is already approved. Cannot reject, approved request.";
             }
             u.setRequestStatus(String.valueOf(Twitter2.RequestStatus.REJECTED));

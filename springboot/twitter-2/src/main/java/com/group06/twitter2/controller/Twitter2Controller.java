@@ -57,9 +57,8 @@ public class Twitter2Controller {
         String userEmail = userData.get("userEmail");
         String recoveryAnswer = userData.get("recoveryAnswer");
         String adminEmail = userData.get("adminEmail");
-        String personalInterests = userData.get("personalInterests");
 
-        return twitter2Service.addUserByAdmin(userName, password, firstname, lastname, userEmail, recoveryAnswer, adminEmail, personalInterests);
+        return twitter2Service.addUserByAdmin(userName, password, firstname, lastname, userEmail, recoveryAnswer, adminEmail);
     }
 
     @PostMapping("/removeUserByAdmin")
