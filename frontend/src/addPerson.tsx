@@ -33,6 +33,10 @@ const AddPerson: React.FC = () => {
   const handlerecoveryanswerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRecoveryAnswer(event.target.value);
   };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+  };
 }
 
 export default AddPerson;
