@@ -282,23 +282,25 @@ const ProfilePage: React.FC = () => {
       <div className="row">
         <div className="col">
           <div className="container">
+            <h1>Profile</h1>
             <div className="row">
               <div className="col">
-                <p>{formData.firstName} {formData.lastName}</p>
-                <p>{formData.userName}</p>
-                <p>{formData.email}</p>
-                <p>{formData.personalInterests}</p>
-                <p>{formData.status}</p>
+                <p>Name: {formData.firstName} {formData.lastName}</p>
+                <p>Username: {formData.userName}</p>
+                <p>Email: {formData.email}</p>
+                <p>Interests: {formData.personalInterests}</p>
+                <p>Status: {formData.status}</p>
+                {profileID !== currentUserID && (
+                  <button onClick={() => handleSendRequest(profileID)}
+                          className="btn btn-primary"
+                          disabled={friendRequestSent}>
+                    {friendRequestSent ? 'Request Pending' : 'Add Friend'}
+                  </button>
+                )}
               </div>
             </div>
-          </div><br></br>
-
-          {profileID !== currentUserID && (
-            <button onClick={() => handleSendRequest(profileID)}
-                    className="btn btn-primary" disabled={friendRequestSent}>
-              {friendRequestSent ? 'Request Pending' : 'Add Friend'}
-            </button>
-          )}
+          </div>
+          <br></br>
 
           {Cookies.get('userId') === profileID && (
             <div className="row">
@@ -340,9 +342,11 @@ const ProfilePage: React.FC = () => {
             <form onSubmit={handleStatusChange} className="mt-5">
               <label>
                 Status:
-                <select value={status} onChange={e => setStatus(e.target.value)}
+                <select value={status}
+                        onChange={e => setStatus(e.target.value)}
                         className="form-control mb-3">
-                  <option value="" disabled>Click to select your status</option>
+                  <option value="" disabled>Click to update your status
+                  </option>
                   <option value="Online">Online 🟢</option>
                   <option value="Offline">Offline ⚪</option>
                   <option value="Busy">Busy 🔴</option>
@@ -352,31 +356,43 @@ const ProfilePage: React.FC = () => {
                      className="btn btn-primary mt-3"/>
             </form>
           )}
+        </div>
 
+        <div className="container">
           <h3>Friend List</h3>
-          {friends.map(friend => (
-            <div key={friend.userID}
-                 className="list-group-item d-flex justify-content-between align-items-center">
-              <div className="card">
-                <div className="card-body">
-                  <p className="mb-0">Username: {friend.userName}</p>
-                  <p className="mb-0">Email: {friend.email}</p>
-                  <p>Name: {friend.firstName} {friend.lastName}</p>
-                  {profileID === currentUserID && (
-                    <button
-                      onClick={() => handleRemoveFriend(friend.userID)}
-                      className="btn btn-danger">Remove Friend
-                    </button>
-                  )}
+          {friends.length > 0 ? (
+            friends.map(friend => (
+              <div key={friend.userID} className="row">
+                <div className="col">
+                  <div
+                    className="list-group-item d-flex justify-content-between align-items-center">
+                    <div className="card">
+                      <div className="card-body">
+                        <p className="mb-0">Username: {friend.userName}</p>
+                        <p className="mb-0">Email: {friend.email}</p>
+                        <p>Name: {friend.firstName} {friend.lastName}</p>
+                        {profileID === currentUserID && (
+                          <button
+                            onClick={() => handleRemoveFriend(friend.userID)}
+                            className="btn btn-danger">Remove Friend
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p>No friends were found.</p>
+          )}
+        </div>
 
-          {profileID === currentUserID && (
-            <div>
-              <h3>Friend Requests</h3>
-              {friendRequests.map(request => (
+        {profileID === currentUserID && (
+          <div className="container">
+            <h3>Friend Requests</h3>
+            {friendRequests.length > 0 ? (
+              friendRequests.map(request => (
                 <div key={request.from.id}
                      className="list-group-item d-flex justify-content-between align-items-center">
                   <div className="card">
@@ -395,23 +411,33 @@ const ProfilePage: React.FC = () => {
                     </div>
                   </div>
                 </div>
-              ))}
+              ))
+            ) : (
+              <p>No friend requests were found.</p>
+            )}
+          </div>
+        )}
+        <br></br>{role === "Admin" && (
+        <div className="container">
+          <div className="row">
+            <div className="col">
+              <p>
+                <button type="submit" onClick={handleAddPersonClick}>Add
+                  Person
+                </button>
+              </p>
+              <p>
+                <button type="submit" onClick={handleRemovePersonClick}>Remove
+                  Person
+                </button>
+              </p>
             </div>
-          )}
-          <br></br>{role === "Admin" && (
-            <div className="container">
-              <div className="row">
-                <div className="col">
-                  <p><button type="submit" onClick={handleAddPersonClick}>Add Person</button></p>
-                  <p><button type="submit" onClick={handleRemovePersonClick}>Remove Person</button></p>
-                </div>
-              </div>
-            </div>
-          )}
+          </div>
         </div>
+      )}
       </div>
     </div>
-  );
+) ;
 }
 
 export default ProfilePage;

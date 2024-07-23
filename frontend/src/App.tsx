@@ -10,6 +10,7 @@ import ErrorPage from './errorpage.tsx';
 import {AuthContext} from './AuthContext.tsx';
 import  Feed from './Feed.tsx'
 import {useState} from 'react';
+import Search from "./Search.tsx";
 import AddPerson from './addPerson.tsx';
 import RemovePerson from './removePerson.tsx';
 
@@ -25,6 +26,7 @@ function App() {
             <Route path="/" element={<div />}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/signup" element={<Signup/>}/>
+            <Route path="/search" element={<Search/>}/>
             <Route path="/forgotpassword" element={<ForgotPassword/>}/>
             <Route path="/profile/:profileID" element={<ProfilePage/>}/>
             <Route path="/feed" element={<Feed />} />

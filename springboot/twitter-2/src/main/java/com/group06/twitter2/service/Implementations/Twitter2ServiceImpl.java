@@ -130,4 +130,8 @@ public class Twitter2ServiceImpl implements Twitter2Service {
         twitter2Repository.delete(user);
         return "User deleted successfully.";
     }
+
+    public List<Twitter2> searchUsers(String searchTerm) {
+        return twitter2Repository.searchByUserNameOrEmailOrInterests(searchTerm);
+    }
 }
