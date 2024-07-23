@@ -1,10 +1,12 @@
 import './App.css';
 import React, {useContext, useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Cookies from "js-cookie";
 
 const RemovePerson: React.FC = () => {
     const [userEmail, setEmail] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const adminEmail = Cookies.get('adminEmail') || '';
 
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
@@ -15,6 +17,7 @@ const RemovePerson: React.FC = () => {
 
         const user = {
             userEmail: userEmail,
+            adminEmail: adminEmail,
         };
 
         console.log(user);
