@@ -58,7 +58,7 @@ public class Twitter2ServiceTest {
         when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
 
         when(twitter2Repository.findByEmail("newUser@dal.ca")).thenReturn(null);
-        String result = twitter2Service.addUserByAdmin("newUser", "password", "FirstName", "LastName", "newUser@dal.ca", "recAnswer", "admin@.ca");
+        String result = twitter2Service.addUserByAdmin("newUser", "password", "FirstName", "LastName", "newUser@dal.ca", "recAnswer", "admin@dal.ca");
 
         assertEquals("User added successfully", result);
     }
