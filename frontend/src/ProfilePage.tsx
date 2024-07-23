@@ -270,13 +270,14 @@ const ProfilePage: React.FC = () => {
       <div className="row">
         <div className="col">
           <div className="container">
+            <h1>Profile</h1>
             <div className="row">
               <div className="col">
-                <p>{formData.firstName} {formData.lastName}</p>
-                <p>{formData.userName}</p>
-                <p>{formData.email}</p>
-                <p>{formData.personalInterests}</p>
-                <p>{formData.status}</p>
+                <p>Name: {formData.firstName} {formData.lastName}</p>
+                <p>Username: {formData.userName}</p>
+                <p>Email: {formData.email}</p>
+                <p>Interests: {formData.personalInterests}</p>
+                <p>Status: {formData.status}</p>
                 {profileID !== currentUserID && (
                   <button onClick={() => handleSendRequest(profileID)}
                           className="btn btn-primary"
@@ -310,58 +311,62 @@ const ProfilePage: React.FC = () => {
           {/*)}*/}
 
 
-          {Cookies.get('userId') === profileID && (
-            <div className="row">
-              <div className="col">
-                <h3>Update your personal information:</h3>
-                <form onSubmit={handleDetailsSubmit}>
-                  <div className="form-group mb-3">
-                    <label> First Name: </label>
-                    <input type="text" value={firstName}
-                           onChange={e => setFirstName(e.target.value)}
-                           className="form-control"/>
-                  </div>
-                  <div className="form-group mb-3">
-                    <label> Last Name: </label>
-                    <input type="text" value={lastName}
-                           onChange={e => setLastName(e.target.value)}
-                           className="form-control"/>
-                  </div>
-                  <div className="form-group mb-3">
-                    <label> Email: </label>
-                    <input type="email" value={email}
-                           onChange={e => setEmail(e.target.value)}
-                           className="form-control"/>
-                  </div>
-                  <div className="form-group mb-3">
-                    <label> Interests: </label>
-                    <input type="text" value={interests}
-                           onChange={e => setInterests(e.target.value)}
-                           className="form-control"/>
-                  </div>
-                  <input type="submit" value="Submit"
-                         className="btn btn-primary"/>
-                </form>
+          <div className="container">
+            {Cookies.get('userId') === profileID && (
+              <div className="row">
+                <div className="col">
+                  <h3>Update your Personal Information:</h3>
+                  <form onSubmit={handleDetailsSubmit}>
+                    <div className="form-group mb-3">
+                      <label> First Name: </label>
+                      <input type="text" value={firstName}
+                             onChange={e => setFirstName(e.target.value)}
+                             className="form-control"/>
+                    </div>
+                    <div className="form-group mb-3">
+                      <label> Last Name: </label>
+                      <input type="text" value={lastName}
+                             onChange={e => setLastName(e.target.value)}
+                             className="form-control"/>
+                    </div>
+                    <div className="form-group mb-3">
+                      <label> Email: </label>
+                      <input type="email" value={email}
+                             onChange={e => setEmail(e.target.value)}
+                             className="form-control"/>
+                    </div>
+                    <div className="form-group mb-3">
+                      <label> Interests: </label>
+                      <input type="text" value={interests}
+                             onChange={e => setInterests(e.target.value)}
+                             className="form-control"/>
+                    </div>
+                    <input type="submit" value="Submit"
+                           className="btn btn-primary"/>
+                  </form>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {profileID === currentUserID && (
-            <form onSubmit={handleStatusChange} className="mt-5">
-              <label>
-                Status:
-                <select value={status} onChange={e => setStatus(e.target.value)}
-                        className="form-control mb-3">
-                  <option value="" disabled>Click to select your status</option>
-                  <option value="Online">Online 🟢</option>
-                  <option value="Offline">Offline ⚪</option>
-                  <option value="Busy">Busy 🔴</option>
-                </select>
-              </label>
-              <input type="submit" value="Change Status"
-                     className="btn btn-primary mt-3"/>
-            </form>
-          )}
+            {profileID === currentUserID && (
+              <form onSubmit={handleStatusChange} className="mt-5">
+                <label>
+                  Status:
+                  <select value={status}
+                          onChange={e => setStatus(e.target.value)}
+                          className="form-control mb-3">
+                    <option value="" disabled>Click to update your status
+                    </option>
+                    <option value="Online">Online 🟢</option>
+                    <option value="Offline">Offline ⚪</option>
+                    <option value="Busy">Busy 🔴</option>
+                  </select>
+                </label>
+                <input type="submit" value="Change Status"
+                       className="btn btn-primary mt-3"/>
+              </form>
+            )}
+          </div>
 
           <div className="container">
             <h3>Friend List</h3>
@@ -394,7 +399,7 @@ const ProfilePage: React.FC = () => {
           </div>
 
           {profileID === currentUserID && (
-            <div>
+            <div className="container">
               <h3>Friend Requests</h3>
               {friendRequests.length > 0 ? (
                 friendRequests.map(request => (

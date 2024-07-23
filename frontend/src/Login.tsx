@@ -34,7 +34,7 @@ const Login = () => {
       const result = await serverResponse.json();
       console.log(result);
       console.log('Success:', result);
-  
+
       Cookies.set('authToken', result.authToken); // Set the cookie
       Cookies.set('userId', result.id);
       Cookies.set('username', result.userName);
@@ -49,28 +49,30 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <div>
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-      <button type="submit">Login</button>
-      <a href="/forgotpassword">Forgot Password?</a>
-    </form>
+    <div className="container">
+      <form onSubmit={handleLogin}>
+        <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit">Login</button>
+        <a href="/forgotpassword">Forgot Password?</a>
+      </form>
+    </div>
   );
 };
 
