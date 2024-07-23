@@ -7,9 +7,11 @@ import Signup from "./Signup.tsx";
 import Home from "./Home.tsx";
 import ForgotPassword from "./ForgotPassword";
 import ErrorPage from './errorpage.tsx';
-import {AuthContext} from './AuthContext';
+import {AuthContext} from './AuthContext.tsx';
 import  Feed from './Feed.tsx'
 import {useState} from 'react';
+import AddPerson from './addPerson.tsx';
+import RemovePerson from './removePerson.tsx';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

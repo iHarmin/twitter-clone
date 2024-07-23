@@ -2,6 +2,7 @@ import {useContext, useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useParams} from 'react-router-dom';
 import {AuthContext} from "./AuthContext.tsx";
+import {useNavigate} from 'react-router-dom';
 import Cookies from "js-cookie";
 
 const ProfilePage: React.FC = () => {
@@ -21,7 +22,6 @@ const ProfilePage: React.FC = () => {
   // const currentUserID: string = '11';
 
   // const {isLoggedIn} = useContext(AuthContext);
-  const [role, setRole] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -32,6 +32,7 @@ const ProfilePage: React.FC = () => {
   const [friends, setFriends] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
   const [friendRequestSent, setFriendRequestSent] = useState(false);
+  const navigate = useNavigate();
 
   // Fetch the user's profile data
   useEffect(() => {
@@ -41,7 +42,6 @@ const ProfilePage: React.FC = () => {
         const profileData = await serverResponse.json();
         console.log("Profile Data", profileData);
         setFormData(profileData);
-        setRole(profileData.role);
       } catch (error) {
         console.error(error);
         alert('An error occurred while fetching your profile data.');
@@ -265,6 +265,16 @@ const ProfilePage: React.FC = () => {
     }
   };
 
+  const handleAddPersonClick = () => {
+    navigate('/addPerson');
+  };
+
+  const handleRemovePersonClick = () => {
+    navigate('/removePerson');
+  };
+
+
+
   // Form for entering name, email, and interests
   // Username cannot be changed
   return (
@@ -282,16 +292,6 @@ const ProfilePage: React.FC = () => {
               </div>
             </div>
           </div><br></br>
-          {role === "Admin" && (
-            <div className="container">
-              <div className="row">
-                <div className="col">
-                  <p><button type="submit">Add Person</button></p>
-                  <p><button type="submit">Remove Person</button></p>
-                </div>
-              </div>
-            </div>
-          )}<br></br>
 
           {profileID !== currentUserID && (
             <button onClick={() => handleSendRequest(profileID)}
