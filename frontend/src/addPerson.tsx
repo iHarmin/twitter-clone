@@ -42,7 +42,19 @@ const AddPerson: React.FC = () => {
 
       // Regex pattern to match password requirements
       const passwordPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/ //retrieved from: https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+
+      if (!emailPattern.test(userEmail)) {
+        setErrorMessage('Email must be of domain @dal.ca');
+        return;
+      }
   
+      if (!passwordPattern.test(password)) {
+        setErrorMessage('Password must contain at least 8 characters, one upper case letter, one letter, one number and one special character');
+        return;
+      }
+  
+      // Clear error message if previous was set.
+      setErrorMessage('');
   };
 }
 
