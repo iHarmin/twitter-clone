@@ -1,5 +1,6 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import Cookies from "js-cookie";
+import {Link} from 'react-router-dom';
 
 const Search = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -94,15 +95,17 @@ const Search = () => {
                   <ul className="list-group">
                     {peopleResults.map(user => (
                       <li key={user.id} className="list-group-item p-3">
-                        <div>
-                          <strong>Username:</strong> {user.userName}
-                        </div>
-                        <div>
-                          <strong>Email:</strong> {user.email}
-                        </div>
-                        <div>
-                          <strong>Interests:</strong> {user.personalInterests}
-                        </div>
+                        <Link to={`/profile/${user.id}`}>
+                          <div>
+                            <strong>Username:</strong> {user.userName}
+                          </div>
+                          <div>
+                            <strong>Email:</strong> {user.email}
+                          </div>
+                          <div>
+                            <strong>Interests:</strong> {user.personalInterests}
+                          </div>
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -113,21 +116,23 @@ const Search = () => {
             </div>
 
             <div className="col-md-6">
-              <h2>Friends</h2>
+              <h2>My Friends</h2>
               <div className="p-3 mb-2">
                 {friendResults.length > 0 ? (
                   <ul className="list-group">
                     {friendResults.map(friend => (
                       <li key={friend.id} className="list-group-item p-3">
-                        <div>
-                          <strong>Username:</strong> {friend.userName}
-                        </div>
-                        <div>
-                          <strong>Email:</strong> {friend.email}
-                        </div>
-                        <div>
-                          <strong>Interests:</strong> {friend.personalInterests}
-                        </div>
+                        <Link to={`/profile/${friend.id}`}>
+                          <div>
+                            <strong>Username:</strong> {friend.userName}
+                          </div>
+                          <div>
+                            <strong>Email:</strong> {friend.email}
+                          </div>
+                          <div>
+                            <strong>Interests:</strong> {friend.personalInterests}
+                          </div>
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -139,6 +144,31 @@ const Search = () => {
 
             <div className="col-md-6">
               <h2>Groups</h2>
+              <div className="p-3 mb-2">
+                {groupsResults.length > 0 ? (
+                  <ul className="list-group">
+                    {groupsResults.map(group => (
+                      <li key={group.id} className="list-group-item p-3">
+                        <div>
+                          <strong>Name:</strong> {group.name}
+                        </div>
+                        <div>
+                          <strong>Status:</strong> {group.isPublic}
+                        </div>
+                        <div>
+                          <strong>Interests:</strong> {group.interests}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No groups found matching the search criteria.</p>
+                )}
+              </div>
+            </div>
+
+            <div className="col-md-6">
+              <h2>My Groups</h2>
               <div className="p-3 mb-2">
                 {groupsResults.length > 0 ? (
                   <ul className="list-group">
