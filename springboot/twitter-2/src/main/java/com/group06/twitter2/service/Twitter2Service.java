@@ -30,4 +30,8 @@ public interface Twitter2Service {
     String addUserByAdmin(String username, String password, String firstname, String lastname, String userEmail, String recoveryAnswer, String adminEmail);
 
     String removeUserByAdmin(String adminEmail, String userEmail);
+
+    String changeUserRoleByAdmin(String adminEmail, String userEmail, String newRole);
+
+
 }

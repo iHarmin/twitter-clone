@@ -162,4 +162,29 @@ public class Twitter2ServiceImpl implements Twitter2Service {
         twitter2Repository.delete(user);
         return "User deleted successfully.";
     }
+
+    @Override
+    public String changeUserRoleByAdmin(String adminEmail, String userEmail, String newRole) {
+        Twitter2 admin = twitter2Repository.findByEmail(adminEmail);
+        Twitter2 user = twitter2Repository.findByEmail(userEmail);
+
+        if (admin == null) {
+            return "Admin user does not exist";
+        }
+
+        if (!admin.getRole().equals("Admin")) {
+            return "This user is not authorized to change roles";
+        }
+
+        if (user == null) {
+            return "User does not exist with this email";
+        }
+
+        user.setRole(newRole);
+        twitter2Repository.save(user);
+
+        return "User role updated successfully";
+    }
+
+
 }
