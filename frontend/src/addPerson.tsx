@@ -1,6 +1,7 @@
 import './App.css';
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Cookies from "js-cookie";
 
 const AddPerson: React.FC = () => {
   const [firstname, setFirstName] = useState('');
@@ -10,6 +11,7 @@ const AddPerson: React.FC = () => {
   const [password, setPassword] = useState('');
   const [recoveryAnswer, setRecoveryAnswer] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const adminEmail = Cookies.get('adminEmail') || '';
 
   const handleusernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setusername(event.target.value);
@@ -64,6 +66,7 @@ const AddPerson: React.FC = () => {
         lastname: lastname,
         userEmail: userEmail,
         recoveryAnswer: recoveryAnswer,
+        adminEmail: adminEmail,
       };
   
       console.log(user);
