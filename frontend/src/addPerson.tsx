@@ -36,6 +36,13 @@ const AddPerson: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
+      // Regex pattern to match email containing "@dal.ca"
+      const emailPattern = /@dal\.ca$/;
+
+      // Regex pattern to match password requirements
+      const passwordPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/ //retrieved from: https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+  
   };
 }
 
