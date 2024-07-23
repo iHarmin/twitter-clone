@@ -75,7 +75,7 @@ public class Twitter2ServiceImpl implements Twitter2Service {
             twitter2Repository.save(user);
             return "New password set";
         } else {
-            return "Wrong security answer try";
+            return "Wrong security answer";
         }
     }
 

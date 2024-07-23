@@ -13,6 +13,8 @@ import {useState} from 'react';
 import Search from "./Search.tsx";
 import AddPerson from './addPerson.tsx';
 import RemovePerson from './removePerson.tsx';
+import CreateGroup from './CreateGroup.tsx';
+import GroupDetail from './GroupDetail.tsx';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -23,12 +25,14 @@ function App() {
         <NavBar/>
         <div>
           <Routes>
-            <Route path="/" element={<div />}/>
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/signup" element={<Signup/>}/>
+            <Route path="/" element={<div />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/CreateGroup" element={<CreateGroup />} />
+            <Route path="/group/:id" element={<GroupDetail />} />
+            <Route path="/signup" element={<Signup />} />
             <Route path="/search" element={<Search/>}/>
-            <Route path="/forgotpassword" element={<ForgotPassword/>}/>
-            <Route path="/profile/:profileID" element={<ProfilePage/>}/>
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/profile/:profileID" element={<ProfilePage />} />
             <Route path="/feed" element={<Feed />} />
             <Route path="*" element={<ErrorPage />} />
             <Route path="/addPerson" element={<AddPerson />}/>
