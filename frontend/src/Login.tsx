@@ -1,10 +1,10 @@
-import React, {useContext, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {AuthContext} from './AuthContext';
+import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './AuthContext';
 import Cookies from 'js-cookie';
 
 const Login = () => {
-  const {setIsLoggedIn} = useContext(AuthContext);
+  const { setIsLoggedIn } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -13,7 +13,6 @@ const Login = () => {
     e.preventDefault();
 
     try {
-
       const formData = new URLSearchParams();
       formData.append('email', email);
       formData.append('password', password);
@@ -25,22 +24,31 @@ const Login = () => {
         },
         body: formData
       });
-      console.log(formData);
+
+      console.log(serverResponse);
 
       if (!serverResponse.ok) {
         throw new Error('Login failed');
       }
 
       const result = await serverResponse.json();
-      console.log(result);
-      console.log('Success:', result);
-  
+
+      if (result.requestStatus === 'PENDING') {
+        alert('Your request is pending approval. Please wait until your request is approved.');
+        return;
+      }
+
+      if (result.requestStatus === 'REJECTED') {
+        alert('Your request has been rejected. Please contact support.');
+        return;
+      }
+
+      // For approved requests
       Cookies.set('authToken', result.authToken); // Set the cookie
       Cookies.set('userId', result.id);
       Cookies.set('username', result.userName);
       setIsLoggedIn(true);
       navigate(`/profile/${result.id}`); // Redirect to the user's profile page
-      console.log("Cookie:", result.id);
 
     } catch (error) {
       console.error(error);
