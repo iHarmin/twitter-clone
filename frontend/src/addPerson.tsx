@@ -9,6 +9,30 @@ const AddPerson: React.FC = () => {
   const [password, setPassword] = useState('');
   const [recoveryAnswer, setRecoveryAnswer] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+  const handleusernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setusername(event.target.value);
+  };
+
+  const handlefirstnameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFirstName(event.target.value);
+  };
+
+  const handlelastnameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLastName(event.target.value);
+  };
+
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
+  const handlerecoveryanswerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRecoveryAnswer(event.target.value);
+  };
 }
 
 export default AddPerson;
