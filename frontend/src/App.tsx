@@ -12,6 +12,7 @@ import  Feed from './Feed.tsx'
 import {useState} from 'react';
 import AddPerson from './addPerson.tsx';
 import RemovePerson from './removePerson.tsx';
+import PendingRequests from './PendingRequest';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -31,6 +32,7 @@ function App() {
             <Route path="*" element={<ErrorPage />} />
             <Route path="/addPerson" element={<AddPerson />}/>
             <Route path="/removePerson" element={<RemovePerson />}/>
+            <Route path="/pending-requests" Component={PendingRequests} />
           </Routes>
         </div>
       </Router>
