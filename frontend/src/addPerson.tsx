@@ -55,6 +55,17 @@ const AddPerson: React.FC = () => {
   
       // Clear error message if previous was set.
       setErrorMessage('');
+
+      const user = {
+        userName: userName,
+        password: password,
+        firstname: firstname,
+        lastname: lastname,
+        userEmail: userEmail,
+        recoveryAnswer: recoveryAnswer,
+      };
+  
+      console.log(user);
   };
 }
 
