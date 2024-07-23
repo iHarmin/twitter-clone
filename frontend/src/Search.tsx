@@ -27,7 +27,7 @@ const Search = () => {
         const friendsResponse = await fetch(`http://localhost:8080/api/friends/${currentUserID}`);
         const friendsData = await friendsResponse.json();
         const mappedFriendsData = friendsData.map(friendship => ({
-          userID: friendship.user2.id,
+          id: friendship.user2.id,
           userName: friendship.user2.userName,
           firstName: friendship.user2.firstName,
           lastName: friendship.user2.lastName,
