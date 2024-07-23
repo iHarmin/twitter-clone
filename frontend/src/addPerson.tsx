@@ -66,6 +66,27 @@ const AddPerson: React.FC = () => {
       };
   
       console.log(user);
+
+      try {
+        const serverResponse = await fetch(`http://localhost:8080/api/users/addUserByAdmin`, {
+          method: "POST",
+          headers: {
+            "Content-Type": 'application/json',
+          },
+          body: JSON.stringify(user),
+        }) 
+  
+        if (serverResponse.ok) {
+          const result = await serverResponse.text();
+          console.log('Success:', result);
+          alert("User added successfully!");
+        } else {
+          throw new Error('Server response was not OK!');
+        }
+      } catch (error) {
+        console.error(error);
+        alert('An error occurred while adding new person.');
+      }
   };
 }
 
