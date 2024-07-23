@@ -38,19 +38,6 @@ public class Twitter2ServiceImpl implements Twitter2Service {
     }
 
     @Override
-    public String updatePassword(Twitter2 twitter2) {
-        Optional<Twitter2> passOpt = twitter2Repository.findById(twitter2.getId());
-        if(passOpt.isPresent()) {
-            Twitter2 p = passOpt.get();
-            p.setPassword(twitter2.getPassword());
-            twitter2Repository.save(p);
-            return "Password updated successfully";
-        } else {
-            return "Password not updated";
-        }
-    }
-
-    @Override
     public String updateUserStatus(int id, String status) {
         Optional<Twitter2> userOpt = twitter2Repository.findById(id);
         if (userOpt.isPresent()) {
@@ -88,7 +75,7 @@ public class Twitter2ServiceImpl implements Twitter2Service {
             twitter2Repository.save(user);
             return "New password set";
         } else {
-            return "Wrong security answer try";
+            return "Wrong security answer";
         }
     }
 
@@ -101,5 +88,46 @@ public class Twitter2ServiceImpl implements Twitter2Service {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public String addUserByAdmin(String username, String password, String firstname, String lastname, String userEmail, String recoveryAnswer, String adminEmail) {
+        Twitter2 adminUser = twitter2Repository.findByEmail(adminEmail);
+        Twitter2 user = twitter2Repository.findByEmail(userEmail);
+
+        if(user != null){
+            return "User already exist";
+        }
+
+        if(adminUser.getRole().equals("Admin")){
+            Twitter2 newUser = new Twitter2();
+            newUser.setUserName(username);
+            newUser.setPassword(password);
+            newUser.setFirstName(firstname);
+            newUser.setLastName(lastname);
+            newUser.setEmail(userEmail);
+            newUser.setRecoveryAnswer(recoveryAnswer);
+            newUser.setRole("Student");
+            twitter2Repository.save(newUser);
+            return "User added successfully";
+        }
+        return "This user is not authorized to create new user";
+    }
+
+    @Override
+    public String removeUserByAdmin(String adminEmail, String userEmail){
+        Twitter2 adminUser = twitter2Repository.findByEmail(adminEmail);
+        Twitter2 user = twitter2Repository.findByEmail(userEmail);
+
+        if(!adminUser.getRole().equals("Admin")) {
+            return "This user is not authorized to remove user";
+        }
+
+        if(user == null) {
+            return "User does not exist with this email";
+        }
+
+        twitter2Repository.delete(user);
+        return "User deleted successfully.";
     }
 }
