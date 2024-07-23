@@ -75,7 +75,7 @@ const Search = () => {
     }
 
     return (
-      <div className="container mt-4 p-5">
+      <div className="container mt-4 p-5 search-container">
         <h1>Search</h1>
         <form className="form-inline" onSubmit={handleSearchClick}>
           <input className="form-control" type="search"
@@ -88,14 +88,14 @@ const Search = () => {
 
         {isSearchCLicked && (
           <div className="row">
-            <div className="col-md-6">
+            <div className="col-md-6 mb-4">
               <h2>People</h2>
-              <div className="p-3 mb-2">
+              <div>
                 {peopleResults.length > 0 ? (
                   <ul className="list-group">
                     {peopleResults.map(user => (
                       <li key={user.id} className="list-group-item p-3">
-                        <Link to={`/profile/${user.id}`}>
+                        <Link to={`/profile/${user.id}`} className="text-decoration-none">
                           <div>
                             <strong>Username:</strong> {user.userName}
                           </div>
@@ -115,14 +115,14 @@ const Search = () => {
               </div>
             </div>
 
-            <div className="col-md-6">
+            <div className="col-md-6 mb-4">
               <h2>My Friends</h2>
-              <div className="p-3 mb-2">
+              <div>
                 {friendResults.length > 0 ? (
                   <ul className="list-group">
                     {friendResults.map(friend => (
                       <li key={friend.id} className="list-group-item p-3">
-                        <Link to={`/profile/${friend.id}`}>
+                        <Link to={`/profile/${friend.id}`} className="text-decoration-none">
                           <div>
                             <strong>Username:</strong> {friend.userName}
                           </div>
