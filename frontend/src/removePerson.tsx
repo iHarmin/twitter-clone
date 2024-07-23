@@ -12,6 +12,12 @@ const RemovePerson: React.FC = () => {
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
+
+        const user = {
+            userEmail: userEmail,
+        };
+
+        console.log(user);
     };
     
 }
