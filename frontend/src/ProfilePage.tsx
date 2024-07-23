@@ -398,6 +398,16 @@ const ProfilePage: React.FC = () => {
               ))}
             </div>
           )}
+          <br></br>{role === "Admin" && (
+            <div className="container">
+              <div className="row">
+                <div className="col">
+                  <p><button type="submit" onClick={handleAddPersonClick}>Add Person</button></p>
+                  <p><button type="submit" onClick={handleRemovePersonClick}>Remove Person</button></p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
