@@ -1,5 +1,10 @@
 package com.group06.twitter2;
 
+<<<<<<< HEAD
+=======
+import com.group06.twitter2.model.Post;
+import com.group06.twitter2.DTO.UserDTO;
+>>>>>>> 4bfe7736c65de7b8b92db83a66425d6018a27e48
 import com.group06.twitter2.model.Twitter2;
 import com.group06.twitter2.repository.Twitter2Repository;
 import com.group06.twitter2.service.Implementations.Twitter2ServiceImpl;
@@ -99,8 +104,9 @@ public class Twitter2ServiceTest {
         Twitter2 user = new Twitter2();
 
         int id = user.getId();
+        UserDTO userDTO = new UserDTO(id, "Name", "Lname", "email@example.ca", "Interest");
         when(twitter2Repository.findById(id)).thenReturn(Optional.of(user));
-        String output = twitter2Service.updateUserInformation(id, "Name", "Lname", "email@example.ca", "Interest");
+        String output = twitter2Service.updateUserInformation(userDTO);
         assertEquals("User information updated successfully", output);
         assertEquals(user.getEmail(), "email@example.ca");
     }
@@ -108,8 +114,9 @@ public class Twitter2ServiceTest {
     @Test
     public void updateUserInformationTest_UserNotFound() {
         int id = 0;
+        UserDTO userDTO = new UserDTO(id, "Name", "Lname", "email@example.ca", "Interest");
         when(twitter2Repository.findById(id)).thenReturn(Optional.empty());
-        String output = twitter2Service.updateUserInformation(id, "Name", "Lname", "email@example.ca", "Interest");
+        String output = twitter2Service.updateUserInformation(userDTO);
         assertEquals("User not found", output);
     }
 
