@@ -132,26 +132,43 @@ public class Twitter2ServiceImpl implements Twitter2Service {
         return "User deleted successfully.";
     }
 
+    private boolean isAdminExists(Twitter2 admin) {
+        return admin != null;
+    }
+
+    private boolean isAdminAuthorized(Twitter2 admin) {
+        return admin.getRole().equals("Admin");
+    }
+
+    private boolean isUserValid(Twitter2 user) {
+        return user != null;
+    }
+
+    private boolean isRoleValid(String role) {
+        return role.equals("Employee") || role.equals("Student") || role.equals("Admin");
+    }
+
     @Override
     public String changeUserRoleByAdmin(String adminEmail, String userEmail, String newRole) {
         Twitter2 admin = twitter2Repository.findByEmail(adminEmail);
         Twitter2 user = twitter2Repository.findByEmail(userEmail);
 
-        if (admin == null) {
+        if (!isAdminExists(admin)) {
             return "Admin user does not exist";
         }
 
-        if (!admin.getRole().equals("Admin")) {
+        if (!isAdminAuthorized(admin)) {
             return "This user is not authorized to change user roles";
         }
 
-        if (user == null) {
+        if (!isUserValid(user)) {
             return "User not found";
         }
 
-        if (!newRole.equals("Employee") && !newRole.equals("Student") && !newRole.equals("Admin")) {
+        if (!isRoleValid(newRole)) {
             return "Invalid role specified";
         }
+
 
         user.setRole(newRole);
         twitter2Repository.save(user);
