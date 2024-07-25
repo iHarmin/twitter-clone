@@ -13,4 +13,6 @@ import java.util.*;
 @Repository
 public interface Twitter2Repository extends JpaRepository<Twitter2, Integer> {
     Twitter2 findByEmail(String email);
+    List<Twitter2> findByRequestStatus(Twitter2.RequestStatus requestStatus);
 }
+

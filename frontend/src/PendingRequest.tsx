@@ -1,97 +1,99 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './PendingRequest.css';
 import Cookies from 'js-cookie';
 
-const PendingRequests: React.FC = () => {
-  const [pendingRequests, setPendingRequests] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+interface Twitter2 {
+    id: number;
+    email: string;
+    requestStatus: string;
+}
 
-  useEffect(() => {
-    // Fetch pending requests from the backend
-    const fetchPendingRequests = async () => {
-      try {
-        const response = await axios.get('/api/requests/pending', { 
-          headers: { 'Authorization': `Bearer ${Cookies.get('token')}` }
-        });
-        setPendingRequests(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching pending requests:', error);
-        setError('Failed to load pending requests');
-        setLoading(false);
-      }
+const PendingRequests: React.FC = () => {
+    const [pendingRequests, setPendingRequests] = useState<Twitter2[]>([]);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/users/pendingRequests')
+            .then(response => {
+                setPendingRequests(response.data);
+            })
+            .catch(err => {
+                setError('Error fetching pending requests');
+                console.error(err);
+            });
+    }, []);
+
+    const handleApprove = (id: number) => {
+        const adminEmail = 'vraj.patel@dal.ca'; // Replace with actual admin email or context value
+
+        axios.post(`http://localhost:8080/api/users/${id}/approve`, { adminEmail })
+            .then(response => {
+                alert(response.data);
+                // Refresh the list of pending requests
+                setPendingRequests(pendingRequests.filter(request => request.id !== id));
+            })
+            .catch(err => {
+                setError('Error approving request');
+                console.error(err);
+            });
     };
 
-    fetchPendingRequests();
-  }, []);
+    const handleReject = (id: number) => {
+        const adminEmail = 'vraj.patel@dal.ca'; // Replace with actual admin email or context value
 
-  const handleApprove = async (requestId: string) => {
-    try {
-      await axios.post(`/api/requests/approve/${requestId}`, {}, { 
-        headers: { 'Authorization': `Bearer ${Cookies.get('token')}` }
-      });
-      // Refresh the list after approval
-      setPendingRequests(pendingRequests.filter(request => request.id !== requestId));
-    } catch (error) {
-      console.error('Error approving request:', error);
-      alert('Failed to approve request');
+        axios.post(`http://localhost:8080/api/users/${id}/reject`, { adminEmail })
+            .then(response => {
+                alert(response.data);
+                // Refresh the list of pending requests
+                setPendingRequests(pendingRequests.filter(request => request.id !== id));
+            })
+            .catch(err => {
+                setError('Error rejecting request');
+                console.error(err);
+            });
+    };
+
+    // Get the user role from the cookie
+    const userRole = Cookies.get('role') || '';
+
+    if (userRole !== 'Admin') {
+        return <p>You do not have access to view this page.</p>;
     }
-  };
 
-  const handleReject = async (requestId: string) => {
-    try {
-      await axios.post(`/api/requests/reject/${requestId}`, {}, { 
-        headers: { 'Authorization': `Bearer ${Cookies.get('token')}` }
-      });
-      // Refresh the list after rejection
-      setPendingRequests(pendingRequests.filter(request => request.id !== requestId));
-    } catch (error) {
-      console.error('Error rejecting request:', error);
-      alert('Failed to reject request');
-    }
-  };
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
-  return (
-    <div className="container">
-      <h1>Pending Requests</h1>
-      {pendingRequests.length === 0 ? (
-        <p>No pending requests</p>
-      ) : (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>User</th>
-              <th>Request Type</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {pendingRequests.map((request, index) => (
-              <tr key={request.id}>
-                <td>{index + 1}</td>
-                <td>{request.user}</td>
-                <td>{request.type}</td>
-                <td>
-                  <button className="btn btn-success" onClick={() => handleApprove(request.id)}>Approve</button>
-                  <button className="btn btn-danger" onClick={() => handleReject(request.id)}>Reject</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
-  );
+    return (
+        <div>
+            <h1>Pending Requests</h1>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {pendingRequests.length === 0 ? (
+                <p>No pending requests found.</p>
+            ) : (
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {pendingRequests.map(request => (
+                            <tr key={request.id}>
+                                <td>{request.id}</td>
+                                <td>{request.email}</td>
+                                <td>{request.requestStatus}</td>
+                                <td>
+                                    <button onClick={() => handleApprove(request.id)}>Approve</button>
+                                    <button onClick={() => handleReject(request.id)}>Reject</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
+        </div>
+    );
 };
 
 export default PendingRequests;

@@ -27,8 +27,11 @@ public interface Twitter2Service {
 
     String removeUserByAdmin(String adminEmail, String userEmail);
 
+    boolean isAdmin(String email);
+
     String approveRequest(Long requestId, String adminEmail);
 
     String rejectRequest(Long requestId, String adminEmail);
 
+    List<Twitter2> getPendingRequests();
 }

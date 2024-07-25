@@ -11,7 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
 
     try {
@@ -35,6 +35,18 @@ const Login = () => {
       console.log(result);
       console.log('Success:', result);
 
+      // Check if the request is pending
+      if (result.requestStatus === 'PENDING') {
+        alert('Your request is pending. Please wait for approval before logging in.');
+        return;
+      }
+
+      if (result.requestStatus === 'REJECTED') {
+        alert('Your request is rejected. You cannot able to login');
+        return;
+      }
+
+      // Handle the admin check
       if (email === 'christian.simoneau@dal.ca' || email === 'moses.tong@dal.ca' || email === 'harmin.patel@dal.ca'
                 || email === 'maitri.vasoya@dal.ca' || email === 'vraj.patel@dal.ca' || email === 'simon.losier@dal.ca') {
         Cookies.set('adminEmail', result.email);
@@ -46,7 +58,7 @@ const Login = () => {
       Cookies.set('role', result.role); // Set the user role
       setIsLoggedIn(true);
 
-      if (result.role === 'admin') {
+      if (result.role === 'Admin') {
         navigate('/pending-requests'); // Navigate to the pending requests page if admin
       } else {
         navigate(`/profile/${result.id}`); // Redirect to the user's profile page if not admin

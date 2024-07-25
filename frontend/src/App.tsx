@@ -32,7 +32,7 @@ function App() {
             <Route path="*" element={<ErrorPage />} />
             <Route path="/addPerson" element={<AddPerson />}/>
             <Route path="/removePerson" element={<RemovePerson />}/>
-            <Route path="/pending-requests" Component={PendingRequests} />
+            <Route path="/PendingRequest" Component={PendingRequests} />
           </Routes>
         </div>
       </Router>

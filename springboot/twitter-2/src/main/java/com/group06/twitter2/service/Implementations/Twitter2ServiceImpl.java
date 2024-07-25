@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class Twitter2ServiceImpl implements Twitter2Service {
@@ -134,6 +135,11 @@ public class Twitter2ServiceImpl implements Twitter2Service {
     }
 
     @Override
+    public boolean isAdmin(String email) {
+        Twitter2 user = twitter2Repository.findByEmail(email);
+        return user != null && user.getRole() != null && user.getRole().equals("Admin");
+    }
+    @Override
     public String approveRequest(Long requestId, String adminEmail) {
         // Check if user is an admin
         if (!isAdmin(adminEmail)) {
@@ -170,4 +176,8 @@ public class Twitter2ServiceImpl implements Twitter2Service {
         return "Invalid user ID. User ID is not present";
     }
 
-}
+    public List<Twitter2> getPendingRequests() {
+        return twitter2Repository.findByRequestStatus(Twitter2.RequestStatus.PENDING);
+    }
+    }
+

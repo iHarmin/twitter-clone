@@ -5,6 +5,7 @@ import com.group06.twitter2.model.Twitter2;
 import com.group06.twitter2.service.Twitter2Service;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
@@ -80,5 +81,10 @@ public class Twitter2Controller {
         String adminEmail = userData.get("adminEmail");
         Long userId = id;
         return twitter2Service.rejectRequest(id, adminEmail);
+    }
+    @GetMapping("/pendingRequests")
+    public ResponseEntity<List<Twitter2>> getPendingRequests() {
+        List<Twitter2> pendingRequests = twitter2Service.getPendingRequests();
+        return ResponseEntity.ok(pendingRequests);
     }
 }
