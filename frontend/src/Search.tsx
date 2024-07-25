@@ -53,9 +53,14 @@ const Search = () => {
 
     const fetchGroups = async (searchTerm: string) => {
       try {
-        const response = await fetch(`http://localhost:8080/api/groups/search?term=${searchTerm}`);
+        const response = await fetch(`http://localhost:8080/api/groups/search?searchTerm=${searchTerm}`);
         const data = await response.json();
-        setGroupsResults(data);
+        const mappedData = data.map(group => ({
+          ...group,
+          status: group.public ? "Public" : "Private"
+        }));
+        setGroupsResults(mappedData);
+        console.log("Groups:", groupsResults);
       } catch (error) {
         console.error('Error fetching groups:', error);
       }
@@ -95,7 +100,8 @@ const Search = () => {
                   <ul className="list-group">
                     {peopleResults.map(user => (
                       <li key={user.id} className="list-group-item p-3">
-                        <Link to={`/profile/${user.id}`} className="text-decoration-none">
+                        <Link to={`/profile/${user.id}`}
+                              className="text-decoration-none">
                           <div>
                             <strong>Username:</strong> {user.userName}
                           </div>
@@ -122,7 +128,8 @@ const Search = () => {
                   <ul className="list-group">
                     {friendResults.map(friend => (
                       <li key={friend.id} className="list-group-item p-3">
-                        <Link to={`/profile/${friend.id}`} className="text-decoration-none">
+                        <Link to={`/profile/${friend.id}`}
+                              className="text-decoration-none">
                           <div>
                             <strong>Username:</strong> {friend.userName}
                           </div>
@@ -149,15 +156,15 @@ const Search = () => {
                   <ul className="list-group">
                     {groupsResults.map(group => (
                       <li key={group.id} className="list-group-item p-3">
-                        <div>
-                          <strong>Name:</strong> {group.name}
-                        </div>
-                        <div>
-                          <strong>Status:</strong> {group.isPublic}
-                        </div>
-                        <div>
-                          <strong>Interests:</strong> {group.interests}
-                        </div>
+                        <Link to={`/group/${group.id}`}
+                              className="text-decoration-none">
+                          <div>
+                            <strong>Name:</strong> {group.groupName}
+                          </div>
+                          <div>
+                            <strong>Status:</strong> {group.status}
+                          </div>
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -174,15 +181,15 @@ const Search = () => {
                   <ul className="list-group">
                     {groupsResults.map(group => (
                       <li key={group.id} className="list-group-item p-3">
-                        <div>
-                          <strong>Name:</strong> {group.name}
-                        </div>
-                        <div>
-                          <strong>Status:</strong> {group.isPublic}
-                        </div>
-                        <div>
-                          <strong>Interests:</strong> {group.interests}
-                        </div>
+                        <Link to={`/group/${group.id}`}
+                              className="text-decoration-none">
+                          <div>
+                            <strong>Name:</strong> {group.groupName}
+                          </div>
+                          <div>
+                            <strong>Status:</strong> {group.status}
+                          </div>
+                        </Link>
                       </li>
                     ))}
                   </ul>
