@@ -66,6 +66,21 @@ const Search = () => {
       }
     };
 
+    const fetchMyGroups = async (userID: string) => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/groups/user/${userID}/groups`);
+        const data = await response.json();
+        const mappedData = data.map(group => ({
+          ...group,
+          status: group.public ? "Public" : "Private"
+        }));
+        setGroupsResults(mappedData);
+        console.log("My Groups:", groupsResults);
+      } catch (error) {
+        console.error('Error fetching my groups:', error);
+      }
+    }
+
     const handleSearchChange = (e) => {
       const searchTerm = e.target.value;
       setSearchTerm(searchTerm);
@@ -77,6 +92,7 @@ const Search = () => {
       await fetchPeople(searchTerm);
       await fetchFriends(searchTerm);
       await fetchGroups(searchTerm);
+      await fetchMyGroups(currentUserID);
     }
 
     return (
@@ -181,8 +197,7 @@ const Search = () => {
                   <ul className="list-group">
                     {groupsResults.map(group => (
                       <li key={group.id} className="list-group-item p-3">
-                        <Link to={`/group/${group.id}`}
-                              className="text-decoration-none">
+                        <Link to={`/group/${group.id}`} className="text-decoration-none">
                           <div>
                             <strong>Name:</strong> {group.groupName}
                           </div>
