@@ -1,5 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
-// import Home from "./Home.tsx";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
