@@ -45,6 +45,12 @@ public class Twitter2Controller {
         return twitter2Service.resetPassword(email, recoveryAnswer, newPassword);
     }
 
+    @PostMapping("/{id}/status")
+    public String updateUserStatus(@PathVariable("id") int id, @RequestBody Map<String, String> body) {
+        String status = body.get("status");
+        return twitter2Service.updateUserStatus(id, status);
+    }
+
     @PostMapping("/checkPasswordValid")
     public Twitter2 checkPasswordValid(@RequestParam String email, @RequestParam String password) {
         return twitter2Service.checkPasswordValid(email, password);
@@ -89,5 +95,19 @@ public class Twitter2Controller {
     public ResponseEntity<List<Twitter2>> getPendingRequests() {
         List<Twitter2> pendingRequests = twitter2Service.getPendingRequests();
         return ResponseEntity.ok(pendingRequests);
+    }
+
+    @PostMapping("/changeUserRoleByAdmin")
+    public String changeUserRoleByAdmin(@RequestBody Map<String, String> userData) {
+        String adminEmail = userData.get("adminEmail");
+        String userEmail = userData.get("userEmail");
+        String newRole = userData.get("newRole");
+        String result = twitter2Service.changeUserRoleByAdmin(adminEmail, userEmail, newRole);
+        return result;
+    }
+
+    @GetMapping("/search")
+    public List<Twitter2> searchUsers (@RequestParam String searchTerm){
+        return twitter2Service.searchUsers(searchTerm);
     }
 }
