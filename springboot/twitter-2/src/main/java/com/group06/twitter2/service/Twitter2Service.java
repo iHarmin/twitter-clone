@@ -27,4 +27,6 @@ public interface Twitter2Service {
 
     String changeUserRoleByAdmin(String adminEmail, String userEmail, String newRole);
 
+    List<Twitter2> searchUsers(String searchTerm);
+
 }

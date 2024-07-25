@@ -16,10 +16,11 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.ArrayList;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
@@ -51,6 +52,99 @@ public class Twitter2ServiceTest {
 
         assertEquals("Invalid email address", result);
     }
+
+    @Test
+    public void getUserByIDTest_Successful() {
+        Twitter2 twitter2 = new Twitter2();
+        twitter2.setId(0);
+        int id = 0;
+        when(twitter2Repository.findById(id)).thenReturn(Optional.of(twitter2));
+        Twitter2 twitter3 = twitter2Service.getUserByID(0);
+        assertEquals(twitter3, twitter2);
+    }
+
+    @Test
+    public void getUserByIDTest_NotFound() {
+        int id = 0;
+        when(twitter2Repository.findById(id)).thenReturn(Optional.empty());
+        boolean error = false;
+        try {
+            twitter2Service.getUserByID(0);
+        } catch (RuntimeException e) {
+            error = true;
+            assertEquals("Customer not found with id: 0", e.getMessage());
+        }
+        assert(error);
+    }
+
+    @Test
+    public void updateUserStatusTest_Successful() {
+        Twitter2 twitter2 = new Twitter2();
+        twitter2.setStatus("inactive");
+
+        when(twitter2Repository.save(twitter2)).thenReturn(twitter2);
+        when(twitter2Repository.findById(twitter2.getId())).thenReturn(Optional.of(twitter2));
+
+        twitter2Service.updateUserStatus(twitter2.getId(), "active");
+        assertEquals("active", twitter2.getStatus());
+    }
+
+    @Test
+    public void updateUserStatusTest_UserNotFound() {
+        int id = 0;
+        when(twitter2Repository.findById(id)).thenReturn(Optional.empty());
+        String output = twitter2Service.updateUserStatus(id, "active");
+        assertEquals("User not found with id: 0", output);
+    }
+
+    @Test
+    public void updateUserInformationTest_successful() {
+        Twitter2 user = new Twitter2();
+
+        int id = user.getId();
+        when(twitter2Repository.findById(id)).thenReturn(Optional.of(user));
+        String output = twitter2Service.updateUserInformation(id, "Name", "Lname", "email@example.ca", "Interest");
+        assertEquals("User information updated successfully", output);
+        assertEquals(user.getEmail(), "email@example.ca");
+    }
+
+    @Test
+    public void updateUserInformationTest_UserNotFound() {
+        int id = 0;
+        when(twitter2Repository.findById(id)).thenReturn(Optional.empty());
+        String output = twitter2Service.updateUserInformation(id, "Name", "Lname", "email@example.ca", "Interest");
+        assertEquals("User not found", output);
+    }
+    @Test
+    public void resetPasswordTest_Successful() {
+        Twitter2 twitter2 = new Twitter2();
+        twitter2.setRecoveryAnswer("answer");
+        twitter2.setPassword("OldPassword");
+        twitter2.setEmail("name@example.com");
+        when(twitter2Repository.findByEmail(twitter2.getEmail())).thenReturn(twitter2);
+
+        String output = twitter2Service.resetPassword(twitter2.getEmail(), twitter2.getRecoveryAnswer(), "NewPassword");
+        assertEquals("New password set", output);
+        assertEquals(twitter2.getPassword(), "NewPassword");
+    }
+
+    @Test
+    public void resetPasswordTest_WrongAnswer() {
+        Twitter2 twitter2 = new Twitter2();
+        twitter2.setRecoveryAnswer("answer");
+        twitter2.setPassword("OldPassword");
+        twitter2.setEmail("name@example.com");
+        when(twitter2Repository.findByEmail(twitter2.getEmail())).thenReturn(twitter2);
+
+        String output = twitter2Service.resetPassword(twitter2.getEmail(), "wrong answer", "NewPassword");
+        assertEquals("Wrong security answer", output);
+    }
+
+    @Test
+    public void resetPasswordTest_NoUser() {
+
+    }
+
 
     @Test
     public void addUserByAdmin_AdminAddsUserSuccessfully() {
@@ -126,6 +220,7 @@ public class Twitter2ServiceTest {
     }
 
     @Test
+
     public void changeUserRoleByAdmin_AdminChangesRoleSuccessfully() {
         Twitter2 adminUser = new Twitter2(1, "adminUser", "admin@dal.ca", "adminPass", "FirstName", "LastName", "recAnswer", "intAdmin", "active", "Admin");
         Twitter2 user = new Twitter2(2, "user", "user@dal.ca", "userPass", "FirstName", "LastName", "recAnswer", "intUser", "active", "Student");
@@ -176,6 +271,60 @@ public class Twitter2ServiceTest {
         assertEquals("Invalid role specified", result);
     }
 
+    public void checkPasswordValidTest_successful() {
+        Twitter2 user = new Twitter2();
+        user.setPassword("password");
+        user.setEmail("user@dal.ca");
+        when(twitter2Repository.findByEmail("user@dal.ca")).thenReturn(user);
+        Twitter2 output = twitter2Service.checkPasswordValid("user@dal.ca", "password");
+        assertEquals(output, user);
+    }
+
+    @Test
+    public void checkPasswordValidTest_WrongPassword() {
+        Twitter2 user = new Twitter2();
+        user.setPassword("password");
+        user.setEmail("user@dal.ca");
+        when(twitter2Repository.findByEmail("user@dal.ca")).thenReturn(user);
+        Twitter2 output = twitter2Service.checkPasswordValid("user@dal.ca", "password1");
+        assertNull(output);
+    }
 
 
+
+    @Test
+    public void searchUser_ByUserName() {
+        Twitter2 twitter2 = new Twitter2(0, "UserName0", "n0@dal.ca", "password0", "FName0",
+                "LName0", "rec0", "int0", "active", "Student");
+        String searchTerm = "UserName0";
+
+        when(twitter2Repository.searchByUserNameOrEmailOrInterests(searchTerm)).thenReturn(List.of(twitter2));
+        List<Twitter2> result = twitter2Service.searchUsers(searchTerm);
+
+        assertEquals("UserName0", result.get(0).getUserName());
+    }
+
+    @Test
+    public void searchUser_ByEmail() {
+        Twitter2 twitter2 = new Twitter2(0, "UserName0", "n0@dal.ca", "password0", "FName0",
+                "LName0", "rec0", "int0", "active", "Student");
+        String searchTerm = "n0@dal.ca";
+
+        when(twitter2Repository.searchByUserNameOrEmailOrInterests(searchTerm)).thenReturn(List.of(twitter2));
+        List<Twitter2> result = twitter2Service.searchUsers(searchTerm);
+
+        assertEquals("n0@dal.ca", result.get(0).getEmail());
+    }
+
+    @Test
+    public void searchUser_ByInterests() {
+        Twitter2 twitter2 = new Twitter2(0, "UserName0", "n0@dal.ca", "password0", "FName0",
+                "LName0", "rec0", "reading", "active", "Student");
+        String searchTerm = "reading";
+
+        when(twitter2Repository.searchByUserNameOrEmailOrInterests(searchTerm)).thenReturn(List.of(twitter2));
+        List<Twitter2> result = twitter2Service.searchUsers(searchTerm);
+
+        assertEquals("reading", result.get(0).getPersonalInterests());
+    }
 }

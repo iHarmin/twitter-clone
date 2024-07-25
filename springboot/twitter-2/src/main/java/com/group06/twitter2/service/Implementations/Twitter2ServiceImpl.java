@@ -75,7 +75,7 @@ public class Twitter2ServiceImpl implements Twitter2Service {
             twitter2Repository.save(user);
             return "New password set";
         } else {
-            return "Wrong security answer try";
+            return "Wrong security answer";
         }
     }
 
@@ -158,6 +158,8 @@ public class Twitter2ServiceImpl implements Twitter2Service {
         return "User role updated successfully";
     }
 
-
+    public List<Twitter2> searchUsers(String searchTerm) {
+        return twitter2Repository.searchByUserNameOrEmailOrInterests(searchTerm);
+    }
 
 }

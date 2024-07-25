@@ -17,7 +17,7 @@ public class Twitter2Controller {
     Twitter2Service twitter2Service;
 
     @PostMapping("/save")
-    public String saveUserProfile(@RequestBody Twitter2 twitter2){
+    public String saveUserProfile(@RequestBody Twitter2 twitter2) {
         return twitter2Service.createUser(twitter2);
     }
 
@@ -32,7 +32,7 @@ public class Twitter2Controller {
     }
 
     @GetMapping("/{id}")
-    public Twitter2 getUserById(@PathVariable("id") int id){
+    public Twitter2 getUserById(@PathVariable("id") int id) {
         return twitter2Service.getUserByID(id);
     }
 
@@ -66,7 +66,7 @@ public class Twitter2Controller {
     }
 
     @PostMapping("/removeUserByAdmin")
-    public String removeUserByAdmin(@RequestBody Map<String, String> userData){
+    public String removeUserByAdmin(@RequestBody Map<String, String> userData) {
         String adminEmail = userData.get("adminEmail");
         String userEmail = userData.get("userEmail");
         return twitter2Service.removeUserByAdmin(adminEmail, userEmail);
@@ -74,10 +74,17 @@ public class Twitter2Controller {
 
     @PostMapping("/changeUserRoleByAdmin")
     public String changeUserRoleByAdmin(@RequestBody Map<String, String> userData) {
-            String adminEmail = userData.get("adminEmail");
-            String userEmail = userData.get("userEmail");
-            String newRole = userData.get("newRole");
-            String result = twitter2Service.changeUserRoleByAdmin(adminEmail, userEmail, newRole);
-            return result;
+        String adminEmail = userData.get("adminEmail");
+        String userEmail = userData.get("userEmail");
+        String newRole = userData.get("newRole");
+        String result = twitter2Service.changeUserRoleByAdmin(adminEmail, userEmail, newRole);
+        return result;
+    }
+
+        @GetMapping("/search")
+        public List<Twitter2> searchUsers (@RequestParam String searchTerm){
+            return twitter2Service.searchUsers(searchTerm);
+
+
     }
 }
