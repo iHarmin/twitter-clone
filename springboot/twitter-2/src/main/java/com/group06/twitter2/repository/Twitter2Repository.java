@@ -13,9 +13,11 @@ public interface Twitter2Repository extends JpaRepository<Twitter2, Integer> {
 
     Twitter2 findByEmail(String email);
 
+    List<Twitter2> findByRequestStatus(Twitter2.RequestStatus requestStatus);
+
     @Query("SELECT t FROM Twitter2 t WHERE " +
-       "LOWER(t.userName) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
-       "LOWER(t.email) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
-       "LOWER(t.personalInterests) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
+            "LOWER(t.userName) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
+            "LOWER(t.email) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
+            "LOWER(t.personalInterests) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
     List<Twitter2> searchByUserNameOrEmailOrInterests(@Param("searchTerm") String searchTerm);
 }

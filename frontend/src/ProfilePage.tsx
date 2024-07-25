@@ -57,7 +57,7 @@ const ProfilePage: React.FC = () => {
       try {
         const friendsResponse = await fetch(`http://localhost:8080/api/friends/${profileID}`);
         const friendsData = await friendsResponse.json();
-        setFriends(friendsData.map(friendship => ({
+        setFriends(friendsData.map((friendship: { user2: { id: any; userName: any; firstName: any; lastName: any; email: any; }; }) => ({
           userID: friendship.user2.id,
           userName: friendship.user2.userName,
           firstName: friendship.user2.firstName,

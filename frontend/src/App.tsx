@@ -15,6 +15,7 @@ import Signup from "./Signup.tsx";
 import AddPerson from './addPerson.tsx';
 import ErrorPage from './errorpage.tsx';
 import RemovePerson from './removePerson.tsx';
+import PendingRequests from './PendingRequest';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -37,6 +38,7 @@ function App() {
             <Route path="*" element={<ErrorPage />} />
             <Route path="/addPerson" element={<AddPerson />}/>
             <Route path="/removePerson" element={<RemovePerson />}/>
+            <Route path="/PendingRequest" Component={PendingRequests} />
             <Route path="/ChangeRole" element={<ChangeRole />}/>
           </Routes>
         </div>
