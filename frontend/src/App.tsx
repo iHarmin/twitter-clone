@@ -1,20 +1,20 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import ProfilePage from './ProfilePage';
-import NavBar from './NavBar';
-import 'bootstrap/dist/css/bootstrap.min.css'
-import Login from "./Login.tsx";
-import Signup from "./Signup.tsx";
-import Home from "./Home.tsx";
-import ForgotPassword from "./ForgotPassword";
-import ErrorPage from './errorpage.tsx';
-import {AuthContext} from './AuthContext.tsx';
-import  Feed from './Feed.tsx'
-import {useState} from 'react';
-import Search from "./Search.tsx";
-import AddPerson from './addPerson.tsx';
-import RemovePerson from './removePerson.tsx';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useState } from 'react';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { AuthContext } from './AuthContext.tsx';
+import ChangeRole from './ChangeRole.tsx';
 import CreateGroup from './CreateGroup.tsx';
+import Feed from './Feed.tsx';
+import ForgotPassword from "./ForgotPassword";
 import GroupDetail from './GroupDetail.tsx';
+import Login from "./Login.tsx";
+import NavBar from './NavBar';
+import ProfilePage from './ProfilePage';
+import Search from "./Search.tsx";
+import Signup from "./Signup.tsx";
+import AddPerson from './addPerson.tsx';
+import ErrorPage from './errorpage.tsx';
+import RemovePerson from './removePerson.tsx';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -37,6 +37,7 @@ function App() {
             <Route path="*" element={<ErrorPage />} />
             <Route path="/addPerson" element={<AddPerson />}/>
             <Route path="/removePerson" element={<RemovePerson />}/>
+            <Route path="/ChangeRole" element={<ChangeRole />}/>
           </Routes>
         </div>
       </Router>

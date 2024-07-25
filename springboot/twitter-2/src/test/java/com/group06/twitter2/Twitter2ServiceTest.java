@@ -220,6 +220,57 @@ public class Twitter2ServiceTest {
     }
 
     @Test
+
+    public void changeUserRoleByAdmin_AdminChangesRoleSuccessfully() {
+        Twitter2 adminUser = new Twitter2(1, "adminUser", "admin@dal.ca", "adminPass", "FirstName", "LastName", "recAnswer", "intAdmin", "active", "Admin");
+        Twitter2 user = new Twitter2(2, "user", "user@dal.ca", "userPass", "FirstName", "LastName", "recAnswer", "intUser", "active", "Student");
+
+        when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
+        when(twitter2Repository.findByEmail("user@dal.ca")).thenReturn(user);
+
+        String result = twitter2Service.changeUserRoleByAdmin("admin@dal.ca", "user@dal.ca", "Employee");
+
+        assertEquals("User role updated successfully", result);
+        assertEquals("Employee", user.getRole());
+    }
+
+    @Test
+    public void changeUserRoleByAdmin_NonAdminCannotChangeRole() {
+        Twitter2 nonAdminUser = new Twitter2(1, "nonAdminUser", "nonAdmin@dal.ca", "userPass", "FirstName", "LastName", "recAnswer", "intUser", "active", "Student");
+        Twitter2 user = new Twitter2(2, "user", "user@dal.ca", "userPass", "FirstName", "LastName", "recAnswer", "intUser", "active", "Student");
+
+        when(twitter2Repository.findByEmail("nonAdmin@dal.ca")).thenReturn(nonAdminUser);
+
+        String result = twitter2Service.changeUserRoleByAdmin("nonAdmin@dal.ca", "user@dal.ca", "Employee");
+
+        assertEquals("This user is not authorized to change user roles", result);
+    }
+
+    @Test
+    public void changeUserRoleByAdmin_UserNotFound() {
+        Twitter2 adminUser = new Twitter2(1, "adminUser", "admin@dal.ca", "adminPass", "FirstName", "LastName", "recAnswer", "intAdmin", "active", "Admin");
+
+        when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
+        when(twitter2Repository.findByEmail("user@dal.ca")).thenReturn(null);
+
+        String result = twitter2Service.changeUserRoleByAdmin("admin@dal.ca", "user@dal.ca", "Employee");
+
+        assertEquals("User not found", result);
+    }
+
+    @Test
+    public void changeUserRoleByAdmin_InvalidRoleSpecified() {
+        Twitter2 adminUser = new Twitter2(1, "adminUser", "admin@dal.ca", "adminPass", "FirstName", "LastName", "recAnswer", "intAdmin", "active", "Admin");
+        Twitter2 user = new Twitter2(2, "user", "user@dal.ca", "userPass", "FirstName", "LastName", "recAnswer", "intUser", "active", "Student");
+
+        when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
+        when(twitter2Repository.findByEmail("user@dal.ca")).thenReturn(user);
+
+        String result = twitter2Service.changeUserRoleByAdmin("admin@dal.ca", "user@dal.ca", "InvalidRole");
+
+        assertEquals("Invalid role specified", result);
+    }
+
     public void checkPasswordValidTest_successful() {
         Twitter2 user = new Twitter2();
         user.setPassword("password");
@@ -239,25 +290,7 @@ public class Twitter2ServiceTest {
         assertNull(output);
     }
 
-    @Test
-    public void updateUserRoleTest_successful() {
-        Twitter2 user = new Twitter2();
-        int id = user.getId();
 
-        when(twitter2Repository.findById(id)).thenReturn(Optional.of(user));
-        String output = twitter2Service.updateUserRole(id, "admin");
-
-        assertEquals("User role updated successfully", output);
-        assertEquals("admin", user.getRole());
-    }
-
-    @Test
-    public void updateUserRoleTest_userNotFound() {
-        int id = 0;
-        when(twitter2Repository.findById(id)).thenReturn(Optional.empty());
-        String output = twitter2Service.updateUserRole(0, "admin");
-        assertEquals("User not found", output);
-    }
 
     @Test
     public void searchUser_ByUserName() {

@@ -1,9 +1,7 @@
-import {useContext, useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {useParams} from 'react-router-dom';
-import {AuthContext} from "./AuthContext.tsx";
-import {useNavigate} from 'react-router-dom';
 import Cookies from "js-cookie";
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const ProfilePage: React.FC = () => {
 
@@ -275,6 +273,10 @@ const ProfilePage: React.FC = () => {
     navigate('/removePerson');
   };
 
+  const handleChangeRoleClick = () => {
+    navigate('/ChangeRole');
+  };
+
   // Form for entering name, email, and interests
   // Username cannot be changed
   return (
@@ -429,8 +431,13 @@ const ProfilePage: React.FC = () => {
                   </p>
                   <p>
                     <button type="submit"
-                            onClick={handleRemovePersonClick}>Remove
-                      Person
+                            onClick={handleRemovePersonClick}>Remove Person
+                    </button>
+                  </p>
+
+                  <p>
+                    <button type="submit"
+                            onClick={handleChangeRoleClick}>Change Role
                     </button>
                   </p>
                 </div>
