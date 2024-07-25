@@ -58,7 +58,7 @@ const ChangeRole: React.FC = () => {
         <label htmlFor="email">Existing user's email:</label>
         <input type="email" id="userEmail" value={userEmail} onChange={handleEmailChange} required/>
 
-        <label htmlFor="newRole">New Role:</label>
+        <label htmlFor="newRole">New Role (Employee OR Student):</label>
         <input type="text" id="newRole" value={newRole} onChange={handleNewRoleChange} required />
 
         {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}

@@ -3,12 +3,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { AuthContext } from './AuthContext.tsx';
-import ChangeRole from './ChangeRole';
+import ChangeRole from './ChangeRole.tsx';
 import Feed from './Feed.tsx';
-import ForgotPassword from "./ForgotPassword";
+import ForgotPassword from "./ForgotPassword.tsx";
 import Login from "./Login.tsx";
-import NavBar from './NavBar';
-import ProfilePage from './ProfilePage';
+import NavBar from './NavBar.tsx';
+import ProfilePage from './ProfilePage.tsx';
 import Signup from "./Signup.tsx";
 import AddPerson from './addPerson.tsx';
 import ErrorPage from './errorpage.tsx';
@@ -31,7 +31,7 @@ function App() {
             <Route path="*" element={<ErrorPage />} />
             <Route path="/addPerson" element={<AddPerson />}/>
             <Route path="/removePerson" element={<RemovePerson />}/>
-            <Route path="/changeRole" element={<ChangeRole />} />
+            <Route path="/ChangeRole" element={<ChangeRole />} />
           </Routes>
         </div>
       </Router>
