@@ -53,14 +53,8 @@ public class Twitter2ServiceImpl implements Twitter2Service {
     }
 
     @Override
-<<<<<<< HEAD
-    public String updateUserInformation(int id, String firstName, String lastName, String email,
-            String personalInterests) {
-        Optional<Twitter2> userOpt = twitter2Repository.findById(id);
-=======
     public String updateUserInformation(UserDTO userDTO) {
         Optional<Twitter2> userOpt = twitter2Repository.findById(userDTO.getId());
->>>>>>> 4bfe7736c65de7b8b92db83a66425d6018a27e48
         if (userOpt.isPresent()) {
             Twitter2 user = userOpt.get();
             user.setFirstName(userDTO.getFirstName());
@@ -73,7 +67,6 @@ public class Twitter2ServiceImpl implements Twitter2Service {
             return "User not found";
         }
     }
-
 
     @Override
     public String resetPassword(String email, String recoveryAnswer, String newPassword) {
@@ -222,7 +215,6 @@ public class Twitter2ServiceImpl implements Twitter2Service {
         if (!isRoleValid(newRole)) {
             return "Invalid role specified";
         }
-
 
         user.setRole(newRole);
         twitter2Repository.save(user);

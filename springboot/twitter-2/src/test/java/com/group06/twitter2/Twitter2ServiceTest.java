@@ -1,10 +1,7 @@
 package com.group06.twitter2;
 
-<<<<<<< HEAD
-=======
 import com.group06.twitter2.model.Post;
 import com.group06.twitter2.DTO.UserDTO;
->>>>>>> 4bfe7736c65de7b8b92db83a66425d6018a27e48
 import com.group06.twitter2.model.Twitter2;
 import com.group06.twitter2.repository.Twitter2Repository;
 import com.group06.twitter2.service.Implementations.Twitter2ServiceImpl;
