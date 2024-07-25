@@ -4,14 +4,14 @@ import React, { useState } from 'react';
 import './App.css';
 
 const ChangeRole: React.FC = () => {
-  const [username, setUsername] = useState('');
+  const [userEmail, setEmail] = useState('');
   const [newRole, setNewRole] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const adminEmail = Cookies.get('adminEmail') || '';
 
-  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
-  };
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+};
 
   const handleNewRoleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewRole(event.target.value);
@@ -21,10 +21,12 @@ const ChangeRole: React.FC = () => {
     event.preventDefault();
 
     const user = {
-      username: username,
+      userEmail: userEmail,
       newRole: newRole,
       adminEmail: adminEmail,
     };
+
+    console.log(user);
 
     try {
       const serverResponse = await fetch(`http://localhost:8080/api/users/changeUserRoleByAdmin`, {
@@ -53,8 +55,8 @@ const ChangeRole: React.FC = () => {
       <h1>Change User Role</h1>
       <form onSubmit={handleSubmit}>
 
-        <label htmlFor="username">Username:</label>
-        <input type="text" id="username" value={username} onChange={handleUsernameChange} required />
+        <label htmlFor="email">Existing user's email:</label>
+        <input type="email" id="userEmail" value={userEmail} onChange={handleEmailChange} required/>
 
         <label htmlFor="newRole">New Role:</label>
         <input type="text" id="newRole" value={newRole} onChange={handleNewRoleChange} required />
