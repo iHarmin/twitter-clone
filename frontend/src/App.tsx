@@ -35,6 +35,8 @@ function App() {
             <Route path="/profile/:profileID" element={<ProfilePage />} />
             <Route path="/feed" element={<Feed />} />
             <Route path="*" element={<ErrorPage />} />
+            <Route path="/addPerson" element={<AddPerson />}/>
+            <Route path="/removePerson" element={<RemovePerson />}/>
           </Routes>
         </div>
       </Router>

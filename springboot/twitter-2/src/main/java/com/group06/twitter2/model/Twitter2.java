@@ -19,6 +19,7 @@ public class Twitter2 {
     private String recoveryAnswer;
     private String personalInterests;
     private String status;
+    private String role;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
@@ -27,7 +28,7 @@ public class Twitter2 {
     public Twitter2() {
     }
 
-    public Twitter2(int id, String userName, String email, String password, String firstName, String lastName, String recoveryAnswer, String personalInterests, String status) {
+    public Twitter2(int id, String userName, String email, String password, String firstName, String lastName, String recoveryAnswer, String personalInterests, String status, String role) {
         this.id = id;
         this.userName = userName;
         this.email = email;
@@ -37,6 +38,7 @@ public class Twitter2 {
         this.recoveryAnswer = recoveryAnswer;
         this.personalInterests = personalInterests;
         this.status = status;
+        this.role = role;
     }
 
     public int getId() {
@@ -109,5 +111,13 @@ public class Twitter2 {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
