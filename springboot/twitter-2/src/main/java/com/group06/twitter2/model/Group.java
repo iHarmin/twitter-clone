@@ -21,8 +21,7 @@ public class Group {
     @OneToMany(mappedBy = "group")
     private Set<GroupRequest> requests;
 
-    public Group() {
-    }
+    public Group() {}
 
     public Group(String groupName, boolean isPublic) {
         this.groupName = groupName;
