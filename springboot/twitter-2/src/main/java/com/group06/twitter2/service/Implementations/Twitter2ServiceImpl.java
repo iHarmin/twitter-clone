@@ -6,6 +6,7 @@ import com.group06.twitter2.repository.FriendshipRepository;
 import com.group06.twitter2.service.Twitter2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.group06.twitter2.DTO.UserDTO;
 
 import java.util.*;
 @Service
@@ -51,21 +52,21 @@ public class Twitter2ServiceImpl implements Twitter2Service {
     }
 
     @Override
-    public String updateUserInformation(int id, String firstName, String lastName, String email,
-                                        String personalInterests) {
-        Optional<Twitter2> userOpt = twitter2Repository.findById(id);
+    public String updateUserInformation(UserDTO userDTO) {
+        Optional<Twitter2> userOpt = twitter2Repository.findById(userDTO.getId());
         if (userOpt.isPresent()) {
             Twitter2 user = userOpt.get();
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
-            user.setEmail(email);
-            user.setPersonalInterests(personalInterests);
+            user.setFirstName(userDTO.getFirstName());
+            user.setLastName(userDTO.getLastName());
+            user.setEmail(userDTO.getEmail());
+            user.setPersonalInterests(userDTO.getPersonalInterests());
             twitter2Repository.save(user);
             return "User information updated successfully";
         } else {
             return "User not found";
         }
     }
+
 
     @Override
     public String resetPassword(String email, String recoveryAnswer, String newPassword) {

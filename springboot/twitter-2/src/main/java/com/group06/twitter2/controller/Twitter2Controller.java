@@ -2,6 +2,7 @@ package com.group06.twitter2.controller;
 
 
 import com.group06.twitter2.model.Twitter2;
+import com.group06.twitter2.DTO.UserDTO;
 import com.group06.twitter2.service.Twitter2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,8 @@ public class Twitter2Controller {
         String lastName = body.get("lastName");
         String email = body.get("email");
         String interests = body.get("interests");
-        return twitter2Service.updateUserInformation(id, firstName, lastName, email, interests);
+        UserDTO userDTO = new UserDTO(id, firstName, lastName, email, interests);
+        return twitter2Service.updateUserInformation(userDTO);
     }
 
     @GetMapping("/{id}")
