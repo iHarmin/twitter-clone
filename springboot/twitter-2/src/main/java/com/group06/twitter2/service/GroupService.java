@@ -8,4 +8,5 @@ public interface GroupService {
     ArrayList<Group> getGroups();
     Group getGroup(int id);
     Group createGroup(Group group);
+    ArrayList<Group> searchGroups(String searchTerm);
 }
