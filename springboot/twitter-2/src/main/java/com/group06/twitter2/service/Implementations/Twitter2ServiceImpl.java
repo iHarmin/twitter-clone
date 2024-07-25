@@ -141,11 +141,15 @@ public class Twitter2ServiceImpl implements Twitter2Service {
         }
 
         if (!admin.getRole().equals("Admin")) {
-            return "This user is not authorized to change roles";
+            return "This user is not authorized to change user roles";
         }
 
         if (user == null) {
-            return "User does not exist with this email";
+            return "User not found";
+        }
+
+        if (!newRole.equals("Employee") && !newRole.equals("Student") && !newRole.equals("Admin")) {
+            return "Invalid role specified";
         }
 
         user.setRole(newRole);
@@ -153,6 +157,7 @@ public class Twitter2ServiceImpl implements Twitter2Service {
 
         return "User role updated successfully";
     }
+
 
 
 }

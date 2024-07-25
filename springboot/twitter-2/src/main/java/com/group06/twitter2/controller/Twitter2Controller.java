@@ -73,18 +73,11 @@ public class Twitter2Controller {
     }
 
     @PostMapping("/changeUserRoleByAdmin")
-    public ResponseEntity<String> changeUserRoleByAdmin(@RequestBody Map<String, String> userData) {
-        try {
+    public String changeUserRoleByAdmin(@RequestBody Map<String, String> userData) {
             String adminEmail = userData.get("adminEmail");
             String userEmail = userData.get("userEmail");
             String newRole = userData.get("newRole");
-
             String result = twitter2Service.changeUserRoleByAdmin(adminEmail, userEmail, newRole);
-            return ResponseEntity.ok(result);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
-        }
+            return result;
     }
-
-
 }
