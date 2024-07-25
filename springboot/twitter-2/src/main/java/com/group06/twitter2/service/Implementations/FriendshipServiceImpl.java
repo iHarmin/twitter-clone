@@ -27,6 +27,7 @@ public class FriendshipServiceImpl implements FriendshipService {
         if (userOpt.isPresent() && friendOpt.isPresent()) {
             Twitter2 user = userOpt.get();
             Twitter2 friend = friendOpt.get();
+            Friendship friendship = friendshipRepository.findFriendshipBetweenUsers(user, friend);
             if (friendshipRepository.findFriendshipBetweenUsers(user, friend) == null) {
                 Friendship f = new Friendship();
                 f.setUser1(user);

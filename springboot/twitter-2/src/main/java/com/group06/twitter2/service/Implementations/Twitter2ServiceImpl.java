@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class Twitter2ServiceImpl implements Twitter2Service {
@@ -77,7 +76,7 @@ public class Twitter2ServiceImpl implements Twitter2Service {
             twitter2Repository.save(user);
             return "New password set";
         } else {
-            return "Wrong security answer try";
+            return "Wrong security answer";
         }
     }
 
@@ -139,6 +138,7 @@ public class Twitter2ServiceImpl implements Twitter2Service {
         Twitter2 user = twitter2Repository.findByEmail(email);
         return user != null && user.getRole() != null && user.getRole().equals("Admin");
     }
+
     @Override
     public String approveRequest(Long requestId, String adminEmail) {
         // Check if user is an admin
@@ -179,5 +179,35 @@ public class Twitter2ServiceImpl implements Twitter2Service {
     public List<Twitter2> getPendingRequests() {
         return twitter2Repository.findByRequestStatus(Twitter2.RequestStatus.PENDING);
     }
+
+    public String changeUserRoleByAdmin(String adminEmail, String userEmail, String newRole) {
+        Twitter2 admin = twitter2Repository.findByEmail(adminEmail);
+        Twitter2 user = twitter2Repository.findByEmail(userEmail);
+
+        if (admin == null) {
+            return "Admin user does not exist";
+        }
+
+        if (!admin.getRole().equals("Admin")) {
+            return "This user is not authorized to change user roles";
+        }
+
+        if (user == null) {
+            return "User not found";
+        }
+
+        if (!newRole.equals("Employee") && !newRole.equals("Student") && !newRole.equals("Admin")) {
+            return "Invalid role specified";
+        }
+
+        user.setRole(newRole);
+        twitter2Repository.save(user);
+
+        return "User role updated successfully";
     }
 
+    public List<Twitter2> searchUsers(String searchTerm) {
+        return twitter2Repository.searchByUserNameOrEmailOrInterests(searchTerm);
+    }
+
+}

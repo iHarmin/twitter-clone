@@ -1,12 +1,6 @@
 package com.group06.twitter2.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.group06.twitter2.model.Post;
 import com.group06.twitter2.model.Twitter2;
-
-import java.nio.file.AccessDeniedException;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.*;
 
 public interface Twitter2Service {
@@ -34,4 +28,9 @@ public interface Twitter2Service {
     String rejectRequest(Long requestId, String adminEmail);
 
     List<Twitter2> getPendingRequests();
+
+    String changeUserRoleByAdmin(String adminEmail, String userEmail, String newRole);
+
+    List<Twitter2> searchUsers(String searchTerm);
+
 }

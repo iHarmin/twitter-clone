@@ -1,59 +1,70 @@
 body, html {
     margin: 0;
     display: flex;
+    width: 100vw;
     justify-content: center;
     align-items: center;
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-  }
-
-  .navbar-brand {
-  font-size: 42px;
-  font-weight: bold;
-  color: #333;
-  font-family: 'Snell Roundhand', 'cursive';
-   
 }
-  
-  .container {
+
+.search-container {
+    align-items: center;
+    min-width: 30vw;
+}
+
+.navbar {
+    justify-content: center;
+}
+
+.navbar-brand {
+    font-size: 42px;
+    font-weight: bold;
+    color: #333;
+    font-family: 'Snell Roundhand', 'cursive';
+    background: #ffffff;
+}
+
+.container {
     background: #ffffff;
     padding: 2rem;
+    margin: 0 0 2rem;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     max-width: 600px;
     width: 100%;
-  }
-  
-  h1 {
+}
+
+h1 {
     font-size: 2rem;
     color: #333;
     margin-bottom: 1.5rem;
-  }
-  
-  form {
+}
+
+form {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  
-  label {
+}
+
+label {
     font-size: 1rem;
     color: #555;
     margin-bottom: 0.5rem;
     text-align: left;
     width: 100%;
-  }
-  
-  input {
+}
+
+input {
     padding: 0.5rem;
     margin-bottom: 1rem;
     border: 1px solid #ddd;
     border-radius: 5px;
     width: 100%;
-  }
-  
-  button {
+}
+
+button {
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -62,13 +73,13 @@ body, html {
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
-  }
-  
-  button:hover {
+}
+
+button:hover {
     background-color: #0056b3;
-  }
-  
-  p {
+}
+
+p {
     font-size: 1rem;
     color: #333;
-  }
+}

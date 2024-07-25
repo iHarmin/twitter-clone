@@ -11,7 +11,7 @@ function NavBar() {
   const userRole = Cookies.get("role");
 
   return (
-    <nav className="navbar navbar-expand navbar-light bg-light">
+    <nav className="navbar navbar-expand navbar-light">
       <div className="container">
         <Link className="navbar-brand" to="#">Twitter 2</Link>
         <ul>
@@ -33,6 +33,9 @@ function NavBar() {
               )}
             </>
           )}
+          <li className="nav-item">
+            <Link to="/search">Search</Link>
+          </li>
           <li className="nav-item">
             <Link to="/signup">Signup</Link>
           </li>

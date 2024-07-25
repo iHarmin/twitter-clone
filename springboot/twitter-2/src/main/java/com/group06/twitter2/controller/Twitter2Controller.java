@@ -1,6 +1,5 @@
 package com.group06.twitter2.controller;
 
-
 import com.group06.twitter2.model.Twitter2;
 import com.group06.twitter2.service.Twitter2Service;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
@@ -18,15 +17,14 @@ public class Twitter2Controller {
     Twitter2Service twitter2Service;
 
     @PostMapping("/save")
-    public String saveUserProfile(@RequestBody Twitter2 twitter2){
+    public String saveUserProfile(@RequestBody Twitter2 twitter2) {
 
         twitter2.setRequestStatus(String.valueOf(Twitter2.RequestStatus.PENDING));
         return twitter2Service.createUser(twitter2);
     }
 
     @PostMapping("/{id}/information")
-    public String updateUserInformation(@PathVariable("id") int id, @RequestBody Map<String,
-            String> body) {
+    public String updateUserInformation(@PathVariable("id") int id, @RequestBody Map<String, String> body) {
         String firstName = body.get("firstName");
         String lastName = body.get("lastName");
         String email = body.get("email");
@@ -35,12 +33,13 @@ public class Twitter2Controller {
     }
 
     @GetMapping("/{id}")
-    public Twitter2 getUserById(@PathVariable("id") int id){
+    public Twitter2 getUserById(@PathVariable("id") int id) {
         return twitter2Service.getUserByID(id);
     }
 
     @PostMapping("/resetPassword")
-    public String resetPassword(@RequestParam String email, @RequestParam String recoveryAnswer, @RequestParam String newPassword) {
+    public String resetPassword(@RequestParam String email, @RequestParam String recoveryAnswer,
+            @RequestParam String newPassword) {
         return twitter2Service.resetPassword(email, recoveryAnswer, newPassword);
     }
 
@@ -59,11 +58,12 @@ public class Twitter2Controller {
         String recoveryAnswer = userData.get("recoveryAnswer");
         String adminEmail = userData.get("adminEmail");
 
-        return twitter2Service.addUserByAdmin(userName, password, firstname, lastname, userEmail, recoveryAnswer, adminEmail);
+        return twitter2Service.addUserByAdmin(userName, password, firstname, lastname, userEmail, recoveryAnswer,
+                adminEmail);
     }
 
     @PostMapping("/removeUserByAdmin")
-    public String removeUserByAdmin(@RequestBody Map<String, String> userData){
+    public String removeUserByAdmin(@RequestBody Map<String, String> userData) {
         String adminEmail = userData.get("adminEmail");
         String userEmail = userData.get("userEmail");
         return twitter2Service.removeUserByAdmin(adminEmail, userEmail);
@@ -82,6 +82,7 @@ public class Twitter2Controller {
         Long userId = id;
         return twitter2Service.rejectRequest(id, adminEmail);
     }
+
     @GetMapping("/pendingRequests")
     public ResponseEntity<List<Twitter2>> getPendingRequests() {
         List<Twitter2> pendingRequests = twitter2Service.getPendingRequests();
