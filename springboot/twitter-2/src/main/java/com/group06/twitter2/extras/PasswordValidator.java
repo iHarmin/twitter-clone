@@ -42,8 +42,12 @@ public class PasswordValidator {
     /*
         Citation: This function's code is taken from PasswordValidator.java which is in csci3130-lab4 repository which was taught by TA.
      */
-    private static boolean isSpecialCharacter(char c) {
-        Set<Character> specialCharacters = Set.of('!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', '{', '}', '[', ']', ':', ';', '<', '>', ',', '.', '?', '/', '\\', '|', '~', '`');
-        return specialCharacters.contains(c);
+    public static final Set<Character> special_characters = Set.of(
+            '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', '{',
+            '}', '[', ']', ':', ';', '<', '>', ',', '.', '?', '/', '\\', '|', '~', '`'
+    );
+
+    public static boolean isSpecialCharacter(char c) {
+        return special_characters.contains(c);
     }
 }
