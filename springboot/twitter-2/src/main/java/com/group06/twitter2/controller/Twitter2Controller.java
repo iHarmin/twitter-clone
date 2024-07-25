@@ -1,14 +1,14 @@
 package com.group06.twitter2.controller;
 
-
 import com.group06.twitter2.model.Twitter2;
 import com.group06.twitter2.DTO.UserDTO;
 import com.group06.twitter2.service.Twitter2Service;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -19,12 +19,13 @@ public class Twitter2Controller {
 
     @PostMapping("/save")
     public String saveUserProfile(@RequestBody Twitter2 twitter2) {
+
+        twitter2.setRequestStatus(String.valueOf(Twitter2.RequestStatus.PENDING));
         return twitter2Service.createUser(twitter2);
     }
 
     @PostMapping("/{id}/information")
-    public String updateUserInformation(@PathVariable("id") int id, @RequestBody Map<String,
-            String> body) {
+    public String updateUserInformation(@PathVariable("id") int id, @RequestBody Map<String, String> body) {
         String firstName = body.get("firstName");
         String lastName = body.get("lastName");
         String email = body.get("email");
@@ -39,14 +40,9 @@ public class Twitter2Controller {
     }
 
     @PostMapping("/resetPassword")
-    public String resetPassword(@RequestParam String email, @RequestParam String recoveryAnswer, @RequestParam String newPassword) {
+    public String resetPassword(@RequestParam String email, @RequestParam String recoveryAnswer,
+            @RequestParam String newPassword) {
         return twitter2Service.resetPassword(email, recoveryAnswer, newPassword);
-    }
-
-    @PostMapping("/{id}/status")
-    public String updateUserStatus(@PathVariable("id") int id, @RequestBody Map<String, String> body) {
-        String status = body.get("status");
-        return twitter2Service.updateUserStatus(id, status);
     }
 
     @PostMapping("/checkPasswordValid")
@@ -64,7 +60,8 @@ public class Twitter2Controller {
         String recoveryAnswer = userData.get("recoveryAnswer");
         String adminEmail = userData.get("adminEmail");
 
-        return twitter2Service.addUserByAdmin(userName, password, firstname, lastname, userEmail, recoveryAnswer, adminEmail);
+        return twitter2Service.addUserByAdmin(userName, password, firstname, lastname, userEmail, recoveryAnswer,
+                adminEmail);
     }
 
     @PostMapping("/removeUserByAdmin")
@@ -74,19 +71,23 @@ public class Twitter2Controller {
         return twitter2Service.removeUserByAdmin(adminEmail, userEmail);
     }
 
-    @PostMapping("/changeUserRoleByAdmin")
-    public String changeUserRoleByAdmin(@RequestBody Map<String, String> userData) {
+    @PostMapping("/{id}/approve")
+    public String approveRequest(@PathVariable Long id, @RequestBody Map<String, String> userData) {
         String adminEmail = userData.get("adminEmail");
-        String userEmail = userData.get("userEmail");
-        String newRole = userData.get("newRole");
-        String result = twitter2Service.changeUserRoleByAdmin(adminEmail, userEmail, newRole);
-        return result;
+        Long userId = id;
+        return twitter2Service.approveRequest(id, adminEmail);
     }
 
-        @GetMapping("/search")
-        public List<Twitter2> searchUsers (@RequestParam String searchTerm){
-            return twitter2Service.searchUsers(searchTerm);
+    @PostMapping("/{id}/reject")
+    public String rejectRequest(@PathVariable Long id, @RequestBody Map<String, String> userData) {
+        String adminEmail = userData.get("adminEmail");
+        Long userId = id;
+        return twitter2Service.rejectRequest(id, adminEmail);
+    }
 
-
+    @GetMapping("/pendingRequests")
+    public ResponseEntity<List<Twitter2>> getPendingRequests() {
+        List<Twitter2> pendingRequests = twitter2Service.getPendingRequests();
+        return ResponseEntity.ok(pendingRequests);
     }
 }
