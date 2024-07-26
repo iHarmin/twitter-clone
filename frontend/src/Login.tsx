@@ -1,5 +1,3 @@
-// components/Login.js
-
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from './AuthContext';
@@ -59,7 +57,7 @@ const Login = () => {
       setIsLoggedIn(true);
 
       if (result.role === 'Admin') {
-        navigate(`/profile/${result.id}`);// Navigate to the pending requests page if admin
+        navigate(`/profile/${result.id}`); // Navigate to the pending requests page if admin
       } else {
         navigate(`/profile/${result.id}`); // Redirect to the user's profile page if not admin
       }

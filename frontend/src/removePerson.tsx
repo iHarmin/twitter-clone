@@ -1,5 +1,5 @@
 import './App.css';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Cookies from "js-cookie";
 
@@ -40,7 +40,7 @@ const RemovePerson: React.FC = () => {
             }
           } catch (error) {
             console.error(error);
-            alert('An error occurred while adding new person.');
+            alert('An error occurred while removing new person.');
           }
     };
 
