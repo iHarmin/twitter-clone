@@ -9,4 +9,6 @@ public interface GroupService {
     Group getGroup(int id);
     Group createGroup(Group group);
     ArrayList<Group> searchGroups(String searchTerm);
+
+    Group joinGroup(int id, int userId);
 }

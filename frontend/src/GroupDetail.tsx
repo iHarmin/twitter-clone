@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from "js-cookie";
 
 const GroupDetail: React.FC = () => {
   const params = useParams();
 
   const [group, setGroup] = useState<any>(null);
   const [isMember, setIsMember] = useState<boolean>(false);
+  const currentUserId= Cookies.get('userId');
 
   const getGroupById = (id: number) => {
     fetch(`http://localhost:8080/api/groups/${id}`).then(async (response) =>
@@ -14,9 +16,13 @@ const GroupDetail: React.FC = () => {
   };
 
   const joinGroup = () => {
-    const currentUserId = 1;
+    const requestBody = { userId: currentUserId};
+    console.log("request body:", requestBody);
     fetch(`http://localhost:8080/api/groups/${params.id}/join`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ userId: currentUserId }),
     }).then(async (response) => {
       if (response.ok) {
