@@ -14,7 +14,19 @@ const GroupDetail: React.FC = () => {
   };
 
   const joinGroup = () => {
-    setIsMember(true);
+    const currentUserId = 1;
+    fetch(`http://localhost:8080/api/groups/${params.id}/join`, {
+      method: 'POST',
+      body: JSON.stringify({ userId: currentUserId }),
+    }).then(async (response) => {
+      if (response.ok) {
+        const updatedGroup = await response.json();
+        setGroup(updatedGroup);
+        setIsMember(true);
+      } else {
+        console.error('Failed to join group, hopefully you are not seeing this.');
+      }
+    });
   };
 
   useEffect(() => {
