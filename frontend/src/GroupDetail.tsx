@@ -1,21 +1,20 @@
-import {
-  useEffect,
-  useState,
-} from 'react';
-
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const GroupDetail: React.FC = () => {
-  // TODO: This was a super quick/gross layout for a 'group detail' page (also Bootstrap doesn't seem to be working...)
-  // TODO: Add requests/add approve requests if user 'canApproveRequests' (find current user in group.members, see if they have the flag)
   const params = useParams();
 
-  const [group, setGroup] = useState(null);
+  const [group, setGroup] = useState<any>(null);
+  const [isMember, setIsMember] = useState<boolean>(false);
 
   const getGroupById = (id: number) => {
     fetch(`http://localhost:8080/api/groups/${id}`).then(async (response) =>
       setGroup(await response.json())
     );
+  };
+
+  const joinGroup = () => {
+    setIsMember(true);
   };
 
   useEffect(() => {
@@ -24,6 +23,14 @@ const GroupDetail: React.FC = () => {
       getGroupById(Number(params.id));
     }
   }, [params.id]);
+
+  useEffect(() => {
+    if (group) {
+      // Check if the current user is already a member
+      const currentUserId = 1;
+      setIsMember(group.members.some((member) => member.user.id === currentUserId));
+    }
+  }, [group]);
 
   return (
     group && (
@@ -37,10 +44,17 @@ const GroupDetail: React.FC = () => {
                 className="list-group-item d-flex justify-content-between align-items-center"
               >
                 {member.user.firstName} {member.user.lastName}
-                {member.user.status == "Online" && <span className="badge badge-success badge-pill">Online</span>}
+                {member.user.status === "Online" && (
+                  <span className="badge badge-success badge-pill">Online</span>
+                )}
               </li>
             ))}
           </ul>
+          {!isMember && (
+            <button className="btn btn-primary mt-3" onClick={joinGroup}>
+              Join Group
+            </button>
+          )}
         </div>
       </div>
     )
