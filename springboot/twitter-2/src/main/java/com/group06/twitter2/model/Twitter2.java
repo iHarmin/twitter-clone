@@ -28,7 +28,6 @@ public class Twitter2 {
     private String status;
     private String role;
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private RequestStatus requestStatus = RequestStatus.APPROVED; // Default status
 
     public Twitter2() {

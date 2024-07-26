@@ -3,9 +3,7 @@ package com.group06.twitter2.controller;
 import com.group06.twitter2.model.Twitter2;
 import com.group06.twitter2.DTO.UserDTO;
 import com.group06.twitter2.service.Twitter2Service;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
@@ -43,6 +41,12 @@ public class Twitter2Controller {
     public String resetPassword(@RequestParam String email, @RequestParam String recoveryAnswer,
             @RequestParam String newPassword) {
         return twitter2Service.resetPassword(email, recoveryAnswer, newPassword);
+    }
+
+    @PostMapping("/{id}/status")
+    public String updateUserStatus(@PathVariable("id") int id, @RequestBody Map<String, String> body) {
+        String status = body.get("status");
+        return twitter2Service.updateUserStatus(id, status);
     }
 
     @PostMapping("/checkPasswordValid")
@@ -89,5 +93,19 @@ public class Twitter2Controller {
     public ResponseEntity<List<Twitter2>> getPendingRequests() {
         List<Twitter2> pendingRequests = twitter2Service.getPendingRequests();
         return ResponseEntity.ok(pendingRequests);
+    }
+
+    @PostMapping("/changeUserRoleByAdmin")
+    public String changeUserRoleByAdmin(@RequestBody Map<String, String> userData) {
+        String adminEmail = userData.get("adminEmail");
+        String userEmail = userData.get("userEmail");
+        String newRole = userData.get("newRole");
+        String result = twitter2Service.changeUserRoleByAdmin(adminEmail, userEmail, newRole);
+        return result;
+    }
+
+    @GetMapping("/search")
+    public List<Twitter2> searchUsers (@RequestParam String searchTerm){
+        return twitter2Service.searchUsers(searchTerm);
     }
 }
