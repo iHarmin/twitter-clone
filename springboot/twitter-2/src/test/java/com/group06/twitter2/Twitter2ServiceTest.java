@@ -1,6 +1,5 @@
 package com.group06.twitter2;
 
-import com.group06.twitter2.model.Post;
 import com.group06.twitter2.DTO.UserDTO;
 import com.group06.twitter2.model.Twitter2;
 import com.group06.twitter2.repository.Twitter2Repository;

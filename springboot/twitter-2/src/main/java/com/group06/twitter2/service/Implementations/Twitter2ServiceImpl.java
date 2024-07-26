@@ -2,7 +2,6 @@ package com.group06.twitter2.service.Implementations;
 
 import com.group06.twitter2.model.Twitter2;
 import com.group06.twitter2.repository.Twitter2Repository;
-import com.group06.twitter2.repository.FriendshipRepository;
 import com.group06.twitter2.service.Twitter2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,8 +13,6 @@ import java.util.*;
 public class Twitter2ServiceImpl implements Twitter2Service {
     @Autowired
     Twitter2Repository twitter2Repository;
-    @Autowired
-    private FriendshipRepository friendshipRepository;
 
     @Override
     public String createUser(Twitter2 twitter2) {
