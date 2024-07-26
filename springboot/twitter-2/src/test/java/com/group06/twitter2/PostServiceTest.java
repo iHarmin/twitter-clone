@@ -30,14 +30,15 @@ public class PostServiceTest {
     @Test
     public void getPostsTest() {
         ArrayList<Post> MockPosts = new ArrayList<>();
-        for (int i = 0; i<5; i++) {
+        int numPosts = 5;
+        for (int i = 0; i<numPosts; i++) {
             Post post = new Post();
             post.setBody("Post" + i);
             MockPosts.add(post);
         }
         when(postsRepository.findAll()).thenReturn(MockPosts);
         ArrayList<Post> posts = postService.getPosts();
-        assertEquals(5, posts.size());
+        assertEquals(numPosts, posts.size());
         assertEquals("Post0", posts.get(0).getBody());
     }
 
