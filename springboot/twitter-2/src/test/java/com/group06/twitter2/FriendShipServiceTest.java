@@ -10,13 +10,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.test.context.TestPropertySource;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -148,8 +145,6 @@ public class FriendShipServiceTest {
         int userID1 = user1.getId();
         int userID2 = user2.getId();
 
-
-
         Friendship friendship = new Friendship();
         friendship.setUser1(user1);
         friendship.setUser2(user2);
@@ -171,8 +166,6 @@ public class FriendShipServiceTest {
 
         int userID1 = user1.getId();
         int userID2 = user2.getId();
-
-
 
         Friendship friendship = new Friendship();
         friendship.setUser1(user1);
@@ -270,7 +263,5 @@ public class FriendShipServiceTest {
             assertEquals(e.getMessage(), "User not found with id: 0");
         }
         assert(error);
-
     }
-
 }

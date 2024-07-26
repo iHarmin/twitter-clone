@@ -59,7 +59,7 @@ const Login = () => {
       setIsLoggedIn(true);
 
       if (result.role === 'Admin') {
-        navigate('/pending-requests'); // Navigate to the pending requests page if admin
+        navigate(`/profile/${result.id}`);// Navigate to the pending requests page if admin
       } else {
         navigate(`/profile/${result.id}`); // Redirect to the user's profile page if not admin
       }
