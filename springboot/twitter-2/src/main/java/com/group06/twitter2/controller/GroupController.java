@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -40,5 +41,10 @@ public class GroupController {
     @GetMapping("/{id}/members")
     public ArrayList<GroupMembership> getGroupMembersByGroupId(@PathVariable int id) {
         return groupMembershipService.getGroupMembersByGroupId(id);
+    }
+
+    @GetMapping("/search")
+    public List<Group> searchGroups(@RequestParam String searchTerm) {
+        return groupService.searchGroups(searchTerm);
     }
 }
