@@ -2,10 +2,11 @@ package com.group06.twitter2.model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "groupslol") // TODO: Change this, but not to 'group' or 'groups' because apparently SQL doesn't like that
+@Table(name = "groupslol")
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +27,7 @@ public class Group {
     public Group(String groupName, boolean isPublic) {
         this.groupName = groupName;
         this.isPublic = isPublic;
+        this.members = new HashSet<>();
     }
 
     public int getId() { return this.id; }
@@ -42,5 +44,4 @@ public class Group {
     }
 
     public Set<GroupMembership> getMembers() { return this.members; }
-
 }

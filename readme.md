@@ -4,15 +4,11 @@ Twitter 2 is a social media platform for Dalhousie University students.
 
 ## Group 6 Team Members
 
-### Front End
-
 Moses Tong (B00898277)
 
 Christian Simoneau (B00797752)
 
 Simon Losier (B00901218)
-
-### Back End
 
 Harmin Rajeshkumar Patel (B00915445)
 
@@ -44,4 +40,3 @@ retrieved from: https://stackoverflow.com/questions/19605150/regex-for-password-
 2) File: Login.tsx, logout.tsx
 Retrieved from: https://www.geeksforgeeks.org/servlet-login-and-logout-example-using-cookies/
 	* Used as a reference for cookie implementation 
-
