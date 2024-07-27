@@ -51,6 +51,26 @@ public class GroupServiceTest {
     }
 
     @Test
+    public void testCreateGroup() {
+        Group group = new Group("Group 1", true);
+
+        when(groupRepository.save(group)).thenReturn(group);
+
+        Group createdGroup = groupService.createGroup(group);
+
+        assertEquals(group, createdGroup);
+    }
+
+    @Test(expected = Exception.class)
+    public void testCreateGroupException() {
+        Group group = new Group("Group 1", true);
+
+        when(groupRepository.save(group)).thenThrow(new RuntimeException());
+
+        groupService.createGroup(group);
+    }
+
+    @Test
     public void testSearchGroupsAvailable() {
         String searchTerm = "Group";
         List<Group> expectedGroups = new ArrayList<>();
