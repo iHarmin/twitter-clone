@@ -1,26 +1,23 @@
 package com.group06.twitter2;
 
-import com.group06.twitter2.model.Post;
+import com.group06.twitter2.DTO.UserDTO;
 import com.group06.twitter2.model.Twitter2;
-import com.group06.twitter2.repository.PostsRepository;
 import com.group06.twitter2.repository.Twitter2Repository;
-import com.group06.twitter2.service.FriendshipService;
-import com.group06.twitter2.service.Implementations.FriendshipServiceImpl;
-import com.group06.twitter2.service.Implementations.PostServiceImpl;
 import com.group06.twitter2.service.Implementations.Twitter2ServiceImpl;
-import com.group06.twitter2.service.Twitter2Service;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 
@@ -34,7 +31,8 @@ public class Twitter2ServiceTest {
 
     @Test
     public void createUserTest() {
-        Twitter2 twitter2 = new Twitter2(0, "Name0", "n0@dal.ca", "password0", "FName0", "LName0", "rec0", "int0", "active", "Student");
+        Twitter2 twitter2 = new Twitter2(0, "Name0", "n0@dal.ca", "password0", "FName0", "LName0", "rec0", "int0",
+                "active", "Student", Twitter2.RequestStatus.APPROVED);
 
         when(twitter2Repository.save(twitter2)).thenReturn(twitter2);
         String result = twitter2Service.createUser(twitter2);
@@ -45,7 +43,8 @@ public class Twitter2ServiceTest {
 
     @Test
     public void createUserTest_InvalidEmail() {
-        Twitter2 twitter2 = new Twitter2(0, "Name0", "n0@gmail.com", "password0", "FName0", "LName0", "rec0", "int0", "active", "Admin");
+        Twitter2 twitter2 = new Twitter2(0, "Name0", "n0@gmail.com", "password0", "FName0", "LName0", "rec0", "int0",
+                "active", "Admin", Twitter2.RequestStatus.APPROVED);
 
         String result = twitter2Service.createUser(twitter2);
 
@@ -73,7 +72,7 @@ public class Twitter2ServiceTest {
             error = true;
             assertEquals("Customer not found with id: 0", e.getMessage());
         }
-        assert(error);
+        assert (error);
     }
 
     @Test
@@ -101,8 +100,9 @@ public class Twitter2ServiceTest {
         Twitter2 user = new Twitter2();
 
         int id = user.getId();
+        UserDTO userDTO = new UserDTO(id, "Name", "Lname", "email@example.ca", "Interest");
         when(twitter2Repository.findById(id)).thenReturn(Optional.of(user));
-        String output = twitter2Service.updateUserInformation(id, "Name", "Lname", "email@example.ca", "Interest");
+        String output = twitter2Service.updateUserInformation(userDTO);
         assertEquals("User information updated successfully", output);
         assertEquals(user.getEmail(), "email@example.ca");
     }
@@ -110,10 +110,12 @@ public class Twitter2ServiceTest {
     @Test
     public void updateUserInformationTest_UserNotFound() {
         int id = 0;
+        UserDTO userDTO = new UserDTO(id, "Name", "Lname", "email@example.ca", "Interest");
         when(twitter2Repository.findById(id)).thenReturn(Optional.empty());
-        String output = twitter2Service.updateUserInformation(id, "Name", "Lname", "email@example.ca", "Interest");
+        String output = twitter2Service.updateUserInformation(userDTO);
         assertEquals("User not found", output);
     }
+
     @Test
     public void resetPasswordTest_Successful() {
         Twitter2 twitter2 = new Twitter2();
@@ -144,49 +146,57 @@ public class Twitter2ServiceTest {
 
     }
 
-
     @Test
     public void addUserByAdmin_AdminAddsUserSuccessfully() {
-        Twitter2 adminUser = new Twitter2(1, "adminUser", "admin@dal.ca", "adminPass", "FName0", "LName0", "rec0", "int0", "active", "Admin");
+        Twitter2 adminUser = new Twitter2(1, "adminUser", "admin@dal.ca", "adminPass", "FName0", "LName0", "rec0",
+                "int0", "active", "Admin", Twitter2.RequestStatus.APPROVED);
+
         when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
 
         when(twitter2Repository.findByEmail("newUser@dal.ca")).thenReturn(null);
-        String result = twitter2Service.addUserByAdmin("newUser", "password", "FirstName", "LastName", "newUser@dal.ca", "recAnswer", "admin@dal.ca");
+        String result = twitter2Service.addUserByAdmin("newUser", "password", "FirstName", "LastName", "newUser@dal.ca",
+                "recAnswer", "admin@dal.ca");
 
         assertEquals("User added successfully", result);
     }
 
-
     @Test
     public void addUserByAdmin_NonAdminUserCannotAddUser() {
-        Twitter2 nonAdminUser = new Twitter2(1, "nonAdminUser", "user@dal.ca", "userPass", "NonAdmin", "User", "recUser", "intUser", "active", "Student");
+        Twitter2 nonAdminUser = new Twitter2(1, "nonAdminUser", "user@dal.ca", "userPass", "NonAdmin", "User",
+                "recUser", "intUser", "active", "Student", Twitter2.RequestStatus.APPROVED);
+
         when(twitter2Repository.findByEmail("user@dal.ca")).thenReturn(nonAdminUser);
 
-        String result = twitter2Service.addUserByAdmin("newUser", "password", "FirstName", "LastName", "newUser@dal.ca", "recAnswer", "user@dal.ca");
+        String result = twitter2Service.addUserByAdmin("newUser", "password", "FirstName", "LastName", "newUser@dal.ca",
+                "recAnswer", "user@dal.ca");
 
         assertEquals("This user is not authorized to create new user", result);
     }
 
-
     @Test
     public void addUserByAdmin_UserAlreadyExists() {
-        Twitter2 adminUser = new Twitter2(1, "adminUser", "admin@dal.ca", "adminPass", "FName0", "LName0", "rec0", "int0", "active", "Admin");
+        Twitter2 adminUser = new Twitter2(1, "adminUser", "admin@dal.ca", "adminPass", "FName0", "LName0", "rec0",
+                "int0", "active", "Admin", Twitter2.RequestStatus.APPROVED);
         when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
-        Twitter2 existingUser = new Twitter2(2, "existingUser", "existing@dal.ca", "existingPass", "Fname1", "Lname1", "rec1", "int1", "active", "Student");
+
+        Twitter2 existingUser = new Twitter2(2, "existingUser", "existing@dal.ca", "existingPass", "Fname1", "Lname1",
+                "rec1", "int1", "active", "Student", Twitter2.RequestStatus.APPROVED);
         when(twitter2Repository.findByEmail("existing@dal.ca")).thenReturn(existingUser);
 
-        String result = twitter2Service.addUserByAdmin("existingUser", "existingPass", "Fname1", "Lname1", "existing@dal.ca", "rec1", "admin@dal.ca");
+        String result = twitter2Service.addUserByAdmin("existingUser", "existingPass", "Fname1", "Lname1",
+                "existing@dal.ca", "rec1", "admin@dal.ca");
 
         assertEquals("User already exist", result);
     }
 
-
     @Test
     public void removeUserByAdmin_AdminRemovesUserSuccessfully() {
-        Twitter2 adminUser = new Twitter2(1, "adminUser", "admin@dal.ca", "adminPass", "FName0", "LName0", "rec0", "int0", "active", "Admin");
+        Twitter2 adminUser = new Twitter2(1, "adminUser", "admin@dal.ca", "adminPass", "FName0", "LName0", "rec0",
+                "int0", "active", "Admin", Twitter2.RequestStatus.APPROVED);
         when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
 
-        Twitter2 user = new Twitter2(2, "user", "user@dal.ca", "password", "FirstName", "LastName", "recAnswer", "intUser", "active", "Student");
+        Twitter2 user = new Twitter2(2, "user", "user@dal.ca", "password", "FirstName", "LastName", "recAnswer",
+                "intUser", "active", "Student", Twitter2.RequestStatus.APPROVED);
         when(twitter2Repository.findByEmail("user@dal.ca")).thenReturn(user);
 
         String result = twitter2Service.removeUserByAdmin("admin@dal.ca", "user@dal.ca");
@@ -196,10 +206,12 @@ public class Twitter2ServiceTest {
 
     @Test
     public void removeUserByAdmin_NonAdminUserCannotRemoveUser() {
-        Twitter2 nonAdminUser = new Twitter2(1, "nonAdminUser", "nonAdminUser@dal.ca", "userPass", "NonAdmin", "User", "recUser", "intUser", "active", "Student");
+        Twitter2 nonAdminUser = new Twitter2(1, "nonAdminUser", "nonAdminUser@dal.ca", "userPass", "NonAdmin", "User",
+                "recUser", "intUser", "active", "Student", Twitter2.RequestStatus.APPROVED);
         when(twitter2Repository.findByEmail("nonAdminUser@dal.ca")).thenReturn(nonAdminUser);
 
-        Twitter2 user = new Twitter2(2, "user", "user@dal.ca", "password", "FirstName", "LastName", "recAnswer", "intUser", "active", "Student");
+        Twitter2 user = new Twitter2(2, "user", "user@dal.ca", "password", "FirstName", "LastName", "recAnswer",
+                "intUser", "active", "Student", Twitter2.RequestStatus.APPROVED);
         when(twitter2Repository.findByEmail("user@dal.ca")).thenReturn(user);
 
         String result = twitter2Service.removeUserByAdmin("nonAdminUser@dal.ca", "user@dal.ca");
@@ -209,7 +221,9 @@ public class Twitter2ServiceTest {
 
     @Test
     public void removeUserByAdmin_UserDoesNotExist() {
-        Twitter2 adminUser = new Twitter2(1, "adminUser", "admin@dal.ca", "adminPass", "FirstName", "LastName", "recAnswer", "intAdmin", "active", "Admin");
+        Twitter2 adminUser = new Twitter2(1, "adminUser", "admin@dal.ca", "adminPass", "FirstName", "LastName",
+                "recAnswer", "intAdmin", "active", "Admin", Twitter2.RequestStatus.APPROVED);
+
         when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
 
         when(twitter2Repository.findByEmail("nonExistentUser@dal.ca")).thenReturn(null);
@@ -219,6 +233,176 @@ public class Twitter2ServiceTest {
     }
 
     @Test
+    public void approveRequest_ValidAdmin_ValidRequestId() {
+        Twitter2 adminUser = new Twitter2();
+        adminUser.setEmail("admin@dal.ca");
+        adminUser.setRole("Admin");
+
+        Twitter2 normalUser = new Twitter2();
+        normalUser.setRequestStatus(String.valueOf(Twitter2.RequestStatus.PENDING));
+
+        when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
+        when(twitter2Repository.findById(1)).thenReturn(Optional.of(normalUser));
+
+        String result = twitter2Service.approveRequest(1L, "admin@dal.ca");
+
+        assertEquals("Request successfully approved", result);
+        assertEquals(Twitter2.RequestStatus.APPROVED, normalUser.getRequestStatus());
+        verify(twitter2Repository, times(1)).save(normalUser);
+    }
+
+    @Test
+    public void approveRequest_NonAdminUser() {
+        Twitter2 nonAdminUser = new Twitter2();
+        nonAdminUser.setEmail("user@dal.ca");
+        nonAdminUser.setRole("Student");
+
+        when(twitter2Repository.findByEmail("user@dal.ca")).thenReturn(nonAdminUser);
+
+        String result = twitter2Service.approveRequest(1L, "user@dal.ca");
+
+        assertEquals("Only admins can approve requests", result);
+        verify(twitter2Repository, never()).save(any(Twitter2.class));
+    }
+
+    @Test
+    public void approveRequest_InvalidRequestId() {
+        Twitter2 adminUser = new Twitter2();
+        adminUser.setEmail("admin@dal.ca");
+        adminUser.setRole("Admin");
+
+        when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
+        when(twitter2Repository.findById(999)).thenReturn(Optional.empty());
+
+        String result = twitter2Service.approveRequest(999L, "admin@dal.ca");
+
+        assertEquals("Invalid user ID. User ID is not present", result);
+        verify(twitter2Repository, never()).save(any(Twitter2.class));
+    }
+
+    @Test
+    public void rejectRequest_ValidAdmin_ValidRequestId() {
+        Twitter2 adminUser = new Twitter2();
+        adminUser.setEmail("admin@dal.ca");
+        adminUser.setRole("Admin");
+
+        Twitter2 normalUser = new Twitter2();
+        normalUser.setRequestStatus(String.valueOf(Twitter2.RequestStatus.PENDING));
+
+        when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
+        when(twitter2Repository.findById(1)).thenReturn(Optional.of(normalUser));
+
+        String result = twitter2Service.rejectRequest(1L, "admin@dal.ca");
+
+        assertEquals("Request rejected successfully", result);
+        assertEquals(Twitter2.RequestStatus.REJECTED, normalUser.getRequestStatus());
+        verify(twitter2Repository, times(1)).save(normalUser);
+    }
+
+    @Test
+    public void rejectRequest_NonAdminUser() {
+        Twitter2 nonAdminUser = new Twitter2();
+        nonAdminUser.setEmail("user@dal.ca");
+        nonAdminUser.setRole("Student");
+
+        when(twitter2Repository.findByEmail("user@dal.ca")).thenReturn(nonAdminUser);
+
+        String result = twitter2Service.rejectRequest(1L, "user@dal.ca");
+
+        assertEquals("Only admins can reject requests", result);
+        verify(twitter2Repository, never()).save(any(Twitter2.class));
+    }
+
+    @Test
+    public void rejectRequest_InvalidRequestId() {
+        Twitter2 adminUser = new Twitter2();
+        adminUser.setEmail("admin@dal.ca");
+        adminUser.setRole("Admin");
+
+        when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
+        when(twitter2Repository.findById(999)).thenReturn(Optional.empty());
+
+        String result = twitter2Service.rejectRequest(999L, "admin@dal.ca");
+
+        assertEquals("Invalid user ID. User ID is not present", result);
+        verify(twitter2Repository, never()).save(any(Twitter2.class));
+    }
+
+    @Test
+    public void rejectRequest_AlreadyApprovedRequest() {
+        Twitter2 adminUser = new Twitter2();
+        adminUser.setEmail("admin@dal.ca");
+        adminUser.setRole("Admin");
+
+        Twitter2 normalUser = new Twitter2();
+        normalUser.setRequestStatus("APPROVED");
+
+        when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
+        when(twitter2Repository.findById(1)).thenReturn(Optional.of(normalUser));
+
+        String result = twitter2Service.rejectRequest(1L, "admin@dal.ca");
+
+        assertEquals("Request is already approved. Cannot reject, approved request.", result);
+        verify(twitter2Repository, never()).save(normalUser);
+    }
+
+    public void changeUserRoleByAdmin_AdminChangesRoleSuccessfully() {
+        Twitter2 adminUser = new Twitter2(1, "adminUser", "admin@dal.ca", "adminPass", "FirstName", "LastName",
+                "recAnswer", "intAdmin", "active", "Admin", Twitter2.RequestStatus.APPROVED);
+        Twitter2 user = new Twitter2(2, "user", "user@dal.ca", "userPass", "FirstName", "LastName", "recAnswer",
+                "intUser", "active", "Student", Twitter2.RequestStatus.APPROVED);
+
+        when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
+        when(twitter2Repository.findByEmail("user@dal.ca")).thenReturn(user);
+
+        String result = twitter2Service.changeUserRoleByAdmin("admin@dal.ca", "user@dal.ca", "Employee");
+
+        assertEquals("User role updated successfully", result);
+        assertEquals("Employee", user.getRole());
+    }
+
+    @Test
+    public void changeUserRoleByAdmin_NonAdminCannotChangeRole() {
+        Twitter2 nonAdminUser = new Twitter2(1, "nonAdminUser", "nonAdmin@dal.ca", "userPass", "FirstName", "LastName",
+                "recAnswer", "intUser", "active", "Student", Twitter2.RequestStatus.APPROVED);
+        Twitter2 user = new Twitter2(2, "user", "user@dal.ca", "userPass", "FirstName", "LastName", "recAnswer",
+                "intUser", "active", "Student", Twitter2.RequestStatus.APPROVED);
+
+        when(twitter2Repository.findByEmail("nonAdmin@dal.ca")).thenReturn(nonAdminUser);
+
+        String result = twitter2Service.changeUserRoleByAdmin("nonAdmin@dal.ca", "user@dal.ca", "Employee");
+
+        assertEquals("This user is not authorized to change user roles", result);
+    }
+
+    @Test
+    public void changeUserRoleByAdmin_UserNotFound() {
+        Twitter2 adminUser = new Twitter2(1, "adminUser", "admin@dal.ca", "adminPass", "FirstName", "LastName",
+                "recAnswer", "intAdmin", "active", "Admin", Twitter2.RequestStatus.APPROVED);
+
+        when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
+        when(twitter2Repository.findByEmail("user@dal.ca")).thenReturn(null);
+
+        String result = twitter2Service.changeUserRoleByAdmin("admin@dal.ca", "user@dal.ca", "Employee");
+
+        assertEquals("User not found", result);
+    }
+
+    @Test
+    public void changeUserRoleByAdmin_InvalidRoleSpecified() {
+        Twitter2 adminUser = new Twitter2(1, "adminUser", "admin@dal.ca", "adminPass", "FirstName", "LastName",
+                "recAnswer", "intAdmin", "active", "Admin", Twitter2.RequestStatus.APPROVED);
+        Twitter2 user = new Twitter2(2, "user", "user@dal.ca", "userPass", "FirstName", "LastName", "recAnswer",
+                "intUser", "active", "Student", Twitter2.RequestStatus.APPROVED);
+
+        when(twitter2Repository.findByEmail("admin@dal.ca")).thenReturn(adminUser);
+        when(twitter2Repository.findByEmail("user@dal.ca")).thenReturn(user);
+
+        String result = twitter2Service.changeUserRoleByAdmin("admin@dal.ca", "user@dal.ca", "InvalidRole");
+
+        assertEquals("Invalid role specified", result);
+    }
+
     public void checkPasswordValidTest_successful() {
         Twitter2 user = new Twitter2();
         user.setPassword("password");
@@ -239,22 +423,38 @@ public class Twitter2ServiceTest {
     }
 
     @Test
-    public void updateUserRoleTest_successful() {
-        Twitter2 user = new Twitter2();
-        int id = user.getId();
+    public void searchUser_ByUserName() {
+        Twitter2 twitter2 = new Twitter2(0, "UserName0", "n0@dal.ca", "password0", "FName0",
+                "LName0", "rec0", "int0", "active", "Student", Twitter2.RequestStatus.APPROVED);
+        String searchTerm = "UserName0";
 
-        when(twitter2Repository.findById(id)).thenReturn(Optional.of(user));
-        String output = twitter2Service.updateUserRole(id, "admin");
+        when(twitter2Repository.searchByUserNameOrEmailOrInterests(searchTerm)).thenReturn(List.of(twitter2));
+        List<Twitter2> result = twitter2Service.searchUsers(searchTerm);
 
-        assertEquals("User role updated successfully", output);
-        assertEquals("admin", user.getRole());
+        assertEquals("UserName0", result.get(0).getUserName());
     }
 
     @Test
-    public void updateUserRoleTest_userNotFound() {
-        int id = 0;
-        when(twitter2Repository.findById(id)).thenReturn(Optional.empty());
-        String output = twitter2Service.updateUserRole(0, "admin");
-        assertEquals("User not found", output);
+    public void searchUser_ByEmail() {
+        Twitter2 twitter2 = new Twitter2(0, "UserName0", "n0@dal.ca", "password0", "FName0",
+                "LName0", "rec0", "int0", "active", "Student", Twitter2.RequestStatus.APPROVED);
+        String searchTerm = "n0@dal.ca";
+
+        when(twitter2Repository.searchByUserNameOrEmailOrInterests(searchTerm)).thenReturn(List.of(twitter2));
+        List<Twitter2> result = twitter2Service.searchUsers(searchTerm);
+
+        assertEquals("n0@dal.ca", result.get(0).getEmail());
+    }
+
+    @Test
+    public void searchUser_ByInterests() {
+        Twitter2 twitter2 = new Twitter2(0, "UserName0", "n0@dal.ca", "password0", "FName0",
+                "LName0", "rec0", "reading", "active", "Student", Twitter2.RequestStatus.APPROVED);
+        String searchTerm = "reading";
+
+        when(twitter2Repository.searchByUserNameOrEmailOrInterests(searchTerm)).thenReturn(List.of(twitter2));
+        List<Twitter2> result = twitter2Service.searchUsers(searchTerm);
+
+        assertEquals("reading", result.get(0).getPersonalInterests());
     }
 }

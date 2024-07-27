@@ -34,6 +34,12 @@ const Signup: React.FC = () => {
     // Regex pattern to match email containing "@dal.ca"
     const emailPattern = /@dal\.ca$/;
     const passwordPattern = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/ //retrieved from: https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+    const usernameSpacePattern = /\s/; // Regex pattern to match username containing space
+
+    if (usernameSpacePattern.test(username)) {
+      setErrorMessage('Username cannot contain spaces');
+      return;
+    }
 
     if (!emailPattern.test(email)) {
       setErrorMessage('Email must be of domain @dal.ca');

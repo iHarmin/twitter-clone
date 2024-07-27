@@ -1,8 +1,7 @@
-import {useContext, useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {useParams} from 'react-router-dom';
-import {AuthContext} from "./AuthContext.tsx";
 import Cookies from "js-cookie";
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const ProfilePage: React.FC = () => {
 
@@ -32,6 +31,7 @@ const ProfilePage: React.FC = () => {
   const [friends, setFriends] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
   const [friendRequestSent, setFriendRequestSent] = useState(false);
+  const navigate = useNavigate();
 
   // Fetch the user's profile data
   useEffect(() => {
@@ -57,7 +57,7 @@ const ProfilePage: React.FC = () => {
       try {
         const friendsResponse = await fetch(`http://localhost:8080/api/friends/${profileID}`);
         const friendsData = await friendsResponse.json();
-        setFriends(friendsData.map(friendship => ({
+        setFriends(friendsData.map((friendship: { user2: { id: any; userName: any; firstName: any; lastName: any; email: any; }; }) => ({
           userID: friendship.user2.id,
           userName: friendship.user2.userName,
           firstName: friendship.user2.firstName,
@@ -265,6 +265,18 @@ const ProfilePage: React.FC = () => {
     }
   };
 
+  const handleAddPersonClick = () => {
+    navigate('/addPerson');
+  };
+
+  const handleRemovePersonClick = () => {
+    navigate('/removePerson');
+  };
+
+  const handleChangeRoleClick = () => {
+    navigate('/ChangeRole');
+  };
+
   // Form for entering name, email, and interests
   // Username cannot be changed
   return (
@@ -272,130 +284,164 @@ const ProfilePage: React.FC = () => {
       <div className="row">
         <div className="col">
           <div className="container">
+            <h1>Profile</h1>
             <div className="row">
               <div className="col">
-                <p>{formData.firstName} {formData.lastName}</p>
-                <p>{formData.userName}</p>
-                <p>{formData.email}</p>
-                <p>{formData.personalInterests}</p>
-                <p>{formData.status}</p>
+                <p>Name: {formData.firstName} {formData.lastName}</p>
+                <p>Username: {formData.userName}</p>
+                <p>Email: {formData.email}</p>
+                <p>Interests: {formData.personalInterests}</p>
+                <p>Status: {formData.status}</p>
+                {profileID !== currentUserID && (
+                  <button onClick={() => handleSendRequest(profileID)}
+                          className="btn btn-primary"
+                          disabled={friendRequestSent}>
+                    {friendRequestSent ? 'Request Pending' : 'Add Friend'}
+                  </button>
+                )}
               </div>
             </div>
-          </div><br></br>
+          </div>
+
+          <div className="container">
+            {Cookies.get('userId') === profileID && (
+              <div className="row">
+                <div className="col">
+                  <h3>Update your Personal Information:</h3>
+                  <form onSubmit={handleDetailsSubmit}>
+                    <div className="form-group mb-3">
+                      <label> First Name: </label>
+                      <input type="text" value={firstName}
+                             onChange={e => setFirstName(e.target.value)}
+                             className="form-control"/>
+                    </div>
+                    <div className="form-group mb-3">
+                      <label> Last Name: </label>
+                      <input type="text" value={lastName}
+                             onChange={e => setLastName(e.target.value)}
+                             className="form-control"/>
+                    </div>
+                    <div className="form-group mb-3">
+                      <label> Email: </label>
+                      <input type="email" value={email}
+                             onChange={e => setEmail(e.target.value)}
+                             className="form-control"/>
+                    </div>
+                    <div className="form-group mb-3">
+                      <label> Interests: </label>
+                      <input type="text" value={interests}
+                             onChange={e => setInterests(e.target.value)}
+                             className="form-control"/>
+                    </div>
+                    <input type="submit" value="Submit"
+                           className="btn btn-primary"/>
+                  </form>
+                </div>
+              </div>
+            )}
+
+            {profileID === currentUserID && (
+              <form onSubmit={handleStatusChange} className="mt-5">
+                <label>
+                  Status:
+                  <select value={status}
+                          onChange={e => setStatus(e.target.value)}
+                          className="form-control mb-3">
+                    <option value="" disabled>Click to update your status
+                    </option>
+                    <option value="Online">Online 🟢</option>
+                    <option value="Offline">Offline ⚪</option>
+                    <option value="Busy">Busy 🔴</option>
+                  </select>
+                </label>
+                <input type="submit" value="Change Status"
+                       className="btn btn-primary mt-3"/>
+              </form>
+            )}
+          </div>
+
+          <div className="container">
+            <h3>Friend List</h3>
+            {friends.length > 0 ? (
+              friends.map(friend => (
+                <div key={friend.userID} className="row">
+                  <div className="col">
+                    <div
+                      className="list-group-item d-flex justify-content-between align-items-center">
+                      <div className="card">
+                        <div className="card-body">
+                          <p className="mb-0">Username: {friend.userName}</p>
+                          <p className="mb-0">Email: {friend.email}</p>
+                          <p>Name: {friend.firstName} {friend.lastName}</p>
+                          {profileID === currentUserID && (
+                            <button
+                              onClick={() => handleRemoveFriend(friend.userID)}
+                              className="btn btn-danger">Remove Friend
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>No friends were found.</p>
+            )}
+          </div>
+
+          {profileID === currentUserID && (
+            <div className="container">
+              <h3>Friend Requests</h3>
+              {friendRequests.length > 0 ? (
+                friendRequests.map(request => (
+                  <div key={request.from.id}
+                       className="list-group-item d-flex justify-content-between align-items-center">
+                    <div className="card">
+                      <div className="card-body">
+                        <p
+                          className="mb-0">Username: {request.from.userName}</p>
+                        <p className="mb-0">Email: {request.from.email}</p>
+                        <p>Name: {request.from.firstName} {request.from.lastName}</p>
+                        <button
+                          onClick={() => handleAcceptRequest(request.from.id)}
+                          className="btn btn-primary me-3">Accept Request
+                        </button>
+                        <button
+                          onClick={() => handleDeclineRequest(request.from.id)}
+                          className="btn btn-danger">Decline Request
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No friend requests were found.</p>
+              )}
+            </div>
+          )}
           {role === "Admin" && (
             <div className="container">
               <div className="row">
                 <div className="col">
-                  <p><button type="submit">Add Person</button></p>
-                  <p><button type="submit">Remove Person</button></p>
-                </div>
-              </div>
-            </div>
-          )}<br></br>
-
-          {profileID !== currentUserID && (
-            <button onClick={() => handleSendRequest(profileID)}
-                    className="btn btn-primary" disabled={friendRequestSent}>
-              {friendRequestSent ? 'Request Pending' : 'Add Friend'}
-            </button>
-          )}
-
-          {Cookies.get('userId') === profileID && (
-            <div className="row">
-              <div className="col">
-                <h3>Update your personal information:</h3>
-                <form onSubmit={handleDetailsSubmit}>
-                  <div className="form-group mb-3">
-                    <label> First Name: </label>
-                    <input type="text" value={firstName}
-                           onChange={e => setFirstName(e.target.value)}
-                           className="form-control"/>
-                  </div>
-                  <div className="form-group mb-3">
-                    <label> Last Name: </label>
-                    <input type="text" value={lastName}
-                           onChange={e => setLastName(e.target.value)}
-                           className="form-control"/>
-                  </div>
-                  <div className="form-group mb-3">
-                    <label> Email: </label>
-                    <input type="email" value={email}
-                           onChange={e => setEmail(e.target.value)}
-                           className="form-control"/>
-                  </div>
-                  <div className="form-group mb-3">
-                    <label> Interests: </label>
-                    <input type="text" value={interests}
-                           onChange={e => setInterests(e.target.value)}
-                           className="form-control"/>
-                  </div>
-                  <input type="submit" value="Submit"
-                         className="btn btn-primary"/>
-                </form>
-              </div>
-            </div>
-          )}
-
-          {profileID === currentUserID && (
-            <form onSubmit={handleStatusChange} className="mt-5">
-              <label>
-                Status:
-                <select value={status} onChange={e => setStatus(e.target.value)}
-                        className="form-control mb-3">
-                  <option value="" disabled>Click to select your status</option>
-                  <option value="Online">Online 🟢</option>
-                  <option value="Offline">Offline ⚪</option>
-                  <option value="Busy">Busy 🔴</option>
-                </select>
-              </label>
-              <input type="submit" value="Change Status"
-                     className="btn btn-primary mt-3"/>
-            </form>
-          )}
-
-          <h3>Friend List</h3>
-          {friends.map(friend => (
-            <div key={friend.userID}
-                 className="list-group-item d-flex justify-content-between align-items-center">
-              <div className="card">
-                <div className="card-body">
-                  <p className="mb-0">Username: {friend.userName}</p>
-                  <p className="mb-0">Email: {friend.email}</p>
-                  <p>Name: {friend.firstName} {friend.lastName}</p>
-                  {profileID === currentUserID && (
-                    <button
-                      onClick={() => handleRemoveFriend(friend.userID)}
-                      className="btn btn-danger">Remove Friend
+                  <p>
+                    <button type="submit" onClick={handleAddPersonClick}>Add
+                      Person
                     </button>
-                  )}
+                  </p>
+                  <p>
+                    <button type="submit"
+                            onClick={handleRemovePersonClick}>Remove Person
+                    </button>
+                  </p>
+
+                  <p>
+                    <button type="submit"
+                            onClick={handleChangeRoleClick}>Change Role
+                    </button>
+                  </p>
                 </div>
               </div>
-            </div>
-          ))}
-
-          {profileID === currentUserID && (
-            <div>
-              <h3>Friend Requests</h3>
-              {friendRequests.map(request => (
-                <div key={request.from.id}
-                     className="list-group-item d-flex justify-content-between align-items-center">
-                  <div className="card">
-                    <div className="card-body">
-                      <p className="mb-0">Username: {request.from.userName}</p>
-                      <p className="mb-0">Email: {request.from.email}</p>
-                      <p>Name: {request.from.firstName} {request.from.lastName}</p>
-                      <button
-                        onClick={() => handleAcceptRequest(request.from.id)}
-                        className="btn btn-primary me-3">Accept Request
-                      </button>
-                      <button
-                        onClick={() => handleDeclineRequest(request.from.id)}
-                        className="btn btn-danger">Decline Request
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
             </div>
           )}
         </div>

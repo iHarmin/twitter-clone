@@ -1,19 +1,18 @@
-import React, {useContext, useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {AuthContext} from './AuthContext';
+import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './AuthContext';
 import Cookies from 'js-cookie';
 
 const Login = () => {
-  const {setIsLoggedIn} = useContext(AuthContext);
+  const { setIsLoggedIn } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
 
     try {
-
       const formData = new URLSearchParams();
       formData.append('email', email);
       formData.append('password', password);
@@ -25,7 +24,6 @@ const Login = () => {
         },
         body: formData
       });
-      console.log(formData);
 
       if (!serverResponse.ok) {
         throw new Error('Login failed');
@@ -34,13 +32,35 @@ const Login = () => {
       const result = await serverResponse.json();
       console.log(result);
       console.log('Success:', result);
-  
+
+      // Check if the request is pending
+      if (result.requestStatus === 'PENDING') {
+        alert('Your request is pending. Please wait for approval before logging in.');
+        return;
+      }
+
+      if (result.requestStatus === 'REJECTED') {
+        alert('Your request is rejected. You cannot able to login');
+        return;
+      }
+
+      // Handle the admin check
+      if (email === 'christian.simoneau@dal.ca' || email === 'moses.tong@dal.ca' || email === 'harmin.patel@dal.ca'
+                || email === 'maitri.vasoya@dal.ca' || email === 'vraj.patel@dal.ca' || email === 'simon.losier@dal.ca') {
+        Cookies.set('adminEmail', result.email);
+      }
+      
       Cookies.set('authToken', result.authToken); // Set the cookie
       Cookies.set('userId', result.id);
       Cookies.set('username', result.userName);
+      Cookies.set('role', result.role); // Set the user role
       setIsLoggedIn(true);
-      navigate(`/profile/${result.id}`); // Redirect to the user's profile page
-      console.log("Cookie:", result.id);
+
+      if (result.role === 'Admin') {
+        navigate(`/profile/${result.id}`); // Navigate to the pending requests page if admin
+      } else {
+        navigate(`/profile/${result.id}`); // Redirect to the user's profile page if not admin
+      }
 
     } catch (error) {
       console.error(error);
@@ -49,28 +69,30 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <div>
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-      <button type="submit">Login</button>
-      <a href="/forgotpassword">Forgot Password?</a>
-    </form>
+    <div className="container">
+      <form onSubmit={handleLogin}>
+        <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit">Login</button>
+        <a href="/forgotpassword">Forgot Password?</a>
+      </form>
+    </div>
   );
 };
 
