@@ -1,14 +1,16 @@
 package com.group06.twitter2;
 
 import com.group06.twitter2.model.Group;
+import com.group06.twitter2.model.GroupMembership;
+import com.group06.twitter2.model.Twitter2;
+import com.group06.twitter2.repository.GroupMembershipRepository;
 import com.group06.twitter2.repository.GroupRepository;
+import com.group06.twitter2.repository.Twitter2Repository;
 import com.group06.twitter2.service.Implementations.GroupServiceImpl;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -27,6 +29,12 @@ public class GroupServiceTest {
 
     @InjectMocks
     private GroupServiceImpl groupService;
+
+    @Mock
+    private Twitter2Repository twitter2Repository;
+
+    @Mock
+    private GroupMembershipRepository groupMembershipRepository;
 
     @Test
     public void testGetGroups() {
@@ -105,7 +113,7 @@ public class GroupServiceTest {
         membership.setGroup(group);
         membership.setUser(user);
 
-        when(groupMembershipRepository.save(any(GroupMembership.class))).thenReturn(membership);
+        when(groupRepository.save(group)).thenReturn(group);
 
         Group updatedGroup = groupService.joinGroup(1, 1);
 
