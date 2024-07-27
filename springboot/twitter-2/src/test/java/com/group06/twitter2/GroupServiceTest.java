@@ -13,6 +13,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -68,6 +70,25 @@ public class GroupServiceTest {
         when(groupRepository.save(group)).thenThrow(new RuntimeException());
 
         groupService.createGroup(group);
+    }
+
+    @Test
+    public void testGetGroup() {
+        Group expectedGroup = new Group("Group 1", true);
+        expectedGroup.setId(1);
+
+        when(groupRepository.findById(1)).thenReturn(Optional.of(expectedGroup));
+
+        Group actualGroup = groupService.getGroup(1);
+
+        assertEquals(expectedGroup, actualGroup);
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testGetGroupNotFound() {
+        when(groupRepository.findById(1)).thenReturn(Optional.empty());
+
+        groupService.getGroup(1);
     }
 
     @Test
