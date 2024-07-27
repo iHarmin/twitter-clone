@@ -27,6 +27,30 @@ public class GroupServiceTest {
     private GroupServiceImpl groupService;
 
     @Test
+    public void testGetGroups() {
+        List<Group> expectedGroups = new ArrayList<>();
+        expectedGroups.add(new Group("Group 1", true));
+        expectedGroups.add(new Group("Group 2", true));
+
+        when(groupRepository.findAll()).thenReturn(expectedGroups);
+
+        List<Group> actualGroups = groupService.getGroups();
+
+        assertEquals(expectedGroups, actualGroups);
+    }
+
+    @Test
+    public void testGetGroupsEmpty() {
+        List<Group> expectedGroups = new ArrayList<>();
+
+        when(groupRepository.findAll()).thenReturn(expectedGroups);
+
+        List<Group> actualGroups = groupService.getGroups();
+
+        assertEquals(expectedGroups, actualGroups);
+    }
+
+    @Test
     public void testSearchGroupsAvailable() {
         String searchTerm = "Group";
         List<Group> expectedGroups = new ArrayList<>();
