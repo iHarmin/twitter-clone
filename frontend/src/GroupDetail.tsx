@@ -101,7 +101,7 @@ const GroupDetail: React.FC = () => {
             </button>
           ) : (
             <button className="btn btn-danger mt-3" onClick={leaveGroup}>
-              Remove
+              Leave Group
             </button>
           )}
         </div>

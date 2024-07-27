@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Switch from 'react-switch';
+import Cookies from "js-cookie";
 
 const CreateGroup: React.FC = () => {
   const [groupName, setGroupName] = useState("");
   const [isPublic, setIsPublic] = useState(true);
+  const currentUserId = Cookies.get("userId");
 
   const navigate = useNavigate();
 
@@ -39,7 +41,27 @@ const CreateGroup: React.FC = () => {
       alert("Error creating group");
     } else {
       const group = await response.json();
-      navigate(`/group/${group.id}`);
+
+      console.log("Created Group:", group);
+
+      // Automatically join the group
+      const joinResponse = await fetch(
+        `http://localhost:8080/api/groups/${group.id}/join`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: currentUserId }),
+        }
+      );
+
+      if (!joinResponse.ok) {
+        alert("Error joining group");
+      } else {
+        console.log("Joined Group:", await joinResponse.json());
+        navigate(`/group/${group.id}`);
+      }
     }
   };
 
