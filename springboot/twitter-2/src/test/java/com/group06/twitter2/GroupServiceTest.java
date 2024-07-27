@@ -92,6 +92,34 @@ public class GroupServiceTest {
     }
 
     @Test
+    public void testJoinGroup() {
+        Group group = new Group("Group 1", true);
+        group.setId(1);
+        Twitter2 user = new Twitter2();
+        user.setId(1);
+
+        when(groupRepository.findById(1)).thenReturn(Optional.of(group));
+        when(twitter2Repository.findById(1)).thenReturn(Optional.of(user));
+
+        GroupMembership membership = new GroupMembership();
+        membership.setGroup(group);
+        membership.setUser(user);
+
+        when(groupMembershipRepository.save(any(GroupMembership.class))).thenReturn(membership);
+
+        Group updatedGroup = groupService.joinGroup(1, 1);
+
+        assertEquals(group, updatedGroup);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testJoinGroupGroupNotFound() {
+        when(groupRepository.findById(1)).thenReturn(Optional.empty());
+
+        groupService.joinGroup(1, 1);
+    }
+
+    @Test
     public void testSearchGroupsAvailable() {
         String searchTerm = "Group";
         List<Group> expectedGroups = new ArrayList<>();
