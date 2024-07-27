@@ -58,4 +58,17 @@ public class GroupController {
         Group updatedGroup = groupService.joinGroup(id, userId);
         return ResponseEntity.ok(updatedGroup);
     }
+
+    @PostMapping("/{id}/leave")
+    public ResponseEntity<Group> leaveGroup(@PathVariable int id, @RequestBody Map<String, Integer> request) {
+        int userId = request.get("userId");
+        Group updatedGroup = groupService.leaveGroup(id, userId);
+        return ResponseEntity.ok(updatedGroup);
+    }
+
+    @GetMapping("/{id}/isUserInGroup")
+    public ResponseEntity<Boolean> isUserInGroup(@PathVariable int id, @RequestParam int userId) {
+        boolean isInGroup = groupService.isUserInGroup(id, userId);
+        return ResponseEntity.ok(isInGroup);
+    }
 }

@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
 import Cookies from "js-cookie";
 
 const GroupDetail: React.FC = () => {
@@ -7,7 +7,7 @@ const GroupDetail: React.FC = () => {
 
   const [group, setGroup] = useState<any>(null);
   const [isMember, setIsMember] = useState<boolean>(false);
-  const currentUserId= Cookies.get('userId');
+  const currentUserId = Cookies.get('userId');
 
   const getGroupById = (id: number) => {
     fetch(`http://localhost:8080/api/groups/${id}`).then(async (response) =>
@@ -16,14 +16,14 @@ const GroupDetail: React.FC = () => {
   };
 
   const joinGroup = () => {
-    const requestBody = { userId: currentUserId};
+    const requestBody = {userId: currentUserId};
     console.log("request body:", requestBody);
     fetch(`http://localhost:8080/api/groups/${params.id}/join`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ userId: currentUserId }),
+      body: JSON.stringify({userId: currentUserId}),
     }).then(async (response) => {
       if (response.ok) {
         const updatedGroup = await response.json();
@@ -35,20 +35,47 @@ const GroupDetail: React.FC = () => {
     });
   };
 
+  const leaveGroup = () => {
+    const requestBody = {userId: currentUserId};
+    console.log('Request Body:', requestBody);
+
+    fetch(`http://localhost:8080/api/groups/${params.id}/leave`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody),
+    }).then(async (response) => {
+      if (response.ok) {
+        const updatedGroup = await response.json();
+        setGroup(updatedGroup);
+        setIsMember(false);
+      } else {
+        console.error('Failed to leave group');
+      }
+    });
+  };
+
+  const checkUserMembership = (groupId: number, userId: string) => {
+    fetch(`http://localhost:8080/api/groups/${groupId}/isUserInGroup?userId=${userId}`)
+      .then(async (response) => {
+        if (response.ok) {
+          const isInGroup = await response.json();
+          setIsMember(isInGroup);
+        } else {
+          console.error('Failed to check user membership');
+        }
+      });
+  };
+
   useEffect(() => {
     if (params.id) {
       // get group from backend
       getGroupById(Number(params.id));
+      // check if user is a member
+      checkUserMembership(Number(params.id), currentUserId);
     }
   }, [params.id]);
-
-  useEffect(() => {
-    if (group) {
-      // Check if the current user is already a member
-      const currentUserId = 1;
-      setIsMember(group.members.some((member) => member.user.id === currentUserId));
-    }
-  }, [group]);
 
   return (
     group && (
@@ -56,7 +83,7 @@ const GroupDetail: React.FC = () => {
         <div className="card-body">
           <div className="card-header">{group.groupName} Members</div>
           <ul className="list-group">
-            {group.members.map((member) => (
+            {group.members.map((member: any) => (
               <li
                 key={member.id}
                 className="list-group-item d-flex justify-content-between align-items-center"
@@ -68,9 +95,13 @@ const GroupDetail: React.FC = () => {
               </li>
             ))}
           </ul>
-          {!isMember && (
+          {!isMember ? (
             <button className="btn btn-primary mt-3" onClick={joinGroup}>
               Join Group
+            </button>
+          ) : (
+            <button className="btn btn-danger mt-3" onClick={leaveGroup}>
+              Remove
             </button>
           )}
         </div>

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -44,8 +45,7 @@ public class GroupServiceImpl implements GroupService {
     public Group createGroup(Group group) {
         try {
             groupRepository.save(group);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw ex;
         }
         return group;
@@ -58,7 +58,7 @@ public class GroupServiceImpl implements GroupService {
 
     public Group joinGroup(int groupId, int userId) {
         Group group = groupRepository.findById(groupId).orElseThrow(() -> new RuntimeException("Group not found"));
-        Twitter2 user = twitter2Repository.findById(userId).orElseThrow(() -> new RuntimeException( "User not found"));
+        Twitter2 user = twitter2Repository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
         GroupMembership membership = new GroupMembership();
         membership.setGroup(group);
@@ -68,4 +68,29 @@ public class GroupServiceImpl implements GroupService {
         group.getMembers().add(membership);
         return groupRepository.save(group);
     }
+
+    @Override
+    public Group leaveGroup(int groupId, int userId) {
+        Group group = groupRepository.findById(groupId).orElseThrow(() -> new RuntimeException("Group not found"));
+        Twitter2 user = twitter2Repository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<GroupMembership> memberships = groupMembershipRepository.findByGroupAndUser(group, user);
+        if (memberships.isEmpty()) {
+            throw new RuntimeException("Membership not found");
+        }
+
+        GroupMembership membership = memberships.get(0);
+        groupMembershipRepository.delete(membership);
+        group.getMembers().remove(membership);
+        return groupRepository.save(group);
+    }
+
+    @Override
+    public boolean isUserInGroup(int groupId, int userId) {
+        Group group = groupRepository.findById(groupId).orElseThrow(() -> new RuntimeException("Group not found"));
+        Twitter2 user = twitter2Repository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        return !groupMembershipRepository.findByGroupAndUser(group, user).isEmpty();
+    }
+
 }

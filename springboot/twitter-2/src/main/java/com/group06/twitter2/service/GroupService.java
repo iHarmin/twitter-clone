@@ -11,4 +11,6 @@ public interface GroupService {
     ArrayList<Group> searchGroups(String searchTerm);
 
     Group joinGroup(int id, int userId);
+    Group leaveGroup(int id, int userId);
+    boolean isUserInGroup(int groupId, int userId);
 }
